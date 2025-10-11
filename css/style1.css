@@ -1,0 +1,138 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fffaf0;
+  }
+  
+  .topo {
+    position: relative;
+  }
+  
+  .banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .menu-direita {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+  
+  .menu-direita a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    background-color: #ff7f50;
+    padding: 8px 15px;
+    border-radius: 5px;
+  }
+  
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+    text-align: center;
+  }
+  
+  main a {
+    display: inline-block;
+    margin: 15px;
+    padding: 15px 30px;
+    background-color: #ff7f50;
+    color: white;
+    text-decoration: none;
+    font-size: 1.3rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  main a:hover {
+    background-color: #ff6347;
+  }
+  
+  .formulario {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff5e1;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .formulario h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .formulario form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .formulario label {
+    margin: 10px 0 5px;
+    font-weight: bold;
+  }
+  
+  .formulario input[type="text"],
+  .formulario input[type="email"],
+  .formulario input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .formulario input[type="submit"] {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #ff7f50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .formulario input[type="submit"]:hover {
+    background-color: #ff6347;
+  }
+
+  .mensagem-sucesso, .mensagem-erro {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .mensagem-sucesso {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .mensagem-erro {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .mensagem-sucesso a,
+  .mensagem-erro a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .mensagem-sucesso a:hover,
+  .mensagem-erro a:hover {
+    text-decoration: underline;
+  }
+  
