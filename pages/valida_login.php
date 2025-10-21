@@ -1,4 +1,15 @@
 <?php
+$ACTIVE_PAGE = 'login';
+$PAGE_TITLE  = 'StoryBites — Validando Login';
+$PAGE_DESC   = 'Processando seu login no StoryBites.';
+$PAGE_STYLES = [
+                'css/login.css',
+]; // CSS específico desta página
+
+require_once __DIR__ . '/../config.php';
+require_once APP_ROOT . '/partials/_head.php';
+require_once APP_ROOT . '/partials/_header.php';
+
 session_start();
 include('../backend/conexao.php'); 
 
@@ -23,27 +34,34 @@ if ($resultado->num_rows === 1) {
         $_SESSION['usuario_tipo'] = $usuario['tipo_usuario']; // 0 ou 1
 
         echo '
-        <div class="mensagem-sucesso">
-            <h2>✅ Login realizado com sucesso!</h2>
-            <p>Bem-vindo, ' . htmlspecialchars($usuario['nome']) . '!</p>
-            <p>Redirecionando para a página inicial...</p>
-        </div>
-        <meta http-equiv="refresh" content="3;URL=../index.php">
+        <main class="formulario">
+            <div class="mensagem-sucesso">
+                <h2>✅ Login realizado com sucesso!</h2>
+                <p>Bem-vindo, ' . htmlspecialchars($usuario['nome']) . '!</p>
+                <p>Redirecionando para a página inicial...</p>
+            </div>
+            <meta http-equiv="refresh" content="3;URL=../index.php">
+        </main>
         ';
     } else {
         echo '
-        <div class="mensagem-erro">
-            <h2>❌ Senha incorreta</h2>
-            <p><a href="login.php">Tentar novamente</a></p>
-        </div>';
+        <main class="formulario">
+            <div class="mensagem-erro">
+                <h2>❌ Senha incorreta</h2>
+                <p><a href="login.php">Tentar novamente</a></p>
+            </div>
+        </main>';
     }
 } else {
     echo '
-    <div class="mensagem-erro">
-        <h2>❌ E-mail não encontrado</h2>
-        <p><a href="login.php">Tentar novamente</a></p>
-    </div>';
+    <main class="formulario">
+        <div class="mensagem-erro">
+            <h2>❌ E-mail não encontrado</h2>
+            <p><a href="login.php">Tentar novamente</a></p>
+        </div>
+    </main>';
 }
 
+require_once APP_ROOT . '/partials/_footer.php';
 $conn->close();
 ?>
