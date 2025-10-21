@@ -33,6 +33,11 @@ if ($resultado->num_rows === 1) {
         $_SESSION['usuario_nome'] = $usuario['nome'];
         $_SESSION['usuario_tipo'] = $usuario['tipo_usuario']; // 0 ou 1
 
+        // Redirecionamento imediato com header (mais confiável)
+        header("Location: ../index.php");
+        exit();
+        
+        // Caso o header não funcione, fallback com meta refresh
         echo '
         <main class="formulario">
             <div class="mensagem-sucesso">
@@ -40,7 +45,7 @@ if ($resultado->num_rows === 1) {
                 <p>Bem-vindo, ' . htmlspecialchars($usuario['nome']) . '!</p>
                 <p>Redirecionando para a página inicial...</p>
             </div>
-            <meta http-equiv="refresh" content="3;URL=../index.php">
+            <meta http-equiv="refresh" content="2;URL=../index.php">
         </main>
         ';
     } else {

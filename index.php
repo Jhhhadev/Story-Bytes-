@@ -1,4 +1,6 @@
 <?php
+session_start(); // Iniciar sessão para verificar se usuário está logado
+
 $ACTIVE_PAGE = 'home';
 $PAGE_TITLE  = 'StoryBites — Início';
 $PAGE_DESC   = 'StoryBites reúne receitas de família e memórias deliciosas.';
@@ -9,12 +11,28 @@ $PAGE_STYLES = [
 require_once __DIR__ . '/config.php';
 require_once APP_ROOT . '/partials/_head.php';
 require_once APP_ROOT . '/partials/_header.php';
+
+// Verificar se usuário está logado e exibir mensagem de boas-vindas
+$usuario_logado = false;
+$nome_usuario = '';
+if (isset($_SESSION['usuario_id'])) {
+    $usuario_logado = true;
+    $nome_usuario = $_SESSION['usuario_nome'];
+}
 ?>
 
 
 <main>
     <section class="apresentacao">
         
+        <?php if ($usuario_logado): ?>
+        <!-- Mensagem de boas-vindas para usuários logados -->
+        <div class="welcome-message" style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h3 style="margin: 0 0 5px 0; font-size: 1.2rem;">🎉 Bem-vindo de volta, <?= htmlspecialchars($nome_usuario) ?>!</h3>
+            <p style="margin: 0; opacity: 0.9;">Explore nossas deliciosas receitas e descubra novos sabores!</p>
+        </div>
+        <?php endif; ?>
+    
     <!-- Adicione dentro da section .apresentacao ou antes dos cards -->
         <div class="carrossel" aria-roledescription="carousel">
             <div class="carrossel-imagens">
