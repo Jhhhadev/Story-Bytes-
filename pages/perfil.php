@@ -24,6 +24,13 @@ $usuario_id = $_SESSION['usuario_id'];
 $usuario_nome = $_SESSION['usuario_nome'];
 $usuario_tipo = $_SESSION['usuario_tipo'];
 
+// Buscar dados completos do usuário
+$sql_usuario = "SELECT * FROM usuario WHERE id = ?";
+$stmt_usuario = $conn->prepare($sql_usuario);
+$stmt_usuario->bind_param("i", $usuario_id);
+$stmt_usuario->execute();
+$dados_usuario = $stmt_usuario->get_result()->fetch_assoc();
+
 // Buscar receitas do usuário (usando a estrutura atual do banco)
 $sql_receitas = "SELECT r.* FROM receita r 
                  WHERE r.titulo LIKE '%usuario_%' 
@@ -213,26 +220,84 @@ if (!$categorias) {
         <!-- Aba: Meus Dados -->
         <div class="tab-content" id="tab-dados">
             <h2>⚙️ Meus Dados</h2>
-            <div class="dados-container">
+            
+            <!-- Botões de alternância -->
+            <div class="dados-toggle">
+                <button class="toggle-btn active" id="btn-visualizar" onclick="toggleDadosMode('visualizar')">👁️ Visualizar</button>
+                <button class="toggle-btn" id="btn-editar" onclick="toggleDadosMode('editar')">✏️ Editar</button>
+            </div>
+            
+            <!-- Modo Visualização -->
+            <div class="dados-container" id="dados-visualizar">
                 <div class="info-group">
                     <label>👤 Nome Completo:</label>
-                    <p><?= htmlspecialchars($usuario_nome) ?></p>
+                    <p><?= htmlspecialchars($dados_usuario['nome'] ?? $usuario_nome) ?></p>
                 </div>
                 
                 <div class="info-group">
                     <label>📧 E-mail:</label>
-                    <p><?= htmlspecialchars($_SESSION['usuario_email'] ?? 'Não disponível') ?></p>
+                    <p><?= htmlspecialchars($dados_usuario['email']) ?></p>
+                </div>
+                
+                <div class="info-group">
+                    <label>📅 Data de Cadastro:</label>
+                    <p><?= date('d/m/Y', strtotime($dados_usuario['dataCadastro'])) ?></p>
                 </div>
                 
                 <div class="info-group">
                     <label>👨‍🍳 Tipo de Usuário:</label>
-                    <p><?= $usuario_tipo === 'admin' ? 'Administrador' : 'Chef Caseiro' ?></p>
+                    <p><?= $dados_usuario['tipo_usuario'] === 'admin' ? 'Administrador' : 'Chef Caseiro' ?></p>
                 </div>
                 
                 <div class="actions">
-                    <button class="btn-primary">✏️ Editar Dados</button>
-                    <button class="btn-secondary">🔐 Alterar Senha</button>
+                    <button class="btn-primary" onclick="toggleDadosMode('editar')">✏️ Editar Dados</button>
+                    <button class="btn-secondary" onclick="toggleDadosMode('senha')">🔐 Alterar Senha</button>
                 </div>
+            </div>
+            
+            <!-- Modo Edição -->
+            <div class="dados-container" id="dados-editar" style="display: none;">
+                <form action="atualizar_dados.php" method="POST" class="dados-form">
+                    <div class="form-group">
+                        <label for="edit-nome">👤 Nome Completo</label>
+                        <input type="text" id="edit-nome" name="nome" value="<?= htmlspecialchars($dados_usuario['nome']) ?>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-email">📧 E-mail</label>
+                        <input type="email" id="edit-email" name="email" value="<?= htmlspecialchars($dados_usuario['email']) ?>" required>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">💾 Salvar Alterações</button>
+                        <button type="button" class="btn-secondary" onclick="toggleDadosMode('visualizar')">❌ Cancelar</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Modo Alterar Senha -->
+            <div class="dados-container" id="dados-senha" style="display: none;">
+                <form action="atualizar_senha.php" method="POST" class="dados-form">
+                    <div class="form-group">
+                        <label for="senha-atual">🔒 Senha Atual</label>
+                        <input type="password" id="senha-atual" name="senha_atual" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nova-senha">🔐 Nova Senha</label>
+                        <input type="password" id="nova-senha" name="nova_senha" required minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmar-senha">🔐 Confirmar Nova Senha</label>
+                        <input type="password" id="confirmar-senha" name="confirmar_senha" required minlength="6">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">🔐 Alterar Senha</button>
+                        <button type="button" class="btn-secondary" onclick="toggleDadosMode('visualizar')">❌ Cancelar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -250,12 +315,58 @@ function switchTab(tabName) {
     document.querySelector(`#tab-${tabName}`).classList.add('active');
 }
 
+// JavaScript para alternância de modos na aba dados
+function toggleDadosMode(modo) {
+    // Esconder todos os containers
+    document.getElementById('dados-visualizar').style.display = 'none';
+    document.getElementById('dados-editar').style.display = 'none';
+    document.getElementById('dados-senha').style.display = 'none';
+    
+    // Remover classe active de todos os botões
+    document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+    
+    // Mostrar o container selecionado
+    if (modo === 'visualizar') {
+        document.getElementById('dados-visualizar').style.display = 'block';
+        document.getElementById('btn-visualizar').classList.add('active');
+    } else if (modo === 'editar') {
+        document.getElementById('dados-editar').style.display = 'block';
+        document.getElementById('btn-editar').classList.add('active');
+    } else if (modo === 'senha') {
+        document.getElementById('dados-senha').style.display = 'block';
+        // Não há botão específico para senha, ele é ativado pelo botão "Alterar Senha"
+    }
+}
+
 // Event listeners para os botões das abas
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const tabName = btn.getAttribute('data-tab');
         switchTab(tabName);
     });
+});
+
+// Validação de confirmação de senha
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form[action="atualizar_senha.php"]');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const novaSenha = document.getElementById('nova-senha').value;
+            const confirmarSenha = document.getElementById('confirmar-senha').value;
+            
+            if (novaSenha !== confirmarSenha) {
+                e.preventDefault();
+                alert('❌ As senhas não coincidem! Por favor, verifique.');
+                return false;
+            }
+            
+            if (novaSenha.length < 6) {
+                e.preventDefault();
+                alert('❌ A senha deve ter pelo menos 6 caracteres!');
+                return false;
+            }
+        });
+    }
 });
 </script>
 
