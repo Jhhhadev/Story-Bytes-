@@ -291,6 +291,11 @@
     font-weight: 600;
 }
 
+.status-rascunho {
+    background: #e2e3e5;
+    color: #495057;
+}
+
 .status-pendente {
     background: #fff3cd;
     color: #856404;
@@ -304,6 +309,17 @@
 .status-rejeitada {
     background: #f8d7da;
     color: #721c24;
+}
+
+.btn-outline {
+    background: transparent;
+    color: #6c757d;
+    border: 2px solid #6c757d;
+}
+
+.btn-outline:hover {
+    background: #6c757d;
+    color: white;
 }
 
 .card-body {

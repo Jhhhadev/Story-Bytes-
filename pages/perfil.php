@@ -174,8 +174,9 @@ if (!$categorias) {
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn-primary">🚀 Enviar para Aprovação</button>
-                        <button type="reset" class="btn-secondary">🔄 Limpar Formulário</button>
+                        <button type="submit" name="acao" value="salvar" class="btn-secondary">💾 Salvar como Rascunho</button>
+                        <button type="submit" name="acao" value="aprovar" class="btn-primary">🚀 Enviar para Aprovação</button>
+                        <button type="reset" class="btn-outline">🔄 Limpar Formulário</button>
                     </div>
                 </form>
             </div>
@@ -194,7 +195,35 @@ if (!$categorias) {
                         <div class="receita-card">
                             <div class="card-header">
                                 <h3><?= htmlspecialchars($receita['titulo']) ?></h3>
-                                <span class="status-badge status-pendente">⏳ Pendente</span>
+                                <?php
+                                $status = $receita['status_aprovacao'];
+                                $status_class = '';
+                                $status_text = '';
+                                $status_icon = '';
+                                
+                                switch($status) {
+                                    case 'rascunho':
+                                        $status_class = 'status-rascunho';
+                                        $status_text = '💾 Rascunho';
+                                        break;
+                                    case 'pendente':
+                                        $status_class = 'status-pendente';
+                                        $status_text = '⏳ Pendente';
+                                        break;
+                                    case 'aprovada':
+                                        $status_class = 'status-aprovada';
+                                        $status_text = '✅ Aprovada';
+                                        break;
+                                    case 'rejeitada':
+                                        $status_class = 'status-rejeitada';
+                                        $status_text = '❌ Rejeitada';
+                                        break;
+                                    default:
+                                        $status_class = 'status-pendente';
+                                        $status_text = '⏳ Pendente';
+                                }
+                                ?>
+                                <span class="status-badge <?= $status_class ?>"><?= $status_text ?></span>
                             </div>
                             <div class="card-body">
                                 <p><strong>Categoria:</strong> Geral</p>

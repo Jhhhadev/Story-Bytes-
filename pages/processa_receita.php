@@ -28,6 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modo_preparo = $_POST['modoprep'];
     $rendimento = $_POST['rendimento'] ?? '';
     $tempo_preparo = $_POST['tempo_preparo'] ?? '';
+    $acao = $_POST['acao'] ?? 'aprovar'; // padrão é enviar para aprovação
+    
+    // Definir status baseado na ação
+    $status_aprovacao = ($acao === 'salvar') ? 'rascunho' : 'pendente';
     
     // Processar upload de imagem (opcional)
     $imagem_nome = null;
@@ -59,24 +63,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Inserir receita no banco de dados
         $sql = "INSERT INTO receita (usuario_id, categoria_id, titulo, descricao, ingredientes, modoprep, rendimento, tempo_preparo, imagem, status_aprovacao, datacriacao) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', NOW())";
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
         
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iisssssss", $usuario_id, $categoria_id, $titulo, $descricao, $ingredientes, $modo_preparo, $rendimento, $tempo_preparo, $imagem_nome);
+        $stmt->bind_param("iissssssss", $usuario_id, $categoria_id, $titulo, $descricao, $ingredientes, $modo_preparo, $rendimento, $tempo_preparo, $imagem_nome, $status_aprovacao);
         
         if ($stmt->execute()) {
-            echo '
-            <main class="formulario">
-                <div class="mensagem-sucesso">
-                    <h2>🎉 Receita enviada com sucesso!</h2>
-                    <p><strong>' . htmlspecialchars($titulo) . '</strong> foi enviada para aprovação.</p>
-                    <p>Nossos administradores irão revisar sua receita em breve!</p>
-                    <div style="margin-top: 20px;">
-                        <a href="perfil.php" class="btn-primary" style="margin-right: 10px;">📋 Ver Minhas Receitas</a>
-                        <a href="perfil.php" class="btn-secondary">➕ Criar Nova Receita</a>
+            if ($acao === 'salvar') {
+                echo '
+                <main class="formulario">
+                    <div class="mensagem-sucesso">
+                        <h2>💾 Receita salva como rascunho!</h2>
+                        <p><strong>' . htmlspecialchars($titulo) . '</strong> foi salva em seus rascunhos.</p>
+                        <p>Você pode editá-la a qualquer momento ou enviá-la para aprovação quando quiser!</p>
+                        <div style="margin-top: 20px;">
+                            <a href="perfil.php" class="btn-primary" style="margin-right: 10px;">📋 Ver Minhas Receitas</a>
+                            <a href="perfil.php" class="btn-secondary">➕ Criar Nova Receita</a>
+                        </div>
                     </div>
-                </div>
-            </main>';
+                </main>';
+            } else {
+                echo '
+                <main class="formulario">
+                    <div class="mensagem-sucesso">
+                        <h2>🎉 Receita enviada para aprovação!</h2>
+                        <p><strong>' . htmlspecialchars($titulo) . '</strong> foi enviada para aprovação.</p>
+                        <p>Nossos administradores irão revisar sua receita em breve!</p>
+                        <div style="margin-top: 20px;">
+                            <a href="perfil.php" class="btn-primary" style="margin-right: 10px;">📋 Ver Minhas Receitas</a>
+                            <a href="perfil.php" class="btn-secondary">➕ Criar Nova Receita</a>
+                        </div>
+                    </div>
+                </main>';
+            }
             
         } else {
             throw new Exception("Erro ao salvar receita: " . $stmt->error);
