@@ -31,18 +31,16 @@ $stmt_usuario->bind_param("i", $usuario_id);
 $stmt_usuario->execute();
 $dados_usuario = $stmt_usuario->get_result()->fetch_assoc();
 
-// Buscar receitas do usuário (usando a estrutura atual do banco)
-$sql_receitas = "SELECT r.* FROM receita r 
-                 WHERE r.titulo LIKE '%usuario_%' 
-                 ORDER BY r.datacriacao DESC 
-                 LIMIT 10";
-$receitas_usuario = $conn->query($sql_receitas);
-
-// Se não houver coluna usuario_id ainda, simulamos resultado vazio
-if (!$receitas_usuario) {
-    $receitas_usuario = new stdClass();
-    $receitas_usuario->num_rows = 0;
-}
+// Buscar receitas do usuário
+$sql_receitas = "SELECT r.*, c.nome as categoria_nome 
+                 FROM receita r 
+                 LEFT JOIN categoria c ON r.categoria_id = c.id
+                 WHERE r.usuario_id = ? 
+                 ORDER BY r.datacriacao DESC";
+$stmt_receitas = $conn->prepare($sql_receitas);
+$stmt_receitas->bind_param("i", $usuario_id);
+$stmt_receitas->execute();
+$receitas_usuario = $stmt_receitas->get_result();
 
 // Buscar categorias disponíveis
 $sql_categorias = "SELECT * FROM categoria ORDER BY nome";
@@ -226,7 +224,7 @@ if (!$categorias) {
                                 <span class="status-badge <?= $status_class ?>"><?= $status_text ?></span>
                             </div>
                             <div class="card-body">
-                                <p><strong>Categoria:</strong> Geral</p>
+                                <p><strong>Categoria:</strong> <?= htmlspecialchars($receita['categoria_nome'] ?? 'Sem categoria') ?></p>
                                 <p><strong>Criada em:</strong> <?= date('d/m/Y', strtotime($receita['datacriacao'])) ?></p>
                                 <p class="descricao"><?= htmlspecialchars(substr($receita['descricao'], 0, 100)) ?>...</p>
                                 
