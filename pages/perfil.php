@@ -103,7 +103,7 @@ if (!$categorias) {
         <div class="tab-content active" id="tab-criar">
             <div class="form-container">
                 <h2>✨ Criar Nova Receita</h2>
-                <form action="processa_receita.php" method="POST" enctype="multipart/form-data" class="receita-form">
+                <form action="/Story-Bytes-/pages/processa_receita.php" method="POST" enctype="multipart/form-data" class="receita-form">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="titulo">📝 Título da Receita</label>
