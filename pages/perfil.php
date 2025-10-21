@@ -229,10 +229,22 @@ if (!$categorias) {
                                 <p><strong>Categoria:</strong> Geral</p>
                                 <p><strong>Criada em:</strong> <?= date('d/m/Y', strtotime($receita['datacriacao'])) ?></p>
                                 <p class="descricao"><?= htmlspecialchars(substr($receita['descricao'], 0, 100)) ?>...</p>
+                                
+                                <?php if ($receita['imagem']): ?>
+                                    <div class="receita-imagem">
+                                        <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                                             alt="<?= htmlspecialchars($receita['titulo']) ?>" 
+                                             style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-top: 10px;">
+                                    </div>
+                                <?php endif; ?>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-small btn-edit">✏️ Editar</button>
-                                <button class="btn-small btn-delete">🗑️ Excluir</button>
+                                <button class="btn-small btn-view" onclick="verReceita(<?= $receita['id'] ?>)">👁️ Ver</button>
+                                <button class="btn-small btn-edit" onclick="editarReceita(<?= $receita['id'] ?>)">✏️ Editar</button>
+                                <?php if ($status === 'rascunho'): ?>
+                                    <button class="btn-small btn-send" onclick="enviarAprovacao(<?= $receita['id'] ?>)">🚀 Enviar</button>
+                                <?php endif; ?>
+                                <button class="btn-small btn-delete" onclick="excluirReceita(<?= $receita['id'] ?>)">🗑️ Excluir</button>
                             </div>
                         </div>
                     <?php endwhile; ?>
@@ -332,6 +344,53 @@ if (!$categorias) {
     </div>
 </main>
 
+<!-- Modal para visualizar receita completa -->
+<div id="modalReceita" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-titulo"></h2>
+            <span class="modal-close" onclick="fecharModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="modal-image-container">
+                <img id="modal-imagem" alt="Imagem da receita">
+            </div>
+            
+            <div class="modal-info">
+                <div class="info-section">
+                    <h3>📋 Descrição</h3>
+                    <p id="modal-descricao"></p>
+                </div>
+                
+                <div class="info-section">
+                    <h3>🥄 Ingredientes</h3>
+                    <div id="modal-ingredientes"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>👩‍🍳 Modo de Preparo</h3>
+                    <div id="modal-modo-preparo"></div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-item">
+                        <h4>🍽️ Rendimento</h4>
+                        <p id="modal-rendimento"></p>
+                    </div>
+                    <div class="info-item">
+                        <h4>⏱️ Tempo de Preparo</h4>
+                        <p id="modal-tempo"></p>
+                    </div>
+                    <div class="info-item">
+                        <h4>📅 Criada em</h4>
+                        <p id="modal-data"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // JavaScript para as abas
 function switchTab(tabName) {
@@ -397,6 +456,113 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Funções para gerenciamento de receitas
+function verReceita(id) {
+    // Fazer uma requisição AJAX para buscar os dados completos da receita
+    fetch('obter_receita.php?id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarModalReceita(data.receita);
+            } else {
+                alert('❌ Erro ao carregar receita: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('❌ Erro ao carregar receita');
+        });
+}
+
+function mostrarModalReceita(receita) {
+    const modal = document.getElementById('modalReceita');
+    
+    document.getElementById('modal-titulo').textContent = receita.titulo;
+    document.getElementById('modal-descricao').textContent = receita.descricao;
+    document.getElementById('modal-ingredientes').innerHTML = receita.ingredientes.replace(/\n/g, '<br>');
+    document.getElementById('modal-modo-preparo').innerHTML = receita.modoprep.replace(/\n/g, '<br>');
+    document.getElementById('modal-rendimento').textContent = receita.rendimento || 'Não informado';
+    document.getElementById('modal-tempo').textContent = receita.tempo_preparo || 'Não informado';
+    document.getElementById('modal-data').textContent = new Date(receita.datacriacao).toLocaleDateString('pt-BR');
+    
+    const modalImagem = document.getElementById('modal-imagem');
+    if (receita.imagem) {
+        modalImagem.src = '../img/receitas/' + receita.imagem;
+        modalImagem.style.display = 'block';
+    } else {
+        modalImagem.style.display = 'none';
+    }
+    
+    modal.style.display = 'block';
+}
+
+function fecharModal() {
+    document.getElementById('modalReceita').style.display = 'none';
+}
+
+function editarReceita(id) {
+    // Por enquanto, apenas alerta - pode ser implementado posteriormente
+    alert('🚧 Funcionalidade de edição em desenvolvimento!');
+}
+
+function enviarAprovacao(id) {
+    if (confirm('📤 Enviar esta receita para aprovação do administrador?')) {
+        fetch('alterar_status_receita.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'id=' + id + '&status=pendente'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ Receita enviada para aprovação!');
+                location.reload();
+            } else {
+                alert('❌ Erro: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('❌ Erro ao enviar receita');
+        });
+    }
+}
+
+function excluirReceita(id) {
+    if (confirm('🗑️ Tem certeza que deseja excluir esta receita?\n\nEsta ação não pode ser desfeita!')) {
+        fetch('excluir_receita.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ Receita excluída com sucesso!');
+                location.reload();
+            } else {
+                alert('❌ Erro: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('❌ Erro ao excluir receita');
+        });
+    }
+}
+
+// Fechar modal clicando fora dele
+window.onclick = function(event) {
+    const modal = document.getElementById('modalReceita');
+    if (event.target === modal) {
+        fecharModal();
+    }
+}
 </script>
 
 <?php
