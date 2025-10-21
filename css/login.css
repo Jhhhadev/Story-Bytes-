@@ -1,0 +1,133 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  width: 100%;
+  
+}
+
+.titulo_login {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: var(--cor-primaria);
+}
+
+.box_form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  background-color: var(--cor-branca);
+  border-radius: 5px;
+  margin-top: 20px; /* Posiciona o formulário um pouco abaixo do header */
+}
+
+.box_form label {
+  text-align: left;
+  margin-bottom: 5px;
+  color: var(--cor-primaria);
+}
+
+.box_form input {
+  box-sizing: border-box;
+}
+
+.box_form input[type="text"],
+.box_form input[type="email"],
+.box_form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid var(--cor-primaria);
+  border-radius: 8px;
+}
+
+.box_form input[type="submit"] {
+  padding: 10px 20px;
+  border: none;
+  background-color: #5cb85c; /* Tom de verde para o botão */
+  color: var(--cor-branca);
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.box-form input[type="submit"]:hover {
+  background-color: #4cae4c; /* Tom mais escuro de verde ao passar o mouse */
+}
+
+
+/* Responsividade para tablets */
+@media (max-width: 900px) {
+  .box_form {
+    width: 80%;
+    min-width: 200px;
+    padding: 16px;
+  }
+  .formulario {
+    height: 400px;
+  }
+}
+
+/* Responsividade para celulares */
+@media (max-width: 600px) {
+  .box_form {
+    width: 98%;
+    min-width: unset;
+    padding: 10px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  }
+  .formulario {
+    height: auto;
+    padding: 20px 0;
+  }
+  .titulo_login {
+    font-size: 1.3rem;
+  }
+}
+
+/* Estilos para mensagens de feedback */
+.mensagem-sucesso, .mensagem-erro {
+  width: 400px;
+  max-width: 90%;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  margin: 20px auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mensagem-sucesso {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.mensagem-sucesso h2 {
+  color: #155724;
+  margin-bottom: 10px;
+}
+
+.mensagem-erro {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.mensagem-erro h2 {
+  color: #721c24;
+  margin-bottom: 10px;
+}
+
+.mensagem-sucesso a, .mensagem-erro a {
+  color: var(--cor-primaria);
+  text-decoration: underline;
+}
+
+.mensagem-sucesso a:hover, .mensagem-erro a:hover {
+  text-decoration: none;
+}
+

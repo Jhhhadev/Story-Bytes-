@@ -1,0 +1,85 @@
+/* estilos.css */
+
+.carrossel {
+  position: relative;
+  width: 80%;
+  max-width: 800px; /* Ajuste conforme necessário */
+  margin: 0 auto;
+  overflow: hidden; /* Garante que apenas o slide atual seja visível */
+  height: 400px; /* Altura fixa para o carrossel */
+}
+
+.carrossel-imagens {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  height: 100%;
+}
+
+.slide .slide img{
+    box-sizing: border-box;
+}
+
+.slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Evita que o conteúdo do slide transborde */
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover; /* Garante que a imagem cubra todo o slide */
+  object-position: center; /* Centraliza a imagem dentro do slide */
+  display: block;
+}
+
+.carrossel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 10px;
+  z-index: 10;
+}
+
+.carrossel-btn.prev {
+  left: 10px;
+}
+
+.carrossel-btn.next {
+  right: 10px;
+}
+
+/* Responsividade para tablets */
+@media (max-width: 900px) {
+  .carrossel {
+    width: 95%;
+    height: 250px;
+    max-width: 100%;
+  }
+  .slide img {
+    height: 250px;
+  }
+}
+
+/* Responsividade para celulares */
+@media (max-width: 600px) {
+  .carrossel {
+    width: 100%;
+    height: 180px;
+    max-width: 100%;
+  }
+  .slide img {
+    height: 180px;
+  }
+}

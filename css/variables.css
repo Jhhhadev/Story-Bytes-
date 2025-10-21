@@ -1,0 +1,32 @@
+:root{
+  /* cores */
+  --cor-primaria: #ff7043;
+  --cor-secundaria: #333333;
+  --cor-fundo: #f9f9f9;
+  --cor-branca: #ffffff;
+  --texto-sobre-primaria: #ffffff;
+  --card-fundo: #ffffff;
+  --card-borda: rgba(0,0,0,0.08);
+  --cor-teste: #ed3957;
+
+  /* tipografia */
+  --fonte-principal: "Open Sans", sans-serif;
+  --fonte-titulo: "Yanone Kaffeesatz", sans-serif;
+
+  /* espaçamentos */
+  --gap-sm: .75rem;
+  --gap-md: 1rem;
+  --gap-lg: 1.25rem;
+  --radius: .5rem;
+  --shadow-sm: 0 2px 6px rgba(0,0,0,.1);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.15);
+}
+
+
+body {
+    font-family: 'Open Sans', 'Yanone Kaffeesatz', sans-serif;
+    line-height: 1.6;
+    background-color: var(--cor-branca);
+    color: var(--cor-secundaria);
+    padding-bottom: 90px; /* espaço para o rodapé fixo não cobrir o conteúdo */
+}
