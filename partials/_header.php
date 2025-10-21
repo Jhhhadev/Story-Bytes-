@@ -35,7 +35,7 @@ $nome_usuario_header = $usuario_logado_header ? $_SESSION['usuario_nome'] : '';
                 <!-- Menu para usuários logados -->
                 <li><a href="pages/perfil.php">PERFIL</a></li>
                 <li><a href="pages/logout.php" style="color: #ff6b6b;">SAIR</a></li>
-                <li style="color: #4CAF50; font-weight: bold;">Olá, <?= htmlspecialchars($nome_usuario_header) ?>!</li>
+                <li style="color: #2C1810; font-weight: bold; text-shadow: 1px 1px 2px rgba(255,255,255,0.5);">Olá, <?= htmlspecialchars($nome_usuario_header) ?>!</li>
             <?php else: ?>
                 <!-- Menu para usuários não logados -->
                 <li><a href="pages/login.php">ENTRAR</a></li>
