@@ -31,6 +31,18 @@ $stmt_usuario->bind_param("i", $usuario_id);
 $stmt_usuario->execute();
 $dados_usuario = $stmt_usuario->get_result()->fetch_assoc();
 
+// Sincronizar sessão com dados do banco (garantir dados atualizados)
+if ($dados_usuario) {
+    $_SESSION['usuario_nome'] = $dados_usuario['nome'];
+    $_SESSION['usuario_email'] = $dados_usuario['email'];
+    $_SESSION['usuario_tipo'] = $dados_usuario['tipo_usuario'];
+    
+    // Atualizar variáveis locais
+    $usuario_nome = $dados_usuario['nome'];
+    $usuario_email = $dados_usuario['email'];
+    $usuario_tipo = $dados_usuario['tipo_usuario'];
+}
+
 // Buscar receitas do usuário
 $sql_receitas = "SELECT r.*, c.nome as categoria_nome 
                  FROM receita r 
@@ -270,7 +282,7 @@ if (!$categorias) {
             <div class="dados-container" id="dados-visualizar">
                 <div class="info-group">
                     <label>👤 Nome Completo:</label>
-                    <p><?= htmlspecialchars($dados_usuario['nome'] ?? $usuario_nome) ?></p>
+                    <p><?= htmlspecialchars($dados_usuario['nome']) ?></p>
                 </div>
                 
                 <div class="info-group">
@@ -291,6 +303,7 @@ if (!$categorias) {
                 <div class="actions">
                     <button class="btn-primary" onclick="toggleDadosMode('editar')">✏️ Editar Dados</button>
                     <button class="btn-secondary" onclick="toggleDadosMode('senha')">🔐 Alterar Senha</button>
+                    <button class="btn-outline" onclick="atualizarDados()" title="Recarregar dados do banco">🔄 Atualizar</button>
                 </div>
             </div>
             
@@ -560,6 +573,29 @@ window.onclick = function(event) {
     if (event.target === modal) {
         fecharModal();
     }
+}
+
+// Função para atualizar dados em tempo real
+function atualizarDados() {
+    fetch('sincronizar_sessao.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Recarregar a página para mostrar dados atualizados
+            window.location.reload();
+        } else {
+            alert('❌ Erro ao atualizar dados: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('❌ Erro ao conectar com o servidor');
+    });
 }
 </script>
 
