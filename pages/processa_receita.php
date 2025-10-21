@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', NOW())";
         
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iissssss", $usuario_id, $categoria_id, $titulo, $descricao, $ingredientes, $modo_preparo, $rendimento, $tempo_preparo, $imagem_nome);
+        $stmt->bind_param("iisssssss", $usuario_id, $categoria_id, $titulo, $descricao, $ingredientes, $modo_preparo, $rendimento, $tempo_preparo, $imagem_nome);
         
         if ($stmt->execute()) {
             echo '
