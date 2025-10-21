@@ -31,7 +31,8 @@ if ($resultado->num_rows === 1) {
         // SESSÃO COMPLETA
         $_SESSION['usuario_id'] = $usuario['id'];
         $_SESSION['usuario_nome'] = $usuario['nome'];
-        $_SESSION['usuario_tipo'] = $usuario['tipo_usuario']; // 0 ou 1
+        $_SESSION['usuario_email'] = $usuario['email'];
+        $_SESSION['usuario_tipo'] = $usuario['tipo_usuario'];
 
         // Redirecionamento imediato com header (mais confiável)
         header("Location: ../index.php");

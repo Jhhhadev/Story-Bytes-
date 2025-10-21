@@ -50,14 +50,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (empty($erros)) {
         try {
+            // Buscar dados antigos para comparação
+            $sql_old = "SELECT nome, email FROM usuario WHERE id = ?";
+            $stmt_old = $conn->prepare($sql_old);
+            $stmt_old->bind_param("i", $usuario_id);
+            $stmt_old->execute();
+            $dados_antigos = $stmt_old->get_result()->fetch_assoc();
+            
             // Atualizar dados no banco
             $sql = "UPDATE usuario SET nome = ?, email = ? WHERE id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ssi", $nome, $email, $usuario_id);
             
             if ($stmt->execute()) {
+                // Verificar se realmente houve alteração
+                $alteracoes = [];
+                if ($dados_antigos['nome'] !== $nome) {
+                    $alteracoes[] = "Nome: '{$dados_antigos['nome']}' → '{$nome}'";
+                }
+                if ($dados_antigos['email'] !== $email) {
+                    $alteracoes[] = "E-mail: '{$dados_antigos['email']}' → '{$email}'";
+                }
+                
                 // Atualizar dados na sessão
                 $_SESSION['usuario_nome'] = $nome;
+                $_SESSION['usuario_email'] = $email;
                 
                 echo '
                 <main class="formulario">
@@ -68,10 +85,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <li><strong>Nome:</strong> ' . htmlspecialchars($nome) . '</li>
                             <li><strong>E-mail:</strong> ' . htmlspecialchars($email) . '</li>
                         </ul>
+                        ' . (!empty($alteracoes) ? '<p><strong>Alterações feitas:</strong><br>' . implode('<br>', $alteracoes) . '</p>' : '<p>ℹ️ Nenhuma alteração foi detectada.</p>') . '
+                        <p><small>💡 As alterações são aplicadas imediatamente em todo o site.</small></p>
                         <div style="margin-top: 20px;">
                             <a href="perfil.php" class="btn-primary">👤 Voltar ao Perfil</a>
                         </div>
                     </div>
+                    <script>
+                        // Atualizar header automaticamente após 2 segundos
+                        setTimeout(function() {
+                            if (window.location.href.indexOf("perfil.php") === -1) {
+                                window.location.href = "perfil.php";
+                            }
+                        }, 3000);
+                    </script>
                 </main>';
                 
             } else {
