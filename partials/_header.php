@@ -12,7 +12,7 @@ $nome_usuario_header = $usuario_logado_header ? $_SESSION['usuario_nome'] : '';
 
 <header class="menu" role="banner">  <!-- role indica que essa seção é o cabeçaho do site -->
     <nav class="menu__nav" aria-label="Menu Principal">
-        <a href="/Site-de-receitas>">
+        <a href="/Story-Bytes-/">
             <img src="img/logo-story.png" alt="Logo StoryBites" width="90">            
         </a>
         
@@ -23,29 +23,29 @@ $nome_usuario_header = $usuario_logado_header ? $_SESSION['usuario_nome'] : '';
 
 
         <ul class="menu__links">
-            <li><a href="/Site-de-receitas" aria-current="page">INICIO</a></li> <!-- aria-current indica o inicio da pagina atual -->
-            <li><a href="pages/doces.php">DOCES</a></li>
-            <li><a href="pages/massas.php">MASSAS</a></li>
-            <li><a href="pages/carnes.php">CARNES</a></li>
-            <li><a href="pages/sopas.php">SOPAS</a></li>
-            <li><a href="pages/lanches.php">LANCHES</a></li>
-            <li><a href="pages/bebidas.php">BEBIDAS</a></li>
+            <li><a href="/Story-Bytes-/" aria-current="page">INICIO</a></li> <!-- aria-current indica o inicio da pagina atual -->
+            <li><a href="/Story-Bytes-/pages/doces.php">DOCES</a></li>
+            <li><a href="/Story-Bytes-/pages/massas.php">MASSAS</a></li>
+            <li><a href="/Story-Bytes-/pages/carnes.php">CARNES</a></li>
+            <li><a href="/Story-Bytes-/pages/sopas.php">SOPAS</a></li>
+            <li><a href="/Story-Bytes-/pages/lanches.php">LANCHES</a></li>
+            <li><a href="/Story-Bytes-/pages/bebidas.php">BEBIDAS</a></li>
             
             <?php if ($usuario_logado_header): ?>
                 <!-- Menu para usuários logados -->
-                <li><a href="pages/perfil.php">PERFIL</a></li>
+                <li><a href="/Story-Bytes-/pages/perfil.php">PERFIL</a></li>
                 <li style="position: relative;">
                     <div style="color: #2C1810; font-weight: bold; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); margin-bottom: 2px;">
                         Olá, <?= htmlspecialchars($nome_usuario_header) ?>!
                     </div>
                     <div>
-                        <a href="pages/logout.php" style="color: #8B4513; font-size: 0.85em; text-decoration: underline; font-weight: normal;">SAIR</a>
+                        <a href="/Story-Bytes-/pages/logout.php" style="color: #8B4513; font-size: 0.85em; text-decoration: underline; font-weight: normal;">SAIR</a>
                     </div>
                 </li>
             <?php else: ?>
                 <!-- Menu para usuários não logados -->
-                <li><a href="pages/login.php">ENTRAR</a></li>
-                <li><a href="pages/cadastro.php">CADASTRAR</a></li>
+                <li><a href="/Story-Bytes-/pages/login.php">ENTRAR</a></li>
+                <li><a href="/Story-Bytes-/pages/cadastro.php">CADASTRAR</a></li>
             <?php endif; ?>
         </ul>
 
