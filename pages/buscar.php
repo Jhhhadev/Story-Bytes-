@@ -137,7 +137,7 @@ if ($tem_busca) {
             <?php if ($total_resultados > 0): ?>
                 <div class="receitas-grid">
                     <?php while($receita = $receitas->fetch_assoc()): ?>
-                        <article class="receita-card" onclick="abrirModal(<?= $receita['id'] ?>)">
+                        <article class="receita-card">
                             <div class="receita-card-header">
                                 <h4><?= htmlspecialchars($receita['titulo']) ?></h4>
                                 <span class="receita-categoria"><?= htmlspecialchars($receita['categoria_nome'] ?? 'Sem categoria') ?></span>
@@ -237,13 +237,19 @@ if ($tem_busca) {
                 <?php if ($receitas_destaque && $receitas_destaque->num_rows > 0): ?>
                     <div class="receitas-grid">
                         <?php while($receita = $receitas_destaque->fetch_assoc()): ?>
-                            <div class="receita-card" onclick="abrirModal(<?= $receita['id'] ?>)">
+                            <div class="receita-card">
                                 <div class="receita-card-header">
                                     <h4><?= htmlspecialchars($receita['titulo']) ?></h4>
                                     <span class="receita-categoria"><?= htmlspecialchars($receita['categoria_nome']) ?></span>
                                 </div>
                                 <div class="receita-card-body">
                                     <p class="receita-descricao"><?= htmlspecialchars(substr($receita['descricao'], 0, 80)) ?>...</p>
+                                    
+                                    <div class="acoes-receita">
+                                        <a href="ver_receita.php?id=<?= $receita['id'] ?>" class="btn-ver-receita">
+                                            Ver Receita Completa
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         <?php endwhile; ?>
@@ -255,8 +261,8 @@ if ($tem_busca) {
 
 </main>
 
-<!-- Modal para receita completa -->
-<div id="modalReceita" class="modal">
+<!-- Modal para receita completa (mantido para compatibilidade) -->
+<div id="modalReceita" class="modal" style="display: none;">
     <div class="modal-content">
         <div class="modal-header">
             <h2 id="modalTitulo"></h2>
