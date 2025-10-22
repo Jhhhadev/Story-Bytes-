@@ -49,7 +49,7 @@ $nome_usuario_header = $usuario_logado_header ? $_SESSION['usuario_nome'] : '';
             <?php endif; ?>
         </ul>
 
-        <form class="search-form" action="#" method="GET" role="search" autocomplete="off">
+        <form class="search-form" action="/Story-Bytes-/pages/buscar.php" method="GET" role="search" autocomplete="off">
             <input type="text" id="campo-busca" name="busca" placeholder="Buscar receitas..." aria-label="Buscar receitas">
             <button type="submit">PROCURAR</button> 
         </form>
