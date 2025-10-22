@@ -142,37 +142,54 @@ if ($tem_busca) {
                                 <h4><?= htmlspecialchars($receita['titulo']) ?></h4>
                                 <span class="receita-categoria"><?= htmlspecialchars($receita['categoria_nome'] ?? 'Sem categoria') ?></span>
                             </div>
-                            
+
                             <div class="receita-card-body">
                                 <p class="receita-descricao"><?= htmlspecialchars(substr($receita['descricao'], 0, 120)) ?>...</p>
                                 
-                                <div class="receita-meta">
-                                    <span class="receita-tempo"><?= htmlspecialchars($receita['tempo_preparo'] ?? 'Não informado') ?></span>
+                                <!-- Informações detalhadas da receita -->
+                                <div class="receita-detalhes">
+                                    <div class="detalhe-item">
+                                        <strong>Rendimento:</strong> <?= htmlspecialchars($receita['rendimento'] ?? 'Não informado') ?>
+                                    </div>
+                                    <div class="detalhe-item">
+                                        <strong>Preparo:</strong> <?= htmlspecialchars($receita['tempo_preparo'] ?? 'Não informado') ?>
+                                    </div>
                                     <?php if ($receita['autor_nome']): ?>
-                                        <span class="receita-autor">Por: <?= htmlspecialchars($receita['autor_nome']) ?></span>
+                                        <div class="detalhe-item">
+                                            <strong>Por:</strong> <?= htmlspecialchars($receita['autor_nome']) ?>
+                                        </div>
                                     <?php endif; ?>
                                 </div>
-                            </div>
-                                    <?php 
+
+                                <!-- Ingredientes completos -->
+                                <div class="ingredientes-secao">
+                                    <h5>Ingredientes:</h5>
+                                    <?php
                                     $ingredientes = explode("\n", $receita['ingredientes']);
-                                    $primeiros_ingredientes = array_slice($ingredientes, 0, 3);
                                     ?>
-                                    <ul>
-                                        <?php foreach($primeiros_ingredientes as $ingrediente): ?>
+                                    <ul class="ingredientes-lista">
+                                        <?php foreach($ingredientes as $ingrediente): ?>
                                             <?php if (trim($ingrediente)): ?>
                                                 <li><?= htmlspecialchars(trim($ingrediente)) ?></li>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
-                                        <?php if (count($ingredientes) > 3): ?>
-                                            <li><em>... e mais ingredientes</em></li>
-                                        <?php endif; ?>
                                     </ul>
                                 </div>
-                                
-                                <div class="acoes-receita">
-                                    <button class="btn-ver-receita" onclick="verReceitaCompleta(<?= $receita['id'] ?>)">
-                                        👁️ Ver Receita Completa
-                                    </button>
+
+                                <!-- Modo de preparo resumido -->
+                                <div class="modo-preparo-secao">
+                                    <h5>Modo de Preparo:</h5>
+                                    <p class="modo-preparo-resumo">
+                                        <?= htmlspecialchars(substr($receita['modoprep'], 0, 200)) ?>...
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="acoes-receita">
+                                <a href="ver_receita.php?id=<?= $receita['id'] ?>" class="btn-ver-receita">
+                                    Ver Receita Completa
+                                </a>
+                            </div>
                         </article>
                     <?php endwhile; ?>
                 </div>
@@ -272,21 +289,6 @@ if ($tem_busca) {
 
 <script>
 function abrirModal(receitaId) {
-    fetch('obter_receita_publica.php?id=' + id)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                mostrarModalReceitaBusca(data.receita);
-            } else {
-                alert('❌ Erro ao carregar receita: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('❌ Erro ao carregar receita');
-        });
-}
-
     fetch('obter_receita_publica.php?id=' + receitaId)
         .then(response => response.json())
         .then(data => {
@@ -301,6 +303,7 @@ function abrirModal(receitaId) {
                 document.getElementById('modalCategoria').textContent = receita.categoria_nome || 'Sem categoria';
                 
                 document.getElementById('modalReceita').style.display = 'block';
+                document.getElementById('modalReceita').classList.add('show');
             } else {
                 alert('Erro ao carregar receita: ' + data.message);
             }
@@ -313,6 +316,7 @@ function abrirModal(receitaId) {
 
 function fecharModal() {
     document.getElementById('modalReceita').style.display = 'none';
+    document.getElementById('modalReceita').classList.remove('show');
 }
 
 // Fechar modal clicando fora
