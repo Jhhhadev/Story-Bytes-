@@ -27,18 +27,17 @@ $tem_busca = !empty($termo_busca) || $categoria_filtro > 0;
 
 if ($tem_busca) {
     // Construir query de busca
-    $sql = "SELECT r.*, c.nome as categoria_nome, u.nome as autor_nome 
+    $sql = "SELECT r.*, c.nome as categoria_nome 
             FROM receita r 
             LEFT JOIN categoria c ON r.categoria_id = c.id 
-            LEFT JOIN usuario u ON r.usuario_id = u.id 
-            WHERE r.status_aprovacao = 'aprovada'";
+            WHERE 1=1";
     
     $params = [];
     $types = '';
     
     // Adicionar filtro de texto
     if (!empty($termo_busca)) {
-        $sql .= " AND (r.titulo LIKE ? OR r.descricao LIKE ? OR r.ingredientes LIKE ?)";
+        $sql .= " AND (r.titulo LIKE ? OR r.descricao LIKE ? OR r.modoprep LIKE ?)";
         $termo_like = "%{$termo_busca}%";
         $params[] = $termo_like;
         $params[] = $termo_like;
@@ -151,36 +150,13 @@ if ($tem_busca) {
                                     <div class="detalhe-item">
                                         <strong>Rendimento:</strong> <?= htmlspecialchars($receita['rendimento'] ?? 'Não informado') ?>
                                     </div>
-                                    <div class="detalhe-item">
-                                        <strong>Preparo:</strong> <?= htmlspecialchars($receita['tempo_preparo'] ?? 'Não informado') ?>
-                                    </div>
-                                    <?php if ($receita['autor_nome']): ?>
-                                        <div class="detalhe-item">
-                                            <strong>Por:</strong> <?= htmlspecialchars($receita['autor_nome']) ?>
-                                        </div>
-                                    <?php endif; ?>
                                 </div>
 
-                                <!-- Ingredientes completos -->
-                                <div class="ingredientes-secao">
-                                    <h5>Ingredientes:</h5>
-                                    <?php
-                                    $ingredientes = explode("\n", $receita['ingredientes']);
-                                    ?>
-                                    <ul class="ingredientes-lista">
-                                        <?php foreach($ingredientes as $ingrediente): ?>
-                                            <?php if (trim($ingrediente)): ?>
-                                                <li><?= htmlspecialchars(trim($ingrediente)) ?></li>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                </div>
-
-                                <!-- Modo de preparo resumido -->
+                                <!-- Modo de preparo expandido -->
                                 <div class="modo-preparo-secao">
                                     <h5>Modo de Preparo:</h5>
                                     <p class="modo-preparo-resumo">
-                                        <?= htmlspecialchars(substr($receita['modoprep'], 0, 200)) ?>...
+                                        <?= htmlspecialchars(substr($receita['modoprep'], 0, 300)) ?>...
                                     </p>
                                 </div>
                             </div>
