@@ -245,7 +245,7 @@ if (!$categorias) {
                                 <?php endif; ?>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-small btn-view" onclick="verReceita(<?= $receita['id'] ?>)">👁️ Ver</button>
+                                <button class="btn-small btn-view" onclick="obterReceita(<?= $receita['id'] ?>)">👁️ Ver</button>
                                 <button class="btn-small btn-edit" onclick="editarReceita(<?= $receita['id'] ?>)">✏️ Editar</button>
                                 <?php if ($status === 'rascunho'): ?>
                                     <button class="btn-small btn-send" onclick="enviarAprovacao(<?= $receita['id'] ?>)">🚀 Enviar</button>
@@ -465,9 +465,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Funções para gerenciamento de receitas
-function verReceita(id) {
+function obterReceita(id) {
     // Fazer uma requisição AJAX para buscar os dados completos da receita
-    fetch('obter_receita.php?id=' + id)
+    fetch('/Story-Bytes-/pages/obter_receita.php?id=' + id)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -510,7 +510,7 @@ function fecharModal() {
 
 function editarReceita(id) {
     // Redirecionar para página de edição
-    window.location.href = 'editar_receita.php?id=' + id;
+    window.location.href = '/Story-Bytes-/pages/editar_receita.php?id=' + id;
 }
 
 function enviarAprovacao(id) {
@@ -540,7 +540,7 @@ function enviarAprovacao(id) {
 
 function excluirReceita(id) {
     if (confirm('🗑️ Tem certeza que deseja excluir esta receita?\n\nEsta ação não pode ser desfeita!')) {
-        fetch('excluir_receita.php', {
+        fetch('/Story-Bytes-/pages/excluir_receita.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

@@ -13,8 +13,13 @@ if (!isset($_SESSION['usuario_id'])) {
 include('../backend/conexao.php');
 
 // Verificar se é POST e se tem ID
-if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['id'])) {
-    echo json_encode(['success' => false, 'message' => 'Método incorreto ou ID não fornecido']);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['success' => false, 'message' => 'Método incorreto']);
+    exit();
+}
+
+if (!isset($_POST['id'])) {
+    echo json_encode(['success' => false, 'message' => 'ID não fornecido']);
     exit();
 }
 
@@ -54,13 +59,15 @@ try {
     $stmt_delete->bind_param("i", $receita_id);
     
     if ($stmt_delete->execute()) {
-        if ($stmt_delete->affected_rows > 0) {
+        $affected = $stmt_delete->affected_rows;
+        
+        if ($affected > 0) {
             echo json_encode(['success' => true, 'message' => 'Receita excluída com sucesso']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Nenhuma receita foi excluída']);
         }
     } else {
-        throw new Exception('Erro ao executar exclusão');
+        throw new Exception('Erro ao executar exclusão: ' . $stmt_delete->error);
     }
     
     $stmt_delete->close();
