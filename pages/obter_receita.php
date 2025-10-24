@@ -12,16 +12,15 @@ include('../backend/conexao.php');
 
 if (isset($_GET['id'])) {
     $receita_id = (int)$_GET['id'];
-    $usuario_id = $_SESSION['usuario_id'];
     
-    // Buscar receita do usuário logado (segurança)
+    // Buscar receita por ID (sem verificação de usuário)
     $sql = "SELECT r.*, c.nome as categoria_nome 
             FROM receita r 
             LEFT JOIN categoria c ON r.categoria_id = c.id 
-            WHERE r.id = ? AND r.usuario_id = ?";
+            WHERE r.id = ?";
     
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $receita_id, $usuario_id);
+    $stmt->bind_param("i", $receita_id);
     $stmt->execute();
     $result = $stmt->get_result();
     

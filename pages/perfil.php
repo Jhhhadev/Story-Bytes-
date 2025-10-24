@@ -43,16 +43,12 @@ if ($dados_usuario) {
     $usuario_tipo = $dados_usuario['tipo_usuario'];
 }
 
-// Buscar receitas do usuário
+// Buscar receitas do usuário (como não há usuario_id, mostrar todas as receitas)
 $sql_receitas = "SELECT r.*, c.nome as categoria_nome 
                  FROM receita r 
                  LEFT JOIN categoria c ON r.categoria_id = c.id
-                 WHERE r.usuario_id = ? 
                  ORDER BY r.datacriacao DESC";
-$stmt_receitas = $conn->prepare($sql_receitas);
-$stmt_receitas->bind_param("i", $usuario_id);
-$stmt_receitas->execute();
-$receitas_usuario = $stmt_receitas->get_result();
+$receitas_usuario = $conn->query($sql_receitas);
 
 // Buscar categorias disponíveis
 $sql_categorias = "SELECT * FROM categoria ORDER BY nome";
@@ -513,8 +509,8 @@ function fecharModal() {
 }
 
 function editarReceita(id) {
-    // Por enquanto, apenas alerta - pode ser implementado posteriormente
-    alert('🚧 Funcionalidade de edição em desenvolvimento!');
+    // Redirecionar para página de edição
+    window.location.href = 'editar_receita.php?id=' + id;
 }
 
 function enviarAprovacao(id) {

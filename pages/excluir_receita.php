@@ -12,20 +12,19 @@ include('../backend/conexao.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     $receita_id = (int)$_POST['id'];
-    $usuario_id = $_SESSION['usuario_id'];
     
-    // Verificar se a receita pertence ao usuário e obter dados para excluir imagem
-    $sql_check = "SELECT imagem FROM receita WHERE id = ? AND usuario_id = ?";
+    // Verificar se a receita existe e obter dados
+    $sql_check = "SELECT imagem FROM receita WHERE id = ?";
     $stmt_check = $conn->prepare($sql_check);
-    $stmt_check->bind_param("ii", $receita_id, $usuario_id);
+    $stmt_check->bind_param("i", $receita_id);
     $stmt_check->execute();
     $result_check = $stmt_check->get_result();
     
     if ($receita = $result_check->fetch_assoc()) {
         // Excluir receita do banco
-        $sql = "DELETE FROM receita WHERE id = ? AND usuario_id = ?";
+        $sql = "DELETE FROM receita WHERE id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ii", $receita_id, $usuario_id);
+        $stmt->bind_param("i", $receita_id);
         
         if ($stmt->execute()) {
             // Se tinha imagem, tentar excluir o arquivo
