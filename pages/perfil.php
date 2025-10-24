@@ -71,10 +71,10 @@ if (!$categorias) {
     <!-- Cabeçalho do Perfil -->
     <section class="perfil-header">
         <div class="welcome-banner">
-            <h1>👤 Meu Perfil</h1>
+            <h1>Meu Perfil</h1>
             <p>Bem-vindo, <strong><?= htmlspecialchars($usuario_nome) ?></strong>!</p>
             <p class="user-type">
-                <?= $usuario_tipo === 'admin' ? '👑 Administrador' : '👨‍🍳 Chef Caseiro' ?>
+                <?= $usuario_tipo === 'admin' ? 'Administrador' : 'Chef Caseiro' ?>
             </p>
         </div>
     </section>
@@ -100,25 +100,25 @@ if (!$categorias) {
     <!-- Abas de Navegação -->
     <section class="perfil-tabs">
         <div class="tab-buttons">
-            <button class="tab-btn active" data-tab="criar">➕ Criar Receita</button>
-            <button class="tab-btn" data-tab="minhas">📋 Minhas Receitas</button>
-            <button class="tab-btn" data-tab="dados">⚙️ Meus Dados</button>
+            <button class="tab-btn active" data-tab="criar">Criar Receita</button>
+            <button class="tab-btn" data-tab="minhas">Minhas Receitas</button>
+            <button class="tab-btn" data-tab="dados">Meus Dados</button>
         </div>
 
         <!-- Aba: Criar Receita -->
         <div class="tab-content active" id="tab-criar">
             <div class="form-container">
-                <h2>✨ Criar Nova Receita</h2>
+                <h2>Criar Nova Receita</h2>
                 <form action="/Story-Bytes-/pages/processa_receita.php" method="POST" enctype="multipart/form-data" class="receita-form">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="titulo">📝 Título da Receita</label>
+                            <label for="titulo">Título da Receita</label>
                             <input type="text" id="titulo" name="titulo" required 
                                    placeholder="Ex: Bolo de Chocolate da Vovó">
                         </div>
                         
                         <div class="form-group">
-                            <label for="categoria">🏷️ Categoria</label>
+                            <label for="categoria">Categoria</label>
                             <select id="categoria" name="categoria_id" required>
                                 <option value="">Selecione uma categoria</option>
                                 <?php 
@@ -142,47 +142,47 @@ if (!$categorias) {
                     </div>
 
                     <div class="form-group">
-                        <label for="descricao">📖 Descrição</label>
+                        <label for="descricao">Descrição</label>
                         <textarea id="descricao" name="descricao" rows="3" required
                                   placeholder="Conte a história desta receita..."></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="ingredientes">🥄 Ingredientes</label>
+                        <label for="ingredientes">Ingredientes</label>
                         <textarea id="ingredientes" name="ingredientes" rows="6" required
                                   placeholder="Liste os ingredientes, um por linha:&#10;- 2 xícaras de farinha&#10;- 3 ovos&#10;- 1 xícara de açúcar"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="modo_preparo">👩‍🍳 Modo de Preparo</label>
+                        <label for="modo_preparo">Modo de Preparo</label>
                         <textarea id="modo_preparo" name="modoprep" rows="8" required
                                   placeholder="Descreva o passo a passo:&#10;1. Pré-aqueça o forno...&#10;2. Misture os ingredientes secos..."></textarea>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="rendimento">🍽️ Rendimento</label>
+                            <label for="rendimento">Rendimento</label>
                             <input type="text" id="rendimento" name="rendimento" 
                                    placeholder="Ex: 8 porções, 12 unidades">
                         </div>
 
                         <div class="form-group">
-                            <label for="tempo_preparo">⏱️ Tempo de Preparo</label>
+                            <label for="tempo_preparo">Tempo de Preparo</label>
                             <input type="text" id="tempo_preparo" name="tempo_preparo" 
                                    placeholder="Ex: 45 minutos, 2 horas">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="imagem">📸 Imagem da Receita</label>
+                        <label for="imagem">Imagem da Receita</label>
                         <input type="file" id="imagem" name="imagem" accept="image/*">
                         <small>Formato: JPG, PNG. Tamanho máximo: 2MB</small>
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" name="acao" value="salvar" class="btn-secondary">💾 Salvar como Rascunho</button>
-                        <button type="submit" name="acao" value="aprovar" class="btn-primary">🚀 Enviar para Aprovação</button>
-                        <button type="reset" class="btn-outline">🔄 Limpar Formulário</button>
+                        <button type="submit" name="acao" value="salvar" class="btn-secondary">Salvar como Rascunho</button>
+                        <button type="submit" name="acao" value="aprovar" class="btn-primary">Enviar para Aprovação</button>
+                        <button type="reset" class="btn-outline">Limpar Formulário</button>
                     </div>
                 </form>
             </div>
@@ -190,7 +190,7 @@ if (!$categorias) {
 
         <!-- Aba: Minhas Receitas -->
         <div class="tab-content" id="tab-minhas">
-            <h2>📋 Minhas Receitas</h2>
+            <h2>Minhas Receitas</h2>
             
             <?php if ($receitas_usuario && $receitas_usuario->num_rows > 0): ?>
                 <div class="receitas-grid">
@@ -198,7 +198,7 @@ if (!$categorias) {
                     $receitas_usuario->data_seek(0); // Resetar o ponteiro
                     while($receita = $receitas_usuario->fetch_assoc()): 
                     ?>
-                        <div class="receita-card">
+                        <div class="receita-card" data-receita-id="<?= $receita['id'] ?>">
                             <div class="card-header">
                                 <h3><?= htmlspecialchars($receita['titulo']) ?></h3>
                                 <?php
@@ -210,23 +210,23 @@ if (!$categorias) {
                                 switch($status) {
                                     case 'rascunho':
                                         $status_class = 'status-rascunho';
-                                        $status_text = '💾 Rascunho';
+                                        $status_text = 'Rascunho';
                                         break;
                                     case 'pendente':
                                         $status_class = 'status-pendente';
-                                        $status_text = '⏳ Pendente';
+                                        $status_text = 'Pendente';
                                         break;
                                     case 'aprovada':
                                         $status_class = 'status-aprovada';
-                                        $status_text = '✅ Aprovada';
+                                        $status_text = 'Aprovada';
                                         break;
                                     case 'rejeitada':
                                         $status_class = 'status-rejeitada';
-                                        $status_text = '❌ Rejeitada';
+                                        $status_text = 'Rejeitada';
                                         break;
                                     default:
                                         $status_class = 'status-pendente';
-                                        $status_text = '⏳ Pendente';
+                                        $status_text = 'Pendente';
                                 }
                                 ?>
                                 <span class="status-badge <?= $status_class ?>"><?= $status_text ?></span>
@@ -259,46 +259,46 @@ if (!$categorias) {
                 <div class="empty-state">
                     <p>🍽️ Você ainda não criou nenhuma receita.</p>
                     <p>Que tal compartilhar sua primeira criação culinária?</p>
-                    <button class="btn-primary" onclick="switchTab('criar')">➕ Criar Primeira Receita</button>
+                    <button class="btn-primary" onclick="switchTab('criar')">Criar Primeira Receita</button>
                 </div>
             <?php endif; ?>
         </div>
 
         <!-- Aba: Meus Dados -->
         <div class="tab-content" id="tab-dados">
-            <h2>⚙️ Meus Dados</h2>
+            <h2>Meus Dados</h2>
             
             <!-- Botões de alternância -->
             <div class="dados-toggle">
                 <button class="toggle-btn active" id="btn-visualizar" onclick="toggleDadosMode('visualizar')">👁️ Visualizar</button>
-                <button class="toggle-btn" id="btn-editar" onclick="toggleDadosMode('editar')">✏️ Editar</button>
+                <button class="toggle-btn" id="btn-editar" onclick="toggleDadosMode('editar')">Editar</button>
             </div>
             
             <!-- Modo Visualização -->
             <div class="dados-container" id="dados-visualizar">
                 <div class="info-group">
-                    <label>👤 Nome Completo:</label>
+                    <label>Nome Completo:</label>
                     <p><?= htmlspecialchars($dados_usuario['nome']) ?></p>
                 </div>
                 
                 <div class="info-group">
-                    <label>📧 E-mail:</label>
+                    <label>E-mail:</label>
                     <p><?= htmlspecialchars($dados_usuario['email']) ?></p>
                 </div>
                 
                 <div class="info-group">
-                    <label>📅 Data de Cadastro:</label>
+                    <label>Data de Cadastro:</label>
                     <p><?= date('d/m/Y', strtotime($dados_usuario['dataCadastro'])) ?></p>
                 </div>
                 
                 <div class="info-group">
-                    <label>👨‍🍳 Tipo de Usuário:</label>
+                    <label>Tipo de Usuário:</label>
                     <p><?= $dados_usuario['tipo_usuario'] === 'admin' ? 'Administrador' : 'Chef Caseiro' ?></p>
                 </div>
                 
                 <div class="actions">
-                    <button class="btn-primary" onclick="toggleDadosMode('editar')">✏️ Editar Dados</button>
-                    <button class="btn-secondary" onclick="toggleDadosMode('senha')">🔐 Alterar Senha</button>
+                    <button class="btn-primary" onclick="toggleDadosMode('editar')">Editar Dados</button>
+                    <button class="btn-secondary" onclick="toggleDadosMode('senha')">Alterar Senha</button>
                     <button class="btn-outline" onclick="atualizarDados()" title="Recarregar dados do banco">🔄 Atualizar</button>
                 </div>
             </div>
@@ -307,17 +307,17 @@ if (!$categorias) {
             <div class="dados-container" id="dados-editar" style="display: none;">
                 <form action="atualizar_dados.php" method="POST" class="dados-form">
                     <div class="form-group">
-                        <label for="edit-nome">👤 Nome Completo</label>
+                        <label for="edit-nome">Nome Completo</label>
                         <input type="text" id="edit-nome" name="nome" value="<?= htmlspecialchars($dados_usuario['nome']) ?>" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="edit-email">📧 E-mail</label>
+                        <label for="edit-email">E-mail</label>
                         <input type="email" id="edit-email" name="email" value="<?= htmlspecialchars($dados_usuario['email']) ?>" required>
                     </div>
                     
                     <div class="form-actions">
-                        <button type="submit" class="btn-primary">💾 Salvar Alterações</button>
+                        <button type="submit" class="btn-primary">Salvar Alterações</button>
                         <button type="button" class="btn-secondary" onclick="toggleDadosMode('visualizar')">❌ Cancelar</button>
                     </div>
                 </form>
@@ -327,23 +327,23 @@ if (!$categorias) {
             <div class="dados-container" id="dados-senha" style="display: none;">
                 <form action="atualizar_senha.php" method="POST" class="dados-form">
                     <div class="form-group">
-                        <label for="senha-atual">🔒 Senha Atual</label>
+                        <label for="senha-atual">Senha Atual</label>
                         <input type="password" id="senha-atual" name="senha_atual" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="nova-senha">🔐 Nova Senha</label>
+                        <label for="nova-senha">Nova Senha</label>
                         <input type="password" id="nova-senha" name="nova_senha" required minlength="6">
                     </div>
                     
                     <div class="form-group">
-                        <label for="confirmar-senha">🔐 Confirmar Nova Senha</label>
+                        <label for="confirmar-senha">Confirmar Nova Senha</label>
                         <input type="password" id="confirmar-senha" name="confirmar_senha" required minlength="6">
                     </div>
                     
                     <div class="form-actions">
-                        <button type="submit" class="btn-primary">🔐 Alterar Senha</button>
-                        <button type="button" class="btn-secondary" onclick="toggleDadosMode('visualizar')">❌ Cancelar</button>
+                        <button type="submit" class="btn-primary">Alterar Senha</button>
+                        <button type="button" class="btn-secondary" onclick="toggleDadosMode('visualizar')">Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -365,31 +365,31 @@ if (!$categorias) {
             
             <div class="modal-info">
                 <div class="info-section">
-                    <h3>📋 Descrição</h3>
+                    <h3>Descrição</h3>
                     <p id="modal-descricao"></p>
                 </div>
                 
                 <div class="info-section">
-                    <h3>🥄 Ingredientes</h3>
+                    <h3>Ingredientes</h3>
                     <div id="modal-ingredientes"></div>
                 </div>
                 
                 <div class="info-section">
-                    <h3>👩‍🍳 Modo de Preparo</h3>
+                    <h3>Modo de Preparo</h3>
                     <div id="modal-modo-preparo"></div>
                 </div>
                 
                 <div class="info-row">
                     <div class="info-item">
-                        <h4>🍽️ Rendimento</h4>
+                        <h4>Rendimento</h4>
                         <p id="modal-rendimento"></p>
                     </div>
                     <div class="info-item">
-                        <h4>⏱️ Tempo de Preparo</h4>
+                        <h4>Tempo de Preparo</h4>
                         <p id="modal-tempo"></p>
                     </div>
                     <div class="info-item">
-                        <h4>📅 Criada em</h4>
+                        <h4>Criada em</h4>
                         <p id="modal-data"></p>
                     </div>
                 </div>
@@ -451,13 +451,13 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (novaSenha !== confirmarSenha) {
                 e.preventDefault();
-                alert('❌ As senhas não coincidem! Por favor, verifique.');
+                alert('As senhas não coincidem! Por favor, verifique.');
                 return false;
             }
             
             if (novaSenha.length < 6) {
                 e.preventDefault();
-                alert('❌ A senha deve ter pelo menos 6 caracteres!');
+                alert('A senha deve ter pelo menos 6 caracteres!');
                 return false;
             }
         });
@@ -473,12 +473,12 @@ function obterReceita(id) {
             if (data.success) {
                 mostrarModalReceita(data.receita);
             } else {
-                alert('❌ Erro ao carregar receita: ' + data.message);
+                alert('Erro ao carregar receita: ' + data.message);
             }
         })
         .catch(error => {
             console.error('Erro:', error);
-            alert('❌ Erro ao carregar receita');
+            alert('Erro ao carregar receita');
         });
 }
 
@@ -514,7 +514,7 @@ function editarReceita(id) {
 }
 
 function enviarAprovacao(id) {
-    if (confirm('📤 Enviar esta receita para aprovação do administrador?')) {
+    if (confirm('Enviar esta receita para aprovação do administrador?')) {
         fetch('alterar_status_receita.php', {
             method: 'POST',
             headers: {
@@ -525,21 +525,24 @@ function enviarAprovacao(id) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('✅ Receita enviada para aprovação!');
+                alert('Receita enviada para aprovação!');
                 location.reload();
             } else {
-                alert('❌ Erro: ' + data.message);
+                alert('Erro: ' + data.message);
             }
         })
         .catch(error => {
             console.error('Erro:', error);
-            alert('❌ Erro ao enviar receita');
+            alert('Erro ao enviar receita');
         });
     }
 }
 
 function excluirReceita(id) {
     if (confirm('🗑️ Tem certeza que deseja excluir esta receita?\n\nEsta ação não pode ser desfeita!')) {
+        // Encontrar o cartão da receita para remover da interface
+        const receitaCard = document.querySelector(`[data-receita-id="${id}"]`);
+        
         fetch('/Story-Bytes-/pages/excluir_receita.php', {
             method: 'POST',
             headers: {
@@ -550,8 +553,32 @@ function excluirReceita(id) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                // Remover o cartão da receita da interface imediatamente
+                if (receitaCard) {
+                    receitaCard.style.opacity = '0.5';
+                    receitaCard.style.transition = 'opacity 0.3s ease';
+                    
+                    setTimeout(() => {
+                        receitaCard.remove();
+                        
+                        // Verificar se ainda há receitas na grid
+                        const receitasGrid = document.querySelector('.receitas-grid');
+                        const remainingCards = receitasGrid.querySelectorAll('.receita-card');
+                        
+                        if (remainingCards.length === 0) {
+                            // Se não há mais receitas, mostrar mensagem de vazio
+                            receitasGrid.innerHTML = `
+                                <div class="sem-receitas">
+                                    <p>🍽️ Você ainda não criou nenhuma receita.</p>
+                                    <p>Que tal compartilhar sua primeira criação culinária?</p>
+                                    <button class="btn-primary" onclick="switchTab('criar')">➕ Criar Primeira Receita</button>
+                                </div>
+                            `;
+                        }
+                    }, 300);
+                }
+                
                 alert('✅ Receita excluída com sucesso!');
-                location.reload();
             } else {
                 alert('❌ Erro: ' + data.message);
             }
@@ -585,12 +612,12 @@ function atualizarDados() {
             // Recarregar a página para mostrar dados atualizados
             window.location.reload();
         } else {
-            alert('❌ Erro ao atualizar dados: ' + data.message);
+            alert('Erro ao atualizar dados: ' + data.message);
         }
     })
     .catch(error => {
         console.error('Erro:', error);
-        alert('❌ Erro ao conectar com o servidor');
+        alert('Erro ao conectar com o servidor');
     });
 }
 </script>
