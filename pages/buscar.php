@@ -12,6 +12,9 @@ require_once APP_ROOT . '/partials/_head.php';
 require_once APP_ROOT . '/partials/_header.php';
 include('../backend/conexao.php');
 
+// Debug - mostrar dados recebidos
+// echo "<pre>DEBUG - GET: "; print_r($_GET); echo "</pre>";
+
 // Obter o termo de busca
 $termo_busca = isset($_GET['busca']) ? trim($_GET['busca']) : '';
 $categoria_filtro = isset($_GET['categoria']) ? (int)$_GET['categoria'] : 0;
@@ -78,7 +81,7 @@ if ($tem_busca) {
     
     <!-- Formulário de Busca -->
     <section class="buscar-form">
-        <form method="GET" action="buscar.php">
+        <form method="GET" action="/Story-Bytes-/pages/buscar.php">
             <div class="form-row">
                 <div class="form-group">
                     <label for="termo">O que você está procurando?</label>
@@ -105,7 +108,7 @@ if ($tem_busca) {
             
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Buscar</button>
-                <a href="buscar.php" class="btn btn-secondary">Limpar</a>
+                <a href="/Story-Bytes-/pages/buscar.php" class="btn btn-secondary">Limpar</a>
             </div>
         </form>
     </section>
