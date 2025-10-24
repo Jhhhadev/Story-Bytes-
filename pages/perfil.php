@@ -3,7 +3,9 @@ session_start();
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: /Story-Bytes-/pages/login.php");
+    // Salvar a URL de destino para redirecionar após login
+    $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
+    header("Location: /Story-Bytes-/pages/login.php?msg=login_required");
     exit();
 }
 
@@ -245,19 +247,19 @@ if (!$categorias) {
                                 <?php endif; ?>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-small btn-view" onclick="obterReceita(<?= $receita['id'] ?>)">👁️ Ver</button>
-                                <button class="btn-small btn-edit" onclick="editarReceita(<?= $receita['id'] ?>)">✏️ Editar</button>
+                                <button class="btn-small btn-view" onclick="obterReceita(<?= $receita['id'] ?>)">Ver</button>
+                                <button class="btn-small btn-edit" onclick="editarReceita(<?= $receita['id'] ?>)">Editar</button>
                                 <?php if ($status === 'rascunho'): ?>
-                                    <button class="btn-small btn-send" onclick="enviarAprovacao(<?= $receita['id'] ?>)">🚀 Enviar</button>
+                                    <button class="btn-small btn-send" onclick="enviarAprovacao(<?= $receita['id'] ?>)">Enviar</button>
                                 <?php endif; ?>
-                                <button class="btn-small btn-delete" onclick="excluirReceita(<?= $receita['id'] ?>)">🗑️ Excluir</button>
+                                <button class="btn-small btn-delete" onclick="excluirReceita(<?= $receita['id'] ?>)">Excluir</button>
                             </div>
                         </div>
                     <?php endwhile; ?>
                 </div>
             <?php else: ?>
                 <div class="empty-state">
-                    <p>🍽️ Você ainda não criou nenhuma receita.</p>
+                    <p>Você ainda não criou nenhuma receita.</p>
                     <p>Que tal compartilhar sua primeira criação culinária?</p>
                     <button class="btn-primary" onclick="switchTab('criar')">Criar Primeira Receita</button>
                 </div>
@@ -270,7 +272,7 @@ if (!$categorias) {
             
             <!-- Botões de alternância -->
             <div class="dados-toggle">
-                <button class="toggle-btn active" id="btn-visualizar" onclick="toggleDadosMode('visualizar')">👁️ Visualizar</button>
+                <button class="toggle-btn active" id="btn-visualizar" onclick="toggleDadosMode('visualizar')">Visualizar</button>
                 <button class="toggle-btn" id="btn-editar" onclick="toggleDadosMode('editar')">Editar</button>
             </div>
             
@@ -299,7 +301,7 @@ if (!$categorias) {
                 <div class="actions">
                     <button class="btn-primary" onclick="toggleDadosMode('editar')">Editar Dados</button>
                     <button class="btn-secondary" onclick="toggleDadosMode('senha')">Alterar Senha</button>
-                    <button class="btn-outline" onclick="atualizarDados()" title="Recarregar dados do banco">🔄 Atualizar</button>
+                    <button class="btn-outline" onclick="atualizarDados()" title="Recarregar dados do banco">Atualizar</button>
                 </div>
             </div>
             
@@ -318,7 +320,7 @@ if (!$categorias) {
                     
                     <div class="form-actions">
                         <button type="submit" class="btn-primary">Salvar Alterações</button>
-                        <button type="button" class="btn-secondary" onclick="toggleDadosMode('visualizar')">❌ Cancelar</button>
+                        <button type="button" class="btn-secondary" onclick="toggleDadosMode('visualizar')">Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -539,7 +541,7 @@ function enviarAprovacao(id) {
 }
 
 function excluirReceita(id) {
-    if (confirm('🗑️ Tem certeza que deseja excluir esta receita?\n\nEsta ação não pode ser desfeita!')) {
+    if (confirm('Tem certeza que deseja excluir esta receita?\n\nEsta ação não pode ser desfeita!')) {
         // Encontrar o cartão da receita para remover da interface
         const receitaCard = document.querySelector(`[data-receita-id="${id}"]`);
         
@@ -569,23 +571,23 @@ function excluirReceita(id) {
                             // Se não há mais receitas, mostrar mensagem de vazio
                             receitasGrid.innerHTML = `
                                 <div class="sem-receitas">
-                                    <p>🍽️ Você ainda não criou nenhuma receita.</p>
+                                    <p>Você ainda não criou nenhuma receita.</p>
                                     <p>Que tal compartilhar sua primeira criação culinária?</p>
-                                    <button class="btn-primary" onclick="switchTab('criar')">➕ Criar Primeira Receita</button>
+                                    <button class="btn-primary" onclick="switchTab('criar')">Criar Primeira Receita</button>
                                 </div>
                             `;
                         }
                     }, 300);
                 }
                 
-                alert('✅ Receita excluída com sucesso!');
+                alert('Receita excluída com sucesso!');
             } else {
-                alert('❌ Erro: ' + data.message);
+                alert('Erro: ' + data.message);
             }
         })
         .catch(error => {
             console.error('Erro:', error);
-            alert('❌ Erro ao excluir receita');
+            alert('Erro ao excluir receita');
         });
     }
 }
@@ -620,6 +622,16 @@ function atualizarDados() {
         alert('Erro ao conectar com o servidor');
     });
 }
+
+// Detectar parâmetro de URL para ativar aba específica
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    
+    if (tabParam && (tabParam === 'minhas' || tabParam === 'criar' || tabParam === 'dados')) {
+        switchTab(tabParam);
+    }
+});
 </script>
 
 <?php

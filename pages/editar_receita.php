@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <main class="perfil-container">
     <section class="perfil-header">
         <div class="welcome-banner">
-            <h1>✏️ Editar Receita</h1>
+            <h1>Editar Receita</h1>
             <p>Editando: <strong><?= htmlspecialchars($receita['titulo']) ?></strong></p>
         </div>
     </section>
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (!empty($errors)): ?>
         <div class="alert alert-error">
             <?php foreach($errors as $error): ?>
-                <p>❌ <?= htmlspecialchars($error) ?></p>
+                <p><?= htmlspecialchars($error) ?></p>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
@@ -96,14 +96,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="tab-content active">
         <form method="POST" class="receita-form">
             <div class="form-group">
-                <label for="titulo">📝 Título da Receita *</label>
+                <label for="titulo">Título da Receita *</label>
                 <input type="text" id="titulo" name="titulo" required 
                        value="<?= htmlspecialchars($receita['titulo']) ?>"
                        placeholder="Ex: Bolo de Chocolate Especial">
             </div>
 
             <div class="form-group">
-                <label for="categoria_id">🏷️ Categoria</label>
+                <label for="categoria_id">Categoria</label>
                 <select id="categoria_id" name="categoria_id">
                     <option value="0">Selecione uma categoria</option>
                     <?php if ($categorias && $categorias->num_rows > 0): ?>
@@ -118,27 +118,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group">
-                <label for="descricao">📄 Descrição *</label>
+                <label for="descricao">Descrição *</label>
                 <textarea id="descricao" name="descricao" required rows="3"
                           placeholder="Descreva sua receita de forma atrativa..."><?= htmlspecialchars($receita['descricao']) ?></textarea>
             </div>
 
             <div class="form-group">
-                <label for="rendimento">👥 Rendimento</label>
+                <label for="rendimento">Rendimento</label>
                 <input type="text" id="rendimento" name="rendimento" 
                        value="<?= htmlspecialchars($receita['rendimento']) ?>"
                        placeholder="Ex: 8 porções, 12 unidades, 1 litro">
             </div>
 
             <div class="form-group">
-                <label for="modoprep">👨‍🍳 Modo de Preparo *</label>
+                <label for="modoprep">Modo de Preparo *</label>
                 <textarea id="modoprep" name="modoprep" required rows="8"
                           placeholder="Descreva passo a passo como preparar sua receita..."><?= htmlspecialchars($receita['modoprep']) ?></textarea>
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn-primary">💾 Salvar Alterações</button>
-                <a href="/Story-Bytes-/pages/perfil.php" class="btn-secondary">❌ Cancelar</a>
+                <button type="submit" class="btn-primary">Salvar Alterações</button>
+                <a href="/Story-Bytes-/pages/perfil.php" class="btn-secondary">Cancelar</a>
             </div>
         </form>
     </div>

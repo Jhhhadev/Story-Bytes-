@@ -73,12 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo '
                 <main class="formulario">
                     <div class="mensagem-sucesso">
-                        <h2>💾 Receita salva como rascunho!</h2>
+                        <h2>Receita salva como rascunho!</h2>
                         <p><strong>' . htmlspecialchars($titulo) . '</strong> foi salva em seus rascunhos.</p>
                         <p>Você pode editá-la a qualquer momento ou enviá-la para aprovação quando quiser!</p>
                         <div style="margin-top: 20px;">
-                            <a href="perfil.php" class="btn-primary" style="margin-right: 10px;">📋 Ver Minhas Receitas</a>
-                            <a href="perfil.php" class="btn-secondary">➕ Criar Nova Receita</a>
+                            <a href="/Story-Bytes-/pages/perfil.php?tab=minhas" class="btn-primary" style="margin-right: 10px;">Ver Minhas Receitas</a>
+                            <a href="/Story-Bytes-/pages/perfil.php?tab=criar" class="btn-secondary">Criar Nova Receita</a>
                         </div>
                     </div>
                 </main>';
@@ -86,12 +86,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo '
                 <main class="formulario">
                     <div class="mensagem-sucesso">
-                        <h2>🎉 Receita enviada para aprovação!</h2>
+                        <h2>Receita enviada para aprovação!</h2>
                         <p><strong>' . htmlspecialchars($titulo) . '</strong> foi enviada para aprovação.</p>
                         <p>Nossos administradores irão revisar sua receita em breve!</p>
                         <div style="margin-top: 20px;">
-                            <a href="perfil.php" class="btn-primary" style="margin-right: 10px;">📋 Ver Minhas Receitas</a>
-                            <a href="perfil.php" class="btn-secondary">➕ Criar Nova Receita</a>
+                            <a href="/Story-Bytes-/pages/perfil.php?tab=minhas" class="btn-primary" style="margin-right: 10px;">Ver Minhas Receitas</a>
+                            <a href="/Story-Bytes-/pages/perfil.php?tab=criar" class="btn-secondary">Criar Nova Receita</a>
                         </div>
                     </div>
                 </main>';

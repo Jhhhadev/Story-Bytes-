@@ -3,7 +3,7 @@
 define('APP_ROOT', __DIR__);
 
 // URL base (ajuste se o projeto mudar de pasta/domínio)
-define('BASE_URL', '/Story-Bytes/');
+define('BASE_URL', '/Story-Bytes-/');
 
 // Página ativa no menu (cada página define a sua antes de incluir o header)
 if (!isset($ACTIVE_PAGE)) { $ACTIVE_PAGE = ''; } // 'home', 'doces', ...
