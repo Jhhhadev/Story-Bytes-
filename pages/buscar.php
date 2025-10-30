@@ -146,6 +146,15 @@ if ($tem_busca) {
                             </div>
 
                             <div class="receita-card-body">
+                                <!-- Imagem da receita -->
+                                <?php if ($receita['imagem'] && file_exists("../img/receitas/" . $receita['imagem'])): ?>
+                                    <div class="receita-imagem-busca">
+                                        <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                                             alt="<?= htmlspecialchars($receita['titulo']) ?>"
+                                             style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+                                    </div>
+                                <?php endif; ?>
+                                
                                 <p class="receita-descricao"><?= htmlspecialchars(substr($receita['descricao'], 0, 120)) ?>...</p>
                                 
                                 <!-- Informações detalhadas da receita -->
@@ -245,6 +254,15 @@ if ($tem_busca) {
                                     <span class="receita-categoria"><?= htmlspecialchars($receita['categoria_nome']) ?></span>
                                 </div>
                                 <div class="receita-card-body">
+                                    <!-- Imagem da receita -->
+                                    <?php if ($receita['imagem'] && file_exists("../img/receitas/" . $receita['imagem'])): ?>
+                                        <div class="receita-imagem-destaque">
+                                            <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                                                 alt="<?= htmlspecialchars($receita['titulo']) ?>"
+                                                 style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 12px;">
+                                        </div>
+                                    <?php endif; ?>
+                                    
                                     <p class="receita-descricao"><?= htmlspecialchars(substr($receita['descricao'], 0, 80)) ?>...</p>
                                     
                                     <div class="acoes-receita">
