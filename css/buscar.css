@@ -608,3 +608,155 @@ main.buscar-main.buscar-main .modal-content {
         padding: 20px;
     }
 }
+
+/* ===== ESTILOS PARA PÁGINAS DE CATEGORIA ===== */
+
+/* Cabeçalho da categoria */
+main.buscar-main .categoria-header {
+    margin-bottom: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    background: var(--cor-branca);
+}
+
+/* Banner da categoria com imagem e informações */
+main.buscar-main .categoria-banner {
+    display: flex;
+    align-items: center;
+    min-height: 220px;
+    background: linear-gradient(135deg, #ff7043 0%, #ff8a65 100%);
+    color: var(--cor-branca);
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+/* Imagem da categoria */
+main.buscar-main .categoria-imagem {
+    flex: 1;
+    max-width: 320px;
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+}
+
+main.buscar-main .banner-categoria {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    filter: brightness(0.9) contrast(1.1);
+}
+
+main.buscar-main .categoria-imagem:hover .banner-categoria {
+    transform: scale(1.02);
+    filter: brightness(1) contrast(1.2);
+}
+
+/* Informações da categoria */
+main.buscar-main .categoria-info {
+    flex: 2;
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(255, 112, 67, 0.95) 0%, rgba(255, 138, 101, 0.95) 100%);
+    position: relative;
+}
+
+main.buscar-main .categoria-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.05"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.05"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    pointer-events: none;
+}
+
+main.buscar-main .categoria-info h1 {
+    font-size: 2.8rem;
+    margin: 0 0 20px 0;
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+    position: relative;
+    z-index: 1;
+}
+
+main.buscar-main .categoria-info p {
+    font-size: 1.2rem;
+    margin: 0 0 15px 0;
+    line-height: 1.6;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+main.buscar-main .categoria-info .total-receitas {
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.25);
+    padding: 12px 20px;
+    border-radius: 25px;
+    display: inline-block;
+    margin-top: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+main.buscar-main .categoria-info .total-receitas:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+    main.buscar-main .categoria-banner {
+        flex-direction: column;
+        text-align: center;
+        min-height: auto;
+    }
+    
+    main.buscar-main .categoria-imagem {
+        max-width: 100%;
+        height: 180px;
+        border-radius: 0;
+    }
+    
+    main.buscar-main .categoria-info {
+        padding: 25px 20px;
+    }
+    
+    main.buscar-main .categoria-info h1 {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+    }
+    
+    main.buscar-main .categoria-info p {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+    
+    main.buscar-main .categoria-info .total-receitas {
+        font-size: 1rem;
+        padding: 10px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    main.buscar-main .categoria-info h1 {
+        font-size: 1.8rem;
+    }
+    
+    main.buscar-main .categoria-info {
+        padding: 20px 15px;
+    }
+    
+    main.buscar-main .categoria-imagem {
+        height: 150px;
+    }
+}

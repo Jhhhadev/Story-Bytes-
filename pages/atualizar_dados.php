@@ -79,23 +79,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo '
                 <main class="formulario">
                     <div class="mensagem-sucesso">
-                        <h2>✅ Dados atualizados com sucesso!</h2>
+                        <h2>Dados atualizados com sucesso!</h2>
                         <p>Suas informações foram atualizadas:</p>
                         <ul style="text-align: left; margin: 15px 0;">
                             <li><strong>Nome:</strong> ' . htmlspecialchars($nome) . '</li>
                             <li><strong>E-mail:</strong> ' . htmlspecialchars($email) . '</li>
                         </ul>
-                        ' . (!empty($alteracoes) ? '<p><strong>Alterações feitas:</strong><br>' . implode('<br>', $alteracoes) . '</p>' : '<p>ℹ️ Nenhuma alteração foi detectada.</p>') . '
-                        <p><small>💡 As alterações são aplicadas imediatamente em todo o site.</small></p>
+                        ' . (!empty($alteracoes) ? '<p><strong>Alterações feitas:</strong><br>' . implode('<br>', $alteracoes) . '</p>' : '<p>Nenhuma alteração foi detectada.</p>') . '
+                        <p><small>As alterações são aplicadas imediatamente em todo o site.</small></p>
                         <div style="margin-top: 20px;">
-                            <a href="perfil.php" class="btn-primary">👤 Voltar ao Perfil</a>
+                            <a href="perfil.php?tab=dados" class="btn-primary">Voltar ao Perfil</a>
                         </div>
                     </div>
                     <script>
                         // Atualizar header automaticamente após 2 segundos
                         setTimeout(function() {
                             if (window.location.href.indexOf("perfil.php") === -1) {
-                                window.location.href = "perfil.php";
+                                window.location.href = "perfil.php?tab=dados";
                             }
                         }, 3000);
                     </script>
@@ -109,9 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo '
             <main class="formulario">
                 <div class="mensagem-erro">
-                    <h2>❌ Erro ao atualizar dados</h2>
+                    <h2>Erro ao atualizar dados</h2>
                     <p>' . htmlspecialchars($e->getMessage()) . '</p>
-                    <p><a href="perfil.php">Voltar ao perfil</a></p>
+                    <p><a href="perfil.php?tab=dados">Voltar ao perfil</a></p>
                 </div>
             </main>';
         }
@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo '
         <main class="formulario">
             <div class="mensagem-erro">
-                <h2>❌ Erro na validação</h2>
+                <h2>Erro na validação</h2>
                 <ul style="text-align: left; margin: 15px 0;">';
         
         foreach ($erros as $erro) {
@@ -129,14 +129,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         echo '
                 </ul>
-                <p><a href="perfil.php">Voltar e corrigir</a></p>
+                <p><a href="perfil.php?tab=dados">Voltar e corrigir</a></p>
             </div>
         </main>';
     }
     
 } else {
     // Se não foi POST, redirecionar para o perfil
-    header("Location: perfil.php");
+    header("Location: perfil.php?tab=dados");
     exit();
 }
 

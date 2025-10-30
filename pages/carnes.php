@@ -1,133 +1,119 @@
 <?php
 $ACTIVE_PAGE = 'carnes';
 $PAGE_TITLE  = 'StoryBites — Carnes';
-$PAGE_DESC   = 'Doces caseiros com histórias e memórias afetivas.';
+$PAGE_DESC   = 'Descubra receitas saborosas com carnes para todas as ocasiões';
 $PAGE_STYLES = [
                 'css/card-receitas.css',
+                'css/buscar.css'
 ]; // CSS específico desta página
 
 require_once __DIR__ . '/../config.php';
 require_once APP_ROOT . '/partials/_head.php';
 require_once APP_ROOT . '/partials/_header.php';
+include('../backend/conexao.php');
+
+// Buscar todas as receitas da categoria Carnes
+$sql = "SELECT r.*, c.nome as categoria_nome, u.nome as autor_nome 
+        FROM receita r 
+        LEFT JOIN categoria c ON r.categoria_id = c.id 
+        LEFT JOIN usuario u ON r.usuario_id = u.id 
+        WHERE c.nome = 'Carnes' 
+        ORDER BY r.datacriacao DESC";
+
+$receitas = $conn->query($sql);
+$total_receitas = $receitas ? $receitas->num_rows : 0;
 ?>
 
-
-<main class="container">
-
-  <article class="card recipe">
-      
-      <div class="recipe-header">
-        <img class="recipe-cover" src="img/bife-acebolado.jpeg" alt="Bife acebolado suculento">
-        <div class="recipe-title">
-          <h2 class="name-recipe">Bife Acebolado</h2>
-          <div class="meta">
-            <span><strong>Rendimento:</strong> 4 porções</span>
-            <span><strong>Preparo:</strong> 30 min</span>
-            <span><strong>Dificuldade:</strong> Fácil</span>
-          </div>
-        </div>
-      </div>
-
-    
-      <div class="grid">
-        <section class="ingredientes">
-          <h3>Ingredientes</h3>
-          <ul class="itens-ingredientes">
-            <li>Tempere os bifes com sal</li>
-            <li>4 bifes de contrafilé ou alcatra</li>
-            <li>2 cebolas grandes cortadas em rodelas</li>
-            <li>2 colheres (sopa) de óleo ou azeite</li>
-            <li>1 colher (sopa) de manteiga</li>
-            <li>2 dentes de alho picados</li>
-            <li>Sal e pimenta-do-reino a gosto</li>
-          </ul>
+<main class="buscar-main">
+    <div class="container">
+        <!-- Cabeçalho da categoria -->
+        <section class="categoria-header">
+            <div class="categoria-banner" style="display: flex !important; align-items: center !important; background: linear-gradient(135deg, #ff7043 0%, #ff8a65 100%) !important; min-height: 220px !important; border-radius: 15px !important; overflow: hidden !important; color: white !important; margin-bottom: 30px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;">
+                <div style="flex: 1 !important; max-width: 320px !important; height: 220px !important; overflow: hidden !important; margin-left: 20px !important;">
+                    <img src="http://localhost/Story-Bytes-/img/carnes.jpg" alt="Pratos com carne" 
+                         style="width: 100% !important; height: 100% !important; object-fit: cover !important; display: block !important; opacity: 1 !important; visibility: visible !important; border-radius: 15px !important;">
+                </div>
+                <div style="flex: 2 !important; padding: 40px !important;">
+                    <h1 style="font-size: 2.8rem !important; margin: 0 0 20px 0 !important; font-weight: 700 !important; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4) !important; color: white !important;">Carnes</h1>
+                    <p style="font-size: 1.2rem !important; margin: 0 0 15px 0 !important; line-height: 1.6 !important; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important; color: white !important;">Descubra receitas saborosas com carnes para todas as ocasiões</p>
+                    <p style="font-size: 1.1rem !important; font-weight: 600 !important; background: rgba(255, 255, 255, 0.25) !important; padding: 12px 20px !important; border-radius: 25px !important; display: inline-block !important; margin-top: 15px !important; backdrop-filter: blur(10px) !important; border: 1px solid rgba(255, 255, 255, 0.3) !important; color: white !important;"><?= $total_receitas ?> receita<?= $total_receitas != 1 ? 's' : '' ?> encontrada<?= $total_receitas != 1 ? 's' : '' ?></p>
+                </div>
+            </div>
         </section>
-        
-        <section class="preparo">
-          <h3>Modo de Preparo</h3>
-          <ol class="itens-preparo">
-            <li>Tempere os bifes com sal, pimenta e alho.</li>
-            <li>Aqueça uma frigideira com óleo e grelhe os bifes até o ponto desejado. Retire e reserve.</li>
-            <li>Na mesma frigideira, adicione a manteiga e refogue as cebolas até ficarem douradas.</li>
-            <li>Volte os bifes para a frigideira, misture com a cebola e deixe apurar por 2 minutos.</li>
-            <li>Sirva acompanhado de arroz branco, batata frita ou salada.</li>
-          </ol>
-        </section>
-      </div>
 
-      
-      <section class="comentarios">
-        <h3>Comentários</h3>
-        <form class="formulario" action="#" method="POST">
-          <textarea placeholder="Deixe seu comentário..." required></textarea>
-          <button type="submit">Enviar</button>
-        </form>
-        <ul class="comentario-lista">
-          <li><strong>Ana:</strong> Fiz e ficou maravilhoso!</li>
-          <li><strong>Carlos:</strong> Adicionei coco ralado e ficou top!</li>
-        </ul>
-      </section>
-  </article>    
-
-      
-  <article class="card recipe">
-    
-    <div class="recipe-header">
-        <img class="recipe-cover" src="img/frango-mostarda.jpeg" alt="Frango ao molho de mostarda">
-        <div class="recipe-title">
-          <h2 class="name-recipe">Frango ao Molho de Mostarda</h2>
-          <div class="meta">
-            <span><strong>Rendimento:</strong> 4 porções</span>
-            <span><strong>Preparo:</strong> 35 min</span>
-            <span><strong>Dificuldade:</strong> Fácil</span>
-          </div>
+        <!-- Botão de voltar -->
+        <div class="voltar-busca">
+            <a href="/Story-Bytes-/pages/buscar.php" class="btn btn-secondary">
+                ← Voltar à Busca
+            </a>
         </div>
+
+        <!-- Lista de receitas -->
+        <?php if ($receitas && $receitas->num_rows > 0): ?>
+            <div class="receitas-grid">
+                <?php while($receita = $receitas->fetch_assoc()): ?>
+                    <article class="receita-card">
+                        <div class="receita-card-header">
+                            <h3><?= htmlspecialchars($receita['titulo']) ?></h3>
+                            <div class="receita-meta">
+                                <span class="categoria"><?= htmlspecialchars($receita['categoria_nome']) ?></span>
+                                <?php if ($receita['autor_nome']): ?>
+                                    <span class="autor">Por: <?= htmlspecialchars($receita['autor_nome']) ?></span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <div class="receita-card-body">
+                            <?php if ($receita['imagem'] && file_exists("../img/receitas/" . $receita['imagem'])): ?>
+                                <div class="receita-imagem">
+                                    <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                                         alt="<?= htmlspecialchars($receita['titulo']) ?>">
+                                </div>
+                            <?php else: ?>
+                                <!-- Imagem padrão para carnes -->
+                                <div class="receita-imagem">
+                                    <img src="../img/carnes.jpg" 
+                                         alt="<?= htmlspecialchars($receita['titulo']) ?>"
+                                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="receita-descricao">
+                                <p><?= htmlspecialchars(substr($receita['descricao'], 0, 150)) ?>...</p>
+                            </div>
+
+                            <div class="receita-detalhes">
+                                <h5>Ingredientes:</h5>
+                                <div class="ingredientes-resumo">
+                                    <?= nl2br(htmlspecialchars(substr($receita['ingredientes'], 0, 200))) ?>...
+                                </div>
+
+                                <h5>Modo de Preparo:</h5>
+                                <p class="modo-preparo-resumo">
+                                    <?= htmlspecialchars(substr($receita['modoprep'], 0, 300)) ?>...
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="acoes-receita">
+                            <a href="/Story-Bytes-/pages/ver_receita.php?id=<?= $receita['id'] ?>" class="btn-ver-receita">
+                                Ver Receita Completa
+                            </a>
+                        </div>
+                    </article>
+                <?php endwhile; ?>
+            </div>
+        <?php else: ?>
+            <div class="sem-resultados">
+                <h3>Nenhuma receita de carnes encontrada</h3>
+                <p>Ainda não temos receitas cadastradas nesta categoria.</p>
+                <p><a href="/Story-Bytes-/pages/buscar.php">← Voltar à busca</a></p>
+            </div>
+        <?php endif; ?>
     </div>
-    
-    <div class="grid">
-    
-      <section class="ingredientes">
-        <h3>Ingredientes</h3>
-        <ul class="itens-ingredientes">
-          <li>500 g de peito de frango em tiras ou cubos</li>
-          <li>2 colheres (sopa) de azeite</li>
-          <li>2 dentes de alho picados</li>
-          <li>1 cebola média picada</li>
-          <li>1 caixinha de creme de leite (200 ml)</li>
-          <li>2 colheres (sopa) de mostarda</li>
-          <li>Sal e pimenta-do-reino a gosto</li>
-          <li>Salsinha picada para finalizar</li>
-        </ul>
-      </section>
-
-      
-      <section class="preparo">
-        <h3>Modo de Preparo</h3>
-        <ol class="itens-preparo">
-          <li>Tempere o frango com sal e pimenta.</li>
-          <li>Aqueça o azeite em uma panela e doure o frango. Reserve.</li>
-          <li>Na mesma panela, refogue o alho e a cebola até dourarem.</li>
-          <li>Adicione o frango de volta, junte a mostarda e mexa bem.</li>
-          <li>Acrescente o creme de leite e deixe cozinhar por 5 minutos em fogo baixo.</li>
-          <li>Finalize com salsinha picada e sirva com arroz branco ou batatas.</li>
-        </ol>
-      </section>
-    </div>
-
-      <!-- Comentário -->
-    <section class="comentarios">
-      <h3>Comentários</h3>
-      <form class="formulario" action="#" method="POST">
-        <textarea placeholder="Deixe seu comentário..." required></textarea>
-        <button type="submit">Enviar</button>
-      </form>
-      <ul class="comentario-lista">
-        <li><strong>Ana:</strong> Fiz e ficou maravilhoso!</li>
-        <li><strong>Carlos:</strong> Adicionei coco ralado e ficou top!</li>
-      </ul>
-    </section>
-  </article>
-
 </main>
 
-<?php require_once APP_ROOT . '/partials/_footer.php'; ?>
+<?php
+require_once APP_ROOT . '/partials/_footer.php';
+$conn->close();
+?>

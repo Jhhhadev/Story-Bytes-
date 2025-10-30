@@ -165,7 +165,7 @@ if ($tem_busca) {
                             </div>
 
                             <div class="acoes-receita">
-                                <a href="ver_receita.php?id=<?= $receita['id'] ?>" class="btn-ver-receita">
+                                <a href="/Story-Bytes-/pages/ver_receita.php?id=<?= $receita['id'] ?>" class="btn-ver-receita">
                                     Ver Receita Completa
                                 </a>
                             </div>
@@ -193,8 +193,32 @@ if ($tem_busca) {
                 <?php 
                 $categorias->data_seek(0); // Reset do ponteiro
                 while($cat = $categorias->fetch_assoc()): 
+                    // Mapear categoria para página específica
+                    $pagina_categoria = '';
+                    switch(strtolower($cat['nome'])) {
+                        case 'bebidas':
+                            $pagina_categoria = '/Story-Bytes-/pages/bebidas.php';
+                            break;
+                        case 'carnes':
+                            $pagina_categoria = '/Story-Bytes-/pages/carnes.php';
+                            break;
+                        case 'doces':
+                            $pagina_categoria = '/Story-Bytes-/pages/doces.php';
+                            break;
+                        case 'lanches':
+                            $pagina_categoria = '/Story-Bytes-/pages/lanches.php';
+                            break;
+                        case 'massas':
+                            $pagina_categoria = '/Story-Bytes-/pages/massas.php';
+                            break;
+                        case 'sopas':
+                            $pagina_categoria = '/Story-Bytes-/pages/sopas.php';
+                            break;
+                        default:
+                            $pagina_categoria = "?categoria={$cat['id']}";
+                    }
                 ?>
-                    <a href="?categoria=<?= $cat['id'] ?>" class="categoria-link">
+                    <a href="<?= $pagina_categoria ?>" class="categoria-link">
                         <?= htmlspecialchars($cat['nome']) ?>
                     </a>
                 <?php endwhile; ?>
@@ -207,7 +231,6 @@ if ($tem_busca) {
                 $sql_destaque = "SELECT r.*, c.nome as categoria_nome 
                                 FROM receita r 
                                 LEFT JOIN categoria c ON r.categoria_id = c.id 
-                                WHERE r.status_aprovacao = 'aprovada' 
                                 ORDER BY RAND() 
                                 LIMIT 6";
                 $receitas_destaque = $conn->query($sql_destaque);
@@ -225,7 +248,7 @@ if ($tem_busca) {
                                     <p class="receita-descricao"><?= htmlspecialchars(substr($receita['descricao'], 0, 80)) ?>...</p>
                                     
                                     <div class="acoes-receita">
-                                        <a href="ver_receita.php?id=<?= $receita['id'] ?>" class="btn-ver-receita">
+                                        <a href="/Story-Bytes-/pages/ver_receita.php?id=<?= $receita['id'] ?>" class="btn-ver-receita">
                                             Ver Receita Completa
                                         </a>
                                     </div>

@@ -9,26 +9,33 @@
 }
 
 .titulo_login {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
   color: var(--cor-primaria);
+  font-family: var(--fonte-titulo);
+  font-weight: 600;
+  text-align: center;
 }
 
 .box_form {
   display: flex;
   flex-direction: column;
-  width: 300px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 400px;
+  max-width: 90%;
+  padding: 30px;
+  box-shadow: var(--shadow-md);
   background-color: var(--cor-branca);
-  border-radius: 5px;
-  margin-top: 20px; /* Posiciona o formulário um pouco abaixo do header */
+  border-radius: var(--radius);
+  margin-top: 20px;
+  border: 1px solid var(--card-borda);
 }
 
 .box_form label {
   text-align: left;
-  margin-bottom: 5px;
-  color: var(--cor-primaria);
+  margin-bottom: 8px;
+  color: var(--cor-secundaria);
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
 .box_form input {
@@ -39,24 +46,56 @@
 .box_form input[type="email"],
 .box_form input[type="password"] {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid var(--cor-primaria);
-  border-radius: 8px;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+}
+
+.box_form input[type="text"]:focus,
+.box_form input[type="email"]:focus,
+.box_form input[type="password"]:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+  background-color: var(--cor-branca);
+  box-shadow: 0 0 0 3px rgba(255, 112, 67, 0.1);
 }
 
 .box_form input[type="submit"] {
   padding: 10px 20px;
   border: none;
-  background-color: #5cb85c; /* Tom de verde para o botão */
+  background-color: var(--cor-primaria);
   color: var(--cor-branca);
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
 }
 
-.box-form input[type="submit"]:hover {
-  background-color: #4cae4c; /* Tom mais escuro de verde ao passar o mouse */
+.box_form input[type="submit"]:hover {
+  background-color: #e55a2b;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.box_form a {
+  color: var(--cor-primaria);
+  text-decoration: none;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 15px;
+  padding: 10px;
+  transition: color 0.3s ease;
+}
+
+.box_form a:hover {
+  color: #e55a2b;
+  text-decoration: underline;
 }
 
 
@@ -69,6 +108,10 @@
   }
   .formulario {
     height: 400px;
+  }
+  .mensagem-sucesso, .mensagem-erro {
+    width: 80%;
+    padding: 20px;
   }
 }
 
@@ -87,47 +130,184 @@
   .titulo_login {
     font-size: 1.3rem;
   }
+  .mensagem-sucesso, .mensagem-erro {
+    width: 95%;
+    padding: 15px;
+    margin: 20px auto;
+  }
+  .mensagem-sucesso h2, .mensagem-erro h2 {
+    font-size: 1.4rem;
+  }
+  .mensagem-sucesso a, .mensagem-erro a {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    margin: 3px;
+    display: inline-block;
+    min-width: 120px;
+  }
+  
+  .mensagem-erro div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .mensagem-erro div a {
+    width: 200px;
+    max-width: 100%;
+  }
 }
 
 /* Estilos para mensagens de feedback */
 .mensagem-sucesso, .mensagem-erro {
-  width: 400px;
+  width: 450px;
   max-width: 90%;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 25px;
+  border-radius: var(--radius);
   text-align: center;
-  margin: 20px auto;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  box-shadow: var(--shadow-md);
+  background-color: var(--cor-branca);
+  position: relative;
+  animation: slideInFromTop 0.5s ease-out;
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .mensagem-sucesso {
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  color: #155724;
+  border-left: 4px solid #28a745;
+  background-color: #f8fff9;
+}
+
+.mensagem-sucesso::before {
+  content: "✓";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background-color: #28a745;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .mensagem-sucesso h2 {
   color: #155724;
+  margin-bottom: 15px;
+  margin-top: 20px;
+  font-family: var(--fonte-titulo);
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.mensagem-sucesso p {
+  color: #155724;
   margin-bottom: 10px;
+  font-size: 1rem;
 }
 
 .mensagem-erro {
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  color: #721c24;
+  border-left: 4px solid #dc3545;
+  background-color: #fff8f8;
+}
+
+.mensagem-erro::before {
+  content: "✕";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .mensagem-erro h2 {
   color: #721c24;
+  margin-bottom: 15px;
+  margin-top: 20px;
+  font-family: var(--fonte-titulo);
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.mensagem-erro p {
+  color: #721c24;
   margin-bottom: 10px;
+  font-size: 1rem;
 }
 
 .mensagem-sucesso a, .mensagem-erro a {
   color: var(--cor-primaria);
-  text-decoration: underline;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 12px 24px;
+  border: 2px solid var(--cor-primaria);
+  border-radius: var(--radius);
+  display: inline-block;
+  margin: 5px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.mensagem-sucesso a::before, .mensagem-erro a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.mensagem-sucesso a:hover::before, .mensagem-erro a:hover::before {
+  left: 100%;
 }
 
 .mensagem-sucesso a:hover, .mensagem-erro a:hover {
-  text-decoration: none;
+  background-color: var(--cor-primaria);
+  color: var(--cor-branca);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--cor-primaria);
+}
+
+/* Estilo para botões secundários */
+.mensagem-erro a[style*="background-color"] {
+  background-color: var(--cor-primaria) !important;
+  color: var(--cor-branca) !important;
+  border-color: var(--cor-primaria);
+}
+
+.mensagem-erro a[style*="background-color"]:hover {
+  background-color: #e55a2b !important;
+  border-color: #e55a2b;
+  transform: translateY(-2px);
 }
 

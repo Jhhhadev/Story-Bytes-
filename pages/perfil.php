@@ -11,7 +11,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $ACTIVE_PAGE = 'perfil';
 $PAGE_TITLE  = 'StoryBites — Meu Perfil';
-$PAGE_DESC   = 'Gerencie suas receitas e envie novas criações para aprovação.';
+$PAGE_DESC   = 'Gerencie suas receitas e crie novas delícias culinárias.';
 $PAGE_STYLES = [
                 'css/login.css', // Reutilizar estilos base
                 'css/perfil.css', // Estilos específicos do perfil
@@ -45,12 +45,26 @@ if ($dados_usuario) {
     $usuario_tipo = $dados_usuario['tipo_usuario'];
 }
 
-// Buscar receitas do usuário (como não há usuario_id, mostrar todas as receitas)
+// Buscar receitas do usuário logado
 $sql_receitas = "SELECT r.*, c.nome as categoria_nome 
                  FROM receita r 
                  LEFT JOIN categoria c ON r.categoria_id = c.id
+                 WHERE r.usuario_id = ?
                  ORDER BY r.datacriacao DESC";
-$receitas_usuario = $conn->query($sql_receitas);
+$stmt_receitas = $conn->prepare($sql_receitas);
+$stmt_receitas->bind_param("i", $usuario_id);
+$stmt_receitas->execute();
+$receitas_usuario = $stmt_receitas->get_result();
+
+// Calcular estatísticas de receitas
+$total_receitas = 0;
+
+if ($receitas_usuario && $receitas_usuario->num_rows > 0) {
+    $total_receitas = $receitas_usuario->num_rows;
+    
+    // Resetar ponteiro para uso posterior
+    $receitas_usuario->data_seek(0);
+}
 
 // Buscar categorias disponíveis
 $sql_categorias = "SELECT * FROM categoria ORDER BY nome";
@@ -78,24 +92,9 @@ if (!$categorias) {
             <p class="user-type">
                 <?= $usuario_tipo === 'admin' ? 'Administrador' : 'Chef Caseiro' ?>
             </p>
-        </div>
-    </section>
-
-    <!-- Estatísticas do Usuário -->
-    <section class="estatisticas">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3><?= ($receitas_usuario && $receitas_usuario->num_rows) ? $receitas_usuario->num_rows : 0 ?></h3>
-                <p>Receitas Criadas</p>
-            </div>
-            <div class="stat-card">
-                <h3>0</h3>
-                <p>Receitas Aprovadas</p>
-            </div>
-            <div class="stat-card">
-                <h3>0</h3>
-                <p>Pendentes</p>
-            </div>
+            <p class="receitas-count">
+                Receitas Criadas: <?= $total_receitas ?>
+            </p>
         </div>
     </section>
 
@@ -111,7 +110,7 @@ if (!$categorias) {
         <div class="tab-content active" id="tab-criar">
             <div class="form-container">
                 <h2>Criar Nova Receita</h2>
-                <form action="/Story-Bytes-/pages/processa_receita.php" method="POST" enctype="multipart/form-data" class="receita-form">
+                <form id="form-receita" action="/Story-Bytes-/pages/processa_receita.php" method="POST" enctype="multipart/form-data" class="receita-form">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="titulo">Título da Receita</label>
@@ -182,8 +181,7 @@ if (!$categorias) {
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" name="acao" value="salvar" class="btn-secondary">Salvar como Rascunho</button>
-                        <button type="submit" name="acao" value="aprovar" class="btn-primary">Enviar para Aprovação</button>
+                        <button type="submit" name="acao" value="salvar" class="btn-primary">Salvar Receita</button>
                         <button type="reset" class="btn-outline">Limpar Formulário</button>
                     </div>
                 </form>
@@ -214,21 +212,9 @@ if (!$categorias) {
                                         $status_class = 'status-rascunho';
                                         $status_text = 'Rascunho';
                                         break;
-                                    case 'pendente':
-                                        $status_class = 'status-pendente';
-                                        $status_text = 'Pendente';
-                                        break;
-                                    case 'aprovada':
-                                        $status_class = 'status-aprovada';
-                                        $status_text = 'Aprovada';
-                                        break;
-                                    case 'rejeitada':
-                                        $status_class = 'status-rejeitada';
-                                        $status_text = 'Rejeitada';
-                                        break;
                                     default:
-                                        $status_class = 'status-pendente';
-                                        $status_text = 'Pendente';
+                                        $status_class = 'status-receita';
+                                        $status_text = 'Receita';
                                 }
                                 ?>
                                 <span class="status-badge <?= $status_class ?>"><?= $status_text ?></span>
@@ -249,9 +235,6 @@ if (!$categorias) {
                             <div class="card-actions">
                                 <button class="btn-small btn-view" onclick="obterReceita(<?= $receita['id'] ?>)">Ver</button>
                                 <button class="btn-small btn-edit" onclick="editarReceita(<?= $receita['id'] ?>)">Editar</button>
-                                <?php if ($status === 'rascunho'): ?>
-                                    <button class="btn-small btn-send" onclick="enviarAprovacao(<?= $receita['id'] ?>)">Enviar</button>
-                                <?php endif; ?>
                                 <button class="btn-small btn-delete" onclick="excluirReceita(<?= $receita['id'] ?>)">Excluir</button>
                             </div>
                         </div>
@@ -301,13 +284,12 @@ if (!$categorias) {
                 <div class="actions">
                     <button class="btn-primary" onclick="toggleDadosMode('editar')">Editar Dados</button>
                     <button class="btn-secondary" onclick="toggleDadosMode('senha')">Alterar Senha</button>
-                    <button class="btn-outline" onclick="atualizarDados()" title="Recarregar dados do banco">Atualizar</button>
                 </div>
             </div>
             
             <!-- Modo Edição -->
             <div class="dados-container" id="dados-editar" style="display: none;">
-                <form action="atualizar_dados.php" method="POST" class="dados-form">
+                <form id="form-editar-dados" class="dados-form">
                     <div class="form-group">
                         <label for="edit-nome">Nome Completo</label>
                         <input type="text" id="edit-nome" name="nome" value="<?= htmlspecialchars($dados_usuario['nome']) ?>" required>
@@ -319,7 +301,7 @@ if (!$categorias) {
                     </div>
                     
                     <div class="form-actions">
-                        <button type="submit" class="btn-primary">Salvar Alterações</button>
+                        <button type="button" class="btn-primary" onclick="salvarDados()">Salvar Alterações</button>
                         <button type="button" class="btn-secondary" onclick="toggleDadosMode('visualizar')">Cancelar</button>
                     </div>
                 </form>
@@ -327,7 +309,7 @@ if (!$categorias) {
             
             <!-- Modo Alterar Senha -->
             <div class="dados-container" id="dados-senha" style="display: none;">
-                <form action="atualizar_senha.php" method="POST" class="dados-form">
+                <form id="form-alterar-senha" class="dados-form">
                     <div class="form-group">
                         <label for="senha-atual">Senha Atual</label>
                         <input type="password" id="senha-atual" name="senha_atual" required>
@@ -344,7 +326,7 @@ if (!$categorias) {
                     </div>
                     
                     <div class="form-actions">
-                        <button type="submit" class="btn-primary">Alterar Senha</button>
+                        <button type="button" class="btn-primary" onclick="alterarSenha()">Alterar Senha</button>
                         <button type="button" class="btn-secondary" onclick="toggleDadosMode('visualizar')">Cancelar</button>
                     </div>
                 </form>
@@ -443,29 +425,6 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     });
 });
 
-// Validação de confirmação de senha
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form[action="atualizar_senha.php"]');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            const novaSenha = document.getElementById('nova-senha').value;
-            const confirmarSenha = document.getElementById('confirmar-senha').value;
-            
-            if (novaSenha !== confirmarSenha) {
-                e.preventDefault();
-                alert('As senhas não coincidem! Por favor, verifique.');
-                return false;
-            }
-            
-            if (novaSenha.length < 6) {
-                e.preventDefault();
-                alert('A senha deve ter pelo menos 6 caracteres!');
-                return false;
-            }
-        });
-    }
-});
-
 // Funções para gerenciamento de receitas
 function obterReceita(id) {
     // Fazer uma requisição AJAX para buscar os dados completos da receita
@@ -515,28 +474,27 @@ function editarReceita(id) {
     window.location.href = '/Story-Bytes-/pages/editar_receita.php?id=' + id;
 }
 
-function enviarAprovacao(id) {
-    if (confirm('Enviar esta receita para aprovação do administrador?')) {
-        fetch('alterar_status_receita.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'id=' + id + '&status=pendente'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Receita enviada para aprovação!');
-                location.reload();
-            } else {
-                alert('Erro: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao enviar receita');
-        });
+// Função para atualizar contador de receitas no header
+function atualizarContadorReceitas(incremento) {
+    const receitasCount = document.querySelector('.receitas-count');
+    if (receitasCount) {
+        // Extrair número atual do texto "Receitas Criadas: X"
+        const textoAtual = receitasCount.textContent;
+        const numeroAtual = parseInt(textoAtual.match(/\d+/)[0]);
+        const novoNumero = Math.max(0, numeroAtual + incremento);
+        
+        // Atualizar texto
+        receitasCount.textContent = `Receitas Criadas: ${novoNumero}`;
+        
+        // Animação visual
+        receitasCount.style.transition = 'color 0.3s ease, transform 0.3s ease';
+        receitasCount.style.color = incremento > 0 ? '#4CAF50' : '#ff7043';
+        receitasCount.style.transform = 'scale(1.1)';
+        
+        setTimeout(() => {
+            receitasCount.style.color = '';
+            receitasCount.style.transform = 'scale(1)';
+        }, 300);
     }
 }
 
@@ -544,6 +502,12 @@ function excluirReceita(id) {
     if (confirm('Tem certeza que deseja excluir esta receita?\n\nEsta ação não pode ser desfeita!')) {
         // Encontrar o cartão da receita para remover da interface
         const receitaCard = document.querySelector(`[data-receita-id="${id}"]`);
+        
+        // Mostrar indicador de carregamento
+        if (receitaCard) {
+            receitaCard.style.opacity = '0.6';
+            receitaCard.style.pointerEvents = 'none';
+        }
         
         fetch('/Story-Bytes-/pages/excluir_receita.php', {
             method: 'POST',
@@ -557,11 +521,15 @@ function excluirReceita(id) {
             if (data.success) {
                 // Remover o cartão da receita da interface imediatamente
                 if (receitaCard) {
-                    receitaCard.style.opacity = '0.5';
-                    receitaCard.style.transition = 'opacity 0.3s ease';
+                    receitaCard.style.transition = 'all 0.5s ease';
+                    receitaCard.style.transform = 'scale(0.8)';
+                    receitaCard.style.opacity = '0';
                     
                     setTimeout(() => {
                         receitaCard.remove();
+                        
+                        // Atualizar contador de receitas criadas
+                        atualizarContadorReceitas(-1);
                         
                         // Verificar se ainda há receitas na grid
                         const receitasGrid = document.querySelector('.receitas-grid');
@@ -577,17 +545,28 @@ function excluirReceita(id) {
                                 </div>
                             `;
                         }
-                    }, 300);
+                    }, 500);
                 }
                 
-                alert('Receita excluída com sucesso!');
+                // Mostrar mensagem de sucesso mais elegante
+                alert(data.message || 'Receita excluída com sucesso!');
             } else {
-                alert('Erro: ' + data.message);
+                // Restaurar o cartão em caso de erro
+                if (receitaCard) {
+                    receitaCard.style.opacity = '1';
+                    receitaCard.style.pointerEvents = 'auto';
+                }
+                alert('Erro ao excluir receita: ' + data.message);
             }
         })
         .catch(error => {
             console.error('Erro:', error);
-            alert('Erro ao excluir receita');
+            // Restaurar o cartão em caso de erro
+            if (receitaCard) {
+                receitaCard.style.opacity = '1';
+                receitaCard.style.pointerEvents = 'auto';
+            }
+            alert('Erro ao conectar com o servidor. Tente novamente.');
         });
     }
 }
@@ -600,28 +579,177 @@ window.onclick = function(event) {
     }
 }
 
-// Função para atualizar dados em tempo real
-function atualizarDados() {
-    fetch('sincronizar_sessao.php', {
+// Função para salvar dados usando AJAX
+function salvarDados() {
+    const nome = document.getElementById('edit-nome').value.trim();
+    const email = document.getElementById('edit-email').value.trim();
+    
+    if (!nome || !email) {
+        alert('Por favor, preencha todos os campos');
+        return;
+    }
+    
+    // Mostrar indicador de carregamento
+    const botaoSalvar = document.querySelector('#dados-editar .btn-primary');
+    const textoOriginal = botaoSalvar.textContent;
+    botaoSalvar.textContent = 'Salvando...';
+    botaoSalvar.disabled = true;
+    
+    const formData = new FormData();
+    formData.append('nome', nome);
+    formData.append('email', email);
+    
+    fetch('/Story-Bytes-/pages/atualizar_dados_ajax.php', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        }
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Recarregar a página para mostrar dados atualizados
-            window.location.reload();
+            // Atualizar os dados na visualização
+            document.querySelector('#dados-visualizar .info-group:nth-child(1) p').textContent = nome;
+            document.querySelector('#dados-visualizar .info-group:nth-child(2) p').textContent = email;
+            
+            // Voltar para o modo visualizar
+            toggleDadosMode('visualizar');
+            
+            // Mostrar mensagem de sucesso
+            alert('Dados atualizados com sucesso!');
         } else {
             alert('Erro ao atualizar dados: ' + data.message);
+        }
+        
+        // Restaurar botão
+        botaoSalvar.textContent = textoOriginal;
+        botaoSalvar.disabled = false;
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao conectar com o servidor');
+        
+        // Restaurar botão
+        botaoSalvar.textContent = textoOriginal;
+        botaoSalvar.disabled = false;
+    });
+}
+
+// Função para alterar senha usando AJAX
+function alterarSenha() {
+    const senhaAtual = document.getElementById('senha-atual').value;
+    const novaSenha = document.getElementById('nova-senha').value;
+    const confirmarSenha = document.getElementById('confirmar-senha').value;
+    
+    // Validações no frontend
+    if (!senhaAtual || !novaSenha || !confirmarSenha) {
+        alert('Por favor, preencha todos os campos');
+        return;
+    }
+    
+    if (novaSenha.length < 6) {
+        alert('A nova senha deve ter pelo menos 6 caracteres');
+        return;
+    }
+    
+    if (novaSenha !== confirmarSenha) {
+        alert('A confirmação da senha não confere');
+        return;
+    }
+    
+    // Mostrar indicador de carregamento
+    const botaoAlterar = document.querySelector('#dados-senha .btn-primary');
+    const textoOriginal = botaoAlterar.textContent;
+    botaoAlterar.textContent = 'Alterando...';
+    botaoAlterar.disabled = true;
+    
+    const formData = new FormData();
+    formData.append('senha_atual', senhaAtual);
+    formData.append('nova_senha', novaSenha);
+    formData.append('confirmar_senha', confirmarSenha);
+    
+    fetch('/Story-Bytes-/pages/atualizar_senha_ajax.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Limpar campos
+            document.getElementById('senha-atual').value = '';
+            document.getElementById('nova-senha').value = '';
+            document.getElementById('confirmar-senha').value = '';
+            
+            // Voltar para o modo visualizar
+            toggleDadosMode('visualizar');
+            
+            // Mostrar mensagem de sucesso
+            alert('Senha alterada com sucesso!');
+        } else {
+            alert('Erro ao alterar senha: ' + data.message);
+        }
+        
+        // Restaurar botão
+        botaoAlterar.textContent = textoOriginal;
+        botaoAlterar.disabled = false;
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao conectar com o servidor');
+        
+        // Restaurar botão
+        botaoAlterar.textContent = textoOriginal;
+        botaoAlterar.disabled = false;
+    });
+}
+
+// Processar formulário de receita via AJAX
+document.getElementById('form-receita').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const botaoSubmit = e.submitter;
+    const textoOriginal = botaoSubmit.textContent;
+    
+    // Mostrar loading
+    botaoSubmit.textContent = 'Enviando...';
+    botaoSubmit.disabled = true;
+    
+    fetch('/Story-Bytes-/pages/processa_receita_ajax.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Atualizar contador de receitas criadas
+            atualizarContadorReceitas(1);
+            
+            // Limpar formulário
+            document.getElementById('form-receita').reset();
+            
+            // Mostrar mensagem de sucesso
+            alert(data.message);
+            
+            // Mudar para a aba "Minhas Receitas" após 1 segundo
+            setTimeout(() => {
+                switchTab('minhas');
+                // Recarregar a página para mostrar a nova receita
+                window.location.reload();
+            }, 1000);
+            
+        } else {
+            alert('Erro: ' + data.message);
         }
     })
     .catch(error => {
         console.error('Erro:', error);
         alert('Erro ao conectar com o servidor');
+    })
+    .finally(() => {
+        // Restaurar botão
+        botaoSubmit.textContent = textoOriginal;
+        botaoSubmit.disabled = false;
     });
-}
+});
 
 // Detectar parâmetro de URL para ativar aba específica
 document.addEventListener('DOMContentLoaded', function() {
@@ -630,6 +758,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (tabParam && (tabParam === 'minhas' || tabParam === 'criar' || tabParam === 'dados')) {
         switchTab(tabParam);
+        
+        // Se for a aba dados, garantir que esteja no modo visualizar
+        if (tabParam === 'dados') {
+            setTimeout(function() {
+                toggleDadosMode('visualizar');
+            }, 100);
+        }
     }
 });
 </script>

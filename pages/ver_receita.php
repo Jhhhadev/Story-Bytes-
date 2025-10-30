@@ -14,7 +14,12 @@ include('../backend/conexao.php');
 
 // Verificar se foi passado um ID
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header('Location: buscar.php');
+    // Debug: mostrar erro se ID não foi passado
+    echo "<div style='padding: 20px; background: #ffebee; border: 1px solid #f44336; margin: 20px;'>";
+    echo "<h3>Erro: ID da receita não informado</h3>";
+    echo "<p>ID recebido: " . (isset($_GET['id']) ? htmlspecialchars($_GET['id']) : 'não informado') . "</p>";
+    echo "<p><a href='buscar.php'>← Voltar para busca</a></p>";
+    echo "</div>";
     exit;
 }
 
@@ -25,7 +30,7 @@ $sql = "SELECT r.*, c.nome as categoria_nome, u.nome as autor_nome
         FROM receita r 
         LEFT JOIN categoria c ON r.categoria_id = c.id 
         LEFT JOIN usuario u ON r.usuario_id = u.id 
-        WHERE r.id = ? AND r.status_aprovacao = 'aprovada'";
+        WHERE r.id = ?";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $receita_id);
@@ -33,7 +38,13 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
-    header('Location: buscar.php');
+    // Debug: mostrar se receita não foi encontrada
+    echo "<div style='padding: 20px; background: #fff3cd; border: 1px solid #ffc107; margin: 20px;'>";
+    echo "<h3>Receita não encontrada</h3>";
+    echo "<p>ID buscado: " . $receita_id . "</p>";
+    echo "<p>Verifique se a receita existe ou se o ID está correto.</p>";
+    echo "<p><a href='buscar.php'>← Voltar para busca</a></p>";
+    echo "</div>";
     exit;
 }
 
@@ -45,8 +56,9 @@ $PAGE_TITLE = 'StoryBites — ' . $receita['titulo'];
     <div class="container">
         <!-- Botão de voltar -->
         <div class="voltar-busca">
-            <a href="buscar.php" class="btn btn-secondary">
+            <a href="/Story-Bytes-/pages/buscar.php" class="btn btn-secondary">
                 ← Voltar à Busca
+            </a>
             </a>
         </div>
 

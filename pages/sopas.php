@@ -1,133 +1,119 @@
 <?php
 $ACTIVE_PAGE = 'sopas';
 $PAGE_TITLE  = 'StoryBites — Sopas';
-$PAGE_DESC   = 'Doces caseiros com histórias e memórias afetivas.';
+$PAGE_DESC   = 'Sopas reconfortantes e nutritivas para aquecer o coração';
 $PAGE_STYLES = [
                 'css/card-receitas.css',
+                'css/buscar.css'
 ]; // CSS específico desta página
 
 require_once __DIR__ . '/../config.php';
 require_once APP_ROOT . '/partials/_head.php';
 require_once APP_ROOT . '/partials/_header.php';
+include('../backend/conexao.php');
+
+// Buscar todas as receitas da categoria Sopas
+$sql = "SELECT r.*, c.nome as categoria_nome, u.nome as autor_nome 
+        FROM receita r 
+        LEFT JOIN categoria c ON r.categoria_id = c.id 
+        LEFT JOIN usuario u ON r.usuario_id = u.id 
+        WHERE c.nome = 'Sopas' 
+        ORDER BY r.datacriacao DESC";
+
+$receitas = $conn->query($sql);
+$total_receitas = $receitas ? $receitas->num_rows : 0;
 ?>
 
-<main class="container">
+<main class="buscar-main">
+    <div class="container">
+        <!-- Cabeçalho da categoria -->
+        <section class="categoria-header">
+            <div class="categoria-banner" style="display: flex !important; align-items: center !important; background: linear-gradient(135deg, #ff7043 0%, #ff8a65 100%) !important; min-height: 220px !important; border-radius: 15px !important; overflow: hidden !important; color: white !important; margin-bottom: 30px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;">
+                <div style="flex: 1 !important; max-width: 320px !important; height: 220px !important; overflow: hidden !important; margin-left: 20px !important;">
+                    <img src="http://localhost/Story-Bytes-/img/sopas.png" alt="Sopas quentinhas" 
+                         style="width: 100% !important; height: 100% !important; object-fit: cover !important; display: block !important; opacity: 1 !important; visibility: visible !important; border-radius: 15px !important;">
+                </div>
+                <div style="flex: 2 !important; padding: 40px !important;">
+                    <h1 style="font-size: 2.8rem !important; margin: 0 0 20px 0 !important; font-weight: 700 !important; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4) !important; color: white !important;">Sopas</h1>
+                    <p style="font-size: 1.2rem !important; margin: 0 0 15px 0 !important; line-height: 1.6 !important; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important; color: white !important;">Receitas de sopas reconfortantes e nutritivas</p>
+                    <p style="font-size: 1.1rem !important; font-weight: 600 !important; background: rgba(255, 255, 255, 0.25) !important; padding: 12px 20px !important; border-radius: 25px !important; display: inline-block !important; margin-top: 15px !important; backdrop-filter: blur(10px) !important; border: 1px solid rgba(255, 255, 255, 0.3) !important; color: white !important;"><?= $total_receitas ?> receita<?= $total_receitas != 1 ? 's' : '' ?> encontrada<?= $total_receitas != 1 ? 's' : '' ?></p>
+                </div>
+            </div>
+        </section>
 
-<article class="card recipe">
-  
-  <div class="recipe-header">
-    <img class="recipe-cover" src="img/sopa-madioquinha.jpeg" alt="Sopa cremosa de mandioquinha">
-    <div class="recipe-title">
-      <h2 class="name-recipe">Sopa Cremosa de Mandioquinha</h2>
-      <div class="meta">
-        <span><strong>Rendimento:</strong> 4 porções</span>
-        <span><strong>Preparo:</strong> 45 min</span>
-        <span><strong>Dificuldade:</strong> Fácil</span>
-      </div>
+        <!-- Botão de voltar -->
+        <div class="voltar-busca">
+            <a href="/Story-Bytes-/pages/buscar.php" class="btn btn-secondary">
+                ← Voltar à Busca
+            </a>
+        </div>
+
+        <!-- Lista de receitas -->
+        <?php if ($receitas && $receitas->num_rows > 0): ?>
+            <div class="receitas-grid">
+                <?php while($receita = $receitas->fetch_assoc()): ?>
+                    <article class="receita-card">
+                        <div class="receita-card-header">
+                            <h3><?= htmlspecialchars($receita['titulo']) ?></h3>
+                            <div class="receita-meta">
+                                <span class="categoria"><?= htmlspecialchars($receita['categoria_nome']) ?></span>
+                                <?php if ($receita['autor_nome']): ?>
+                                    <span class="autor">Por: <?= htmlspecialchars($receita['autor_nome']) ?></span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <div class="receita-card-body">
+                            <?php if ($receita['imagem'] && file_exists("../img/receitas/" . $receita['imagem'])): ?>
+                                <div class="receita-imagem">
+                                    <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                                         alt="<?= htmlspecialchars($receita['titulo']) ?>">
+                                </div>
+                            <?php else: ?>
+                                <!-- Imagem padrão para sopas -->
+                                <div class="receita-imagem">
+                                    <img src="../img/sopas.png" 
+                                         alt="<?= htmlspecialchars($receita['titulo']) ?>"
+                                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="receita-descricao">
+                                <p><?= htmlspecialchars(substr($receita['descricao'], 0, 150)) ?>...</p>
+                            </div>
+
+                            <div class="receita-detalhes">
+                                <h5>Ingredientes:</h5>
+                                <div class="ingredientes-resumo">
+                                    <?= nl2br(htmlspecialchars(substr($receita['ingredientes'], 0, 200))) ?>...
+                                </div>
+
+                                <h5>Modo de Preparo:</h5>
+                                <p class="modo-preparo-resumo">
+                                    <?= htmlspecialchars(substr($receita['modoprep'], 0, 300)) ?>...
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="acoes-receita">
+                            <a href="/Story-Bytes-/pages/ver_receita.php?id=<?= $receita['id'] ?>" class="btn-ver-receita">
+                                Ver Receita Completa
+                            </a>
+                        </div>
+                    </article>
+                <?php endwhile; ?>
+            </div>
+        <?php else: ?>
+            <div class="sem-resultados">
+                <h3>Nenhuma receita de sopas encontrada</h3>
+                <p>Ainda não temos receitas cadastradas nesta categoria.</p>
+                <p><a href="/Story-Bytes-/pages/buscar.php">← Voltar à busca</a></p>
+            </div>
+        <?php endif; ?>
     </div>
-  </div>
-
-  
-  <div class="grid">
-    <section class="ingredientes">
-      <h3>Ingredientes</h3>
-      <ul class="itens-ingredientes">
-        <li>500 g de mandioquinha (batata-baroa) descascada e picada</li>
-        <li>1 cebola média picada</li>
-        <li>2 dentes de alho amassados</li>
-        <li>1 litro de caldo de legumes ou frango</li>
-        <li>1 colher (sopa) de manteiga</li>
-        <li>100 ml de creme de leite (opcional, para mais cremosidade)</li>
-        <li>Sal e pimenta-do-reino a gosto</li>
-        <li>Cheiro-verde para finalizar</li>
-      </ul>
-    </section>
-
-    <section class="preparo">
-      <h3>Modo de Preparo</h3>
-      <ol class="'itens-preparo">
-        <li>Em uma panela, aqueça a manteiga e refogue a cebola e o alho até dourarem.</li>
-        <li>Adicione a mandioquinha picada e o caldo de legumes. Deixe cozinhar por cerca de 25 minutos, até os pedaços ficarem macios.</li>
-        <li>Leve tudo ao liquidificador e bata até formar um creme liso.</li>
-        <li>Volte o creme para a panela, ajuste o sal e a pimenta, e adicione o creme de leite se desejar uma textura mais aveludada.</li>
-        <li>Aqueça por mais 5 minutos e finalize com cheiro-verde.</li>
-        <li>Sirva quente, acompanhada de torradas ou pão francês.</li>
-      </ol>
-    </section>
-  </div>
-
-  <section class="comentarios">
-    <h3>Comentários</h3>
-    <form class="formulario" action="#" method="POST">
-      <textarea placeholder="Deixe seu comentário..." required></textarea>
-      <button type="submit">Enviar</button>
-    </form>
-    <ul class="comentario-lista">
-      <li><strong>Ana:</strong> Fiz e ficou maravilhoso!</li>
-      <li><strong>Carlos:</strong> Adicionei coco ralado e ficou top!</li>
-    </ul>
-  </section>
-</article>
-
-<article class="card recipe">
-  
-  <div class="recipe-header">
-    <img class="recipe-cover" src="img/sopa-legumes.jpeg" alt="Sopa de legumes caseira">
-    <div class="recipe-title">
-      <h2 class="name-recipe">Sopa de Legumes Caseira</h2>
-      <div class="meta">
-        <span><strong>Rendimento:</strong> 6 porções</span>
-        <span><strong>Preparo:</strong> 50 min</span>
-        <span><strong>Dificuldade:</strong> Fácil</span>
-      </div>
-    </div>
-  </div>
-
-  
-  <div class="grid">
-    <section class="ingredientes">
-      <h3>Ingredientes</h3>
-      <ul class="itens-ingredientes">
-        <li>2 batatas médias em cubos</li>
-        <li>2 cenouras fatiadas</li>
-        <li>1 chuchu em cubos</li>
-        <li>1 abobrinha em cubos</li>
-        <li>1 tomate picado</li>
-        <li>1 cebola picada</li>
-        <li>2 dentes de alho amassados</li>
-        <li>1,5 litro de água ou caldo de frango/legumes</li>
-        <li>2 colheres (sopa) de óleo ou azeite</li>
-        <li>Sal, pimenta e cheiro-verde a gosto</li>
-      </ul>
-    </section>
-    
-    <section class="preparo">
-      <h3>Modo de Preparo</h3>
-      <ol class="itens-preparo">
-        <li>Em uma panela grande, aqueça o óleo e refogue a cebola e o alho até dourarem.</li>
-        <li>Acrescente os legumes (batata, cenoura, chuchu, abobrinha e tomate) e refogue por alguns minutos.</li>
-        <li>Adicione a água (ou caldo) e tempere com sal e pimenta.</li>
-        <li>Cozinhe em fogo médio por cerca de 30 a 40 minutos, até os legumes ficarem macios.</li>
-        <li>Acerte o tempero e finalize com cheiro-verde picado.</li>
-        <li>Sirva quente, acompanhada de pão fresco ou torradas.</li>
-      </ol>
-    </section>
-  </div>
-
-  
-  <section class="comentarios">
-    <h3>Comentários</h3>
-    <form class="formulario" action="#" method="POST">
-      <textarea placeholder="Deixe seu comentário..." required></textarea>
-      <button type="submit">Enviar</button>
-    </form>
-    <ul class="comentario-lista">
-      <li><strong>Ana:</strong> Fiz e ficou maravilhoso!</li>
-      <li><strong>Carlos:</strong> Adicionei coco ralado e ficou top!</li>
-    </ul>
-  </section>
-</article>
-
 </main>
 
-<?php require_once APP_ROOT . '/partials/_footer.php'; ?>
+<?php
+require_once APP_ROOT . '/partials/_footer.php';
+$conn->close();
+?>

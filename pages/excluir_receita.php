@@ -10,6 +10,7 @@ if (!isset($_SESSION['usuario_id'])) {
     exit();
 }
 
+require_once __DIR__ . '/../config.php';
 include('../backend/conexao.php');
 
 // Verificar se é POST e se tem ID
@@ -18,12 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-if (!isset($_POST['id'])) {
-    echo json_encode(['success' => false, 'message' => 'ID não fornecido']);
+if (!isset($_POST['id']) || empty($_POST['id'])) {
+    echo json_encode(['success' => false, 'message' => 'ID da receita não fornecido']);
     exit();
 }
 
 $receita_id = (int)$_POST['id'];
+$usuario_id = $_SESSION['usuario_id'];
 
 if ($receita_id <= 0) {
     echo json_encode(['success' => false, 'message' => 'ID da receita inválido']);
@@ -32,7 +34,7 @@ if ($receita_id <= 0) {
 
 try {
     // Verificar se a receita existe
-    $sql_check = "SELECT id, titulo FROM receita WHERE id = ?";
+    $sql_check = "SELECT id, titulo, usuario_id FROM receita WHERE id = ?";
     $stmt_check = $conn->prepare($sql_check);
     
     if (!$stmt_check) {
@@ -45,6 +47,22 @@ try {
     
     if ($result->num_rows === 0) {
         echo json_encode(['success' => false, 'message' => 'Receita não encontrada']);
+        exit();
+    }
+    
+    $receita = $result->fetch_assoc();
+    
+    // Verificar se a receita pertence ao usuário logado (ou se é admin)
+    if ($receita['usuario_id'] != $usuario_id && $_SESSION['usuario_tipo'] !== 'admin') {
+        echo json_encode([
+            'success' => false, 
+            'message' => 'Você não tem permissão para excluir esta receita',
+            'debug' => [
+                'receita_usuario_id' => $receita['usuario_id'],
+                'session_usuario_id' => $usuario_id,
+                'usuario_tipo' => $_SESSION['usuario_tipo'] ?? 'não definido'
+            ]
+        ]);
         exit();
     }
     
@@ -62,7 +80,10 @@ try {
         $affected = $stmt_delete->affected_rows;
         
         if ($affected > 0) {
-            echo json_encode(['success' => true, 'message' => 'Receita excluída com sucesso']);
+            echo json_encode([
+                'success' => true, 
+                'message' => 'Receita "' . htmlspecialchars($receita['titulo']) . '" excluída com sucesso!'
+            ]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Nenhuma receita foi excluída']);
         }
@@ -74,25 +95,7 @@ try {
     $stmt_check->close();
     
 } catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
-}
-
-$conn->close();
-?>
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => 'Receita não encontrada'
-        ]);
-    }
-    
-    $stmt_check->close();
-} else {
-    header('Content-Type: application/json');
-    echo json_encode([
-        'success' => false,
-        'message' => 'ID da receita não fornecido'
-    ]);
+    echo json_encode(['success' => false, 'message' => 'Erro interno: ' . $e->getMessage()]);
 }
 
 $conn->close();
