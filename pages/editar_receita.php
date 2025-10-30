@@ -177,21 +177,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group">
                 <label for="imagem">Imagem da Receita</label>
                 <?php if ($receita['imagem']): ?>
-                    <div class="imagem-atual" style="margin-bottom: 10px;">
-                        <p><strong>Imagem atual:</strong></p>
+                    <div class="imagem-atual" style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+                        <p style="margin: 0 0 10px 0; font-weight: 600; color: #495057;"><strong>Imagem atual:</strong></p>
                         <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
                              alt="<?= htmlspecialchars($receita['titulo']) ?>"
-                             style="max-width: 200px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #ddd;">
-                        <p style="font-size: 0.9em; color: #666; margin-top: 5px;">
-                            Arquivo: <?= htmlspecialchars($receita['imagem']) ?>
+                             style="max-width: 250px; height: 150px; object-fit: cover; border-radius: 8px; border: 2px solid #dee2e6; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <p style="font-size: 0.85em; color: #6c757d; margin: 8px 0 0 0;">
+                            <strong>Arquivo:</strong> <?= htmlspecialchars($receita['imagem']) ?>
                         </p>
                     </div>
                 <?php endif; ?>
-                <input type="file" id="imagem" name="imagem" accept="image/*">
-                <small style="color: #666; font-size: 0.9em;">
-                    Formatos aceitos: JPG, JPEG, PNG (máx. 5MB)
+                <div style="margin-bottom: 10px;">
+                    <input type="file" id="imagem" name="imagem" accept="image/*" 
+                           style="padding: 8px; border: 2px solid #dee2e6; border-radius: 4px; background: white; width: 100%; max-width: 400px;">
+                </div>
+                <small style="color: #6c757d; font-size: 0.9em; display: block; line-height: 1.4;">
+                    <strong>Formatos aceitos:</strong> JPG, JPEG, PNG (máximo 5MB)<br>
                     <?php if (!$receita['imagem']): ?>
-                        <br><em>Nenhuma imagem foi adicionada a esta receita.</em>
+                        <em style="color: #dc3545;">⚠️ Esta receita não possui imagem. Adicione uma para melhorar a apresentação!</em>
+                    <?php else: ?>
+                        <em style="color: #28a745;">✅ Selecione um arquivo para substituir a imagem atual</em>
                     <?php endif; ?>
                 </small>
             </div>
@@ -209,6 +214,91 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
 </main>
+
+<script>
+// Feedback visual para seleção de nova imagem
+document.getElementById('imagem').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const imagemAtual = document.querySelector('.imagem-atual');
+    
+    if (file) {
+        // Verificar tamanho do arquivo
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            alert('⚠️ Arquivo muito grande! O tamanho máximo é 5MB.');
+            e.target.value = '';
+            return;
+        }
+        
+        // Verificar tipo do arquivo
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        if (!allowedTypes.includes(file.type)) {
+            alert('⚠️ Formato não permitido! Use apenas JPG, JPEG ou PNG.');
+            e.target.value = '';
+            return;
+        }
+        
+        // Criar preview da nova imagem
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            // Criar ou atualizar preview
+            let preview = document.getElementById('preview-nova-imagem');
+            if (!preview) {
+                preview = document.createElement('div');
+                preview.id = 'preview-nova-imagem';
+                preview.style.cssText = `
+                    margin-top: 15px; 
+                    padding: 15px; 
+                    background: #e8f5e8; 
+                    border: 2px solid #28a745; 
+                    border-radius: 8px;
+                `;
+                document.querySelector('input[type="file"]').parentNode.appendChild(preview);
+            }
+            
+            preview.innerHTML = `
+                <p style="margin: 0 0 10px 0; font-weight: 600; color: #155724;">
+                    <strong>✅ Nova imagem selecionada:</strong>
+                </p>
+                <img src="${e.target.result}" 
+                     style="max-width: 250px; height: 150px; object-fit: cover; border-radius: 8px; border: 2px solid #28a745; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <p style="font-size: 0.85em; color: #155724; margin: 8px 0 0 0;">
+                    <strong>Arquivo:</strong> ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)
+                </p>
+                <p style="font-size: 0.85em; color: #155724; margin: 5px 0 0 0;">
+                    <em>Esta imagem substituirá a atual quando você salvar as alterações.</em>
+                </p>
+            `;
+            
+            // Destacar que a imagem atual será substituída
+            if (imagemAtual) {
+                imagemAtual.style.opacity = '0.6';
+                imagemAtual.style.border = '2px solid #ffc107';
+                if (!document.getElementById('aviso-substituicao')) {
+                    const aviso = document.createElement('p');
+                    aviso.id = 'aviso-substituicao';
+                    aviso.style.cssText = 'color: #856404; font-weight: 600; margin: 10px 0 0 0; font-size: 0.9em;';
+                    aviso.innerHTML = '⚠️ Esta imagem será substituída';
+                    imagemAtual.appendChild(aviso);
+                }
+            }
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // Remover preview se arquivo foi removido
+        const preview = document.getElementById('preview-nova-imagem');
+        if (preview) preview.remove();
+        
+        // Restaurar aparência da imagem atual
+        if (imagemAtual) {
+            imagemAtual.style.opacity = '1';
+            imagemAtual.style.border = '2px solid #dee2e6';
+            const aviso = document.getElementById('aviso-substituicao');
+            if (aviso) aviso.remove();
+        }
+    }
+});
+</script>
 
 <?php
 require_once APP_ROOT . '/partials/_footer.php';
