@@ -179,9 +179,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php if ($receita['imagem']): ?>
                     <div class="imagem-atual" style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
                         <p style="margin: 0 0 10px 0; font-weight: 600; color: #495057;"><strong>Imagem atual:</strong></p>
-                        <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                        <img src="/Story-Bytes-/img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
                              alt="<?= htmlspecialchars($receita['titulo']) ?>"
-                             style="max-width: 250px; height: 150px; object-fit: cover; border-radius: 8px; border: 2px solid #dee2e6; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                             style="max-width: 250px; height: 150px; object-fit: cover; border-radius: 15px; border: 2px solid #dee2e6; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                         <p style="font-size: 0.85em; color: #6c757d; margin: 8px 0 0 0;">
                             <strong>Arquivo:</strong> <?= htmlspecialchars($receita['imagem']) ?>
                         </p>

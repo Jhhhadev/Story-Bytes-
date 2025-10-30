@@ -149,9 +149,9 @@ if ($tem_busca) {
                                 <!-- Imagem da receita -->
                                 <?php if ($receita['imagem'] && file_exists("../img/receitas/" . $receita['imagem'])): ?>
                                     <div class="receita-imagem-busca">
-                                        <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                                        <img src="/Story-Bytes-/img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
                                              alt="<?= htmlspecialchars($receita['titulo']) ?>"
-                                             style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+                                             style="width: 100%; height: 180px; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-bottom: 15px;">
                                     </div>
                                 <?php endif; ?>
                                 
@@ -257,9 +257,9 @@ if ($tem_busca) {
                                     <!-- Imagem da receita -->
                                     <?php if ($receita['imagem'] && file_exists("../img/receitas/" . $receita['imagem'])): ?>
                                         <div class="receita-imagem-destaque">
-                                            <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                                            <img src="/Story-Bytes-/img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
                                                  alt="<?= htmlspecialchars($receita['titulo']) ?>"
-                                                 style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 12px;">
+                                                 style="width: 100%; height: 160px; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-bottom: 12px;">
                                         </div>
                                     <?php endif; ?>
                                     

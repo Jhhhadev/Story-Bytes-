@@ -66,15 +66,16 @@ $total_receitas = $receitas ? $receitas->num_rows : 0;
                         <div class="receita-card-body">
                             <?php if ($receita['imagem'] && file_exists("../img/receitas/" . $receita['imagem'])): ?>
                                 <div class="receita-imagem">
-                                    <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
-                                         alt="<?= htmlspecialchars($receita['titulo']) ?>">
+                                    <img src="/Story-Bytes-/img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                                         alt="<?= htmlspecialchars($receita['titulo']) ?>"
+                                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                 </div>
                             <?php else: ?>
                                 <!-- Imagem padrão para carnes -->
                                 <div class="receita-imagem">
-                                    <img src="../img/carnes.jpg" 
+                                    <img src="/Story-Bytes-/img/carnes.jpg" 
                                          alt="<?= htmlspecialchars($receita['titulo']) ?>"
-                                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">
+                                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                 </div>
                             <?php endif; ?>
 

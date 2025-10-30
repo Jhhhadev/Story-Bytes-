@@ -68,7 +68,7 @@ $PAGE_TITLE = 'StoryBites — ' . $receita['titulo'];
                 <?php if ($receita['imagem'] && file_exists("../img/receitas/" . $receita['imagem'])): ?>
                     <div class="receita-header-with-image">
                         <div class="receita-imagem-header">
-                            <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                            <img src="/Story-Bytes-/img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
                                  alt="<?= htmlspecialchars($receita['titulo']) ?>"
                                  style="width: 100%; max-width: 400px; height: 250px; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); margin-bottom: 20px;">
                         </div>
