@@ -56,15 +56,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $categoria_id = (int)$_POST['categoria_id'];
     
     $errors = [];
+    $nome_imagem = $receita['imagem']; // Manter imagem atual por padrão
     
     if (empty($titulo)) $errors[] = "Título é obrigatório";
     if (empty($descricao)) $errors[] = "Descrição é obrigatória";
     if (empty($modoprep)) $errors[] = "Modo de preparo é obrigatório";
     
+    // Processar upload de imagem se fornecida
+    if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
+        $arquivo = $_FILES['imagem'];
+        $extensoes_permitidas = ['jpg', 'jpeg', 'png'];
+        $tamanho_maximo = 5 * 1024 * 1024; // 5MB
+        
+        // Verificar tamanho
+        if ($arquivo['size'] > $tamanho_maximo) {
+            $errors[] = "A imagem deve ter no máximo 5MB";
+        }
+        
+        // Verificar extensão
+        $extensao = strtolower(pathinfo($arquivo['name'], PATHINFO_EXTENSION));
+        if (!in_array($extensao, $extensoes_permitidas)) {
+            $errors[] = "Formato de imagem não permitido. Use JPG, JPEG ou PNG";
+        }
+        
+        if (empty($errors)) {
+            // Gerar nome único para o arquivo
+            $nome_imagem = 'receita_' . $receita_id . '_' . time() . '.' . $extensao;
+            $caminho_destino = '../img/receitas/' . $nome_imagem;
+            
+            // Criar diretório se não existir
+            if (!file_exists('../img/receitas/')) {
+                mkdir('../img/receitas/', 0755, true);
+            }
+            
+            // Mover arquivo
+            if (!move_uploaded_file($arquivo['tmp_name'], $caminho_destino)) {
+                $errors[] = "Erro ao fazer upload da imagem";
+                $nome_imagem = $receita['imagem']; // Reverter para imagem anterior
+            } else {
+                // Remover imagem anterior se existir e for diferente
+                if ($receita['imagem'] && $receita['imagem'] !== $nome_imagem) {
+                    $caminho_anterior = '../img/receitas/' . $receita['imagem'];
+                    if (file_exists($caminho_anterior)) {
+                        unlink($caminho_anterior);
+                    }
+                }
+            }
+        }
+    }
+    
     if (empty($errors)) {
-        $sql_update = "UPDATE receita SET titulo = ?, descricao = ?, modoprep = ?, rendimento = ?, categoria_id = ? WHERE id = ?";
+        $sql_update = "UPDATE receita SET titulo = ?, descricao = ?, modoprep = ?, rendimento = ?, categoria_id = ?, imagem = ? WHERE id = ?";
         $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param("sssisi", $titulo, $descricao, $modoprep, $rendimento, $categoria_id, $receita_id);
+        $stmt_update->bind_param("sssissi", $titulo, $descricao, $modoprep, $rendimento, $categoria_id, $nome_imagem, $receita_id);
         
         if ($stmt_update->execute()) {
             $_SESSION['success'] = "Receita atualizada com sucesso!";
@@ -94,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <div class="tab-content active">
-        <form method="POST" class="receita-form">
+        <form method="POST" enctype="multipart/form-data" class="receita-form">
             <div class="form-group">
                 <label for="titulo">Título da Receita *</label>
                 <input type="text" id="titulo" name="titulo" required 
@@ -128,6 +172,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" id="rendimento" name="rendimento" 
                        value="<?= htmlspecialchars($receita['rendimento']) ?>"
                        placeholder="Ex: 8 porções, 12 unidades, 1 litro">
+            </div>
+
+            <div class="form-group">
+                <label for="imagem">Imagem da Receita</label>
+                <?php if ($receita['imagem']): ?>
+                    <div class="imagem-atual" style="margin-bottom: 10px;">
+                        <p><strong>Imagem atual:</strong></p>
+                        <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                             alt="<?= htmlspecialchars($receita['titulo']) ?>"
+                             style="max-width: 200px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #ddd;">
+                        <p style="font-size: 0.9em; color: #666; margin-top: 5px;">
+                            Arquivo: <?= htmlspecialchars($receita['imagem']) ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
+                <input type="file" id="imagem" name="imagem" accept="image/*">
+                <small style="color: #666; font-size: 0.9em;">
+                    Formatos aceitos: JPG, JPEG, PNG (máx. 5MB)
+                    <?php if (!$receita['imagem']): ?>
+                        <br><em>Nenhuma imagem foi adicionada a esta receita.</em>
+                    <?php endif; ?>
+                </small>
             </div>
 
             <div class="form-group">
