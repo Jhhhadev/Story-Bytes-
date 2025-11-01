@@ -28,8 +28,8 @@ if (isset($_SESSION['usuario_id'])) {
         <?php if ($usuario_logado): ?>
         <!-- Mensagem de boas-vindas para usuários logados -->
         <div class="welcome-message" style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            <h3 style="margin: 0 0 5px 0; font-size: 1.2rem;">🎉 Bem-vindo de volta, <?= htmlspecialchars($nome_usuario) ?>!</h3>
-            <p style="margin: 0; opacity: 0.9;">Explore nossas deliciosas receitas e descubra novos sabores!</p>
+            <h3 style="margin: 0 0 5px 0; font-size: 1.2rem;">Bem-vindo(a), <?= htmlspecialchars($nome_usuario) ?>!</h3>
+            <p style="margin: 0; opacity: 0.9;">Compartilhe suas tradições culinárias e encontre novas inspirações na cozinha!</p>
         </div>
         <?php endif; ?>
     
@@ -46,10 +46,9 @@ if (isset($_SESSION['usuario_id'])) {
 
         <h1 class="titulo-principal">Como tudo começou</h1>
         <p class="text-coment">
-            O StoryBites nasceu com o intuito de reunir histórias através das receitas de famílias. 
+            O Story Bites nasceu com o intuito de reunir histórias através das receitas de famílias. 
             Cada receita guarda uma história, cada mordida remete a uma memória e traz sabores que transportam para outro momento. <br>
-            Encontre receitas tradicionais, sofisticadas, fáceis, rápidas ou elaboradas, tudo em um só lugar. 
-            O recheio de emoções transborda a cada mordida.
+            Encontre receitas tradicionais, sofisticadas, fáceis, rápidas ou elaboradas, tudo em um só lugar.             
         </p>
     </section>
 

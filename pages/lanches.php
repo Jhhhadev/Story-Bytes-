@@ -12,6 +12,14 @@ require_once APP_ROOT . '/partials/_head.php';
 require_once APP_ROOT . '/partials/_header.php';
 include('../backend/conexao.php');
 
+// Primeiro, contar o total de receitas da categoria Lanches
+$sql_count = "SELECT COUNT(*) as total 
+              FROM receita r 
+              LEFT JOIN categoria c ON r.categoria_id = c.id 
+              WHERE c.nome = 'Lanches'";
+$result_count = $conn->query($sql_count);
+$total_receitas = $result_count ? $result_count->fetch_assoc()['total'] : 0;
+
 // Buscar todas as receitas da categoria Lanches
 $sql = "SELECT r.*, c.nome as categoria_nome, u.nome as autor_nome 
         FROM receita r 
@@ -21,7 +29,6 @@ $sql = "SELECT r.*, c.nome as categoria_nome, u.nome as autor_nome
         ORDER BY r.datacriacao DESC";
 
 $receitas = $conn->query($sql);
-$total_receitas = $receitas ? $receitas->num_rows : 0;
 ?>
 
 <main class="buscar-main">
@@ -36,15 +43,15 @@ $total_receitas = $receitas ? $receitas->num_rows : 0;
                 <div style="flex: 2 !important; padding: 40px !important;">
                     <h1 style="font-size: 2.8rem !important; margin: 0 0 20px 0 !important; font-weight: 700 !important; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4) !important; color: white !important;">Lanches</h1>
                     <p style="font-size: 1.2rem !important; margin: 0 0 15px 0 !important; line-height: 1.6 !important; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important; color: white !important;">Ideias práticas e deliciosas para seus lanches</p>
-                    <p style="font-size: 1.1rem !important; font-weight: 600 !important; background: rgba(255, 255, 255, 0.25) !important; padding: 12px 20px !important; border-radius: 25px !important; display: inline-block !important; margin-top: 15px !important; backdrop-filter: blur(10px) !important; border: 1px solid rgba(255, 255, 255, 0.3) !important; color: white !important;"><?= $total_receitas ?> receita<?= $total_receitas != 1 ? 's' : '' ?> encontrada<?= $total_receitas != 1 ? 's' : '' ?></p>
+                    <p style="font-size: 1.1rem !important; font-weight: 600 !important; background: rgba(255, 255, 255, 0.25) !important; padding: 12px 20px !important; border-radius: 25px !important; display: inline-block !important; margin-top: 15px !important; backdrop-filter: blur(10px) !important; border: 1px solid rgba(255, 255, 255, 0.3) !important; color: white !important;"><?= $total_receitas ?> receita<?= $total_receitas != 1 ? 's' : '' ?></p>
                 </div>
             </div>
         </section>
 
         <!-- Botão de voltar -->
         <div class="voltar-busca">
-            <a href="/Story-Bytes-/pages/buscar.php" class="btn btn-secondary">
-                ← Voltar à Busca
+            <a href="/Story-Bytes-/index.php" class="btn btn-secondary">
+                Voltar ao Início
             </a>
         </div>
 

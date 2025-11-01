@@ -165,17 +165,17 @@ if ($stmt_insert->execute()) {
             <h2 class="message-title success">Cadastro realizado com sucesso!</h2>
             <p class="message-text success-welcome">Bem-vindo(a), <strong class="highlight-text">' . htmlspecialchars($nome) . '</strong>!</p>
             <p class="message-text info">Sua conta foi criada com sucesso.</p>
-            <p class="message-text countdown">Você será redirecionado para a página inicial em <span id="countdown" class="highlight-text">5</span> segundos...</p>
-            <p class="message-text">Se não for redirecionado, <a href="../index.php" class="inline-link">clique aqui</a>.</p>
+            <p class="message-text countdown">Você será redirecionado para a pagina de login em <span id="countdown" class="highlight-text">10</span> segundos...</p>
+            <p class="message-text">Se não for redirecionado, <a href="pages/login.php" class="inline-link">clique aqui</a>.</p>
             <script>
-                let countdown = 5;
+                let countdown = 10;
                 const countdownElement = document.getElementById("countdown");
                 const timer = setInterval(() => {
                     countdown--;
                     countdownElement.textContent = countdown;
                     if (countdown <= 0) {
                         clearInterval(timer);
-                        window.location.href = "../index.php";
+                        window.location.href = "pages/login.php";
                     }
                 }, 1000);
             </script>

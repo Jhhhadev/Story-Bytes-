@@ -14,7 +14,7 @@ require_once APP_ROOT . '/partials/_header.php';
 <main class="formulario">
   <h2 class="titulo_login">Cadastro de Usuário</h2>
   <form class="box_form" action="pages/processa_cadastro.php" method="post">
-    <label for="nome">Apelido:</label>
+    <label for="nome">Usuário:</label>
     <input type="text" name="nome" id="nome" required>
 
     <label for="email">E-mail:</label>
