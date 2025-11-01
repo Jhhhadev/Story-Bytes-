@@ -226,7 +226,7 @@ if (!$categorias) {
                                 
                                 <?php if ($receita['imagem']): ?>
                                     <div class="receita-imagem">
-                                        <img src="../img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
+                                        <img src="./img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
                                              alt="<?= htmlspecialchars($receita['titulo']) ?>" 
                                              style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-top: 10px;">
                                     </div>
@@ -456,7 +456,7 @@ function mostrarModalReceita(receita) {
     
     const modalImagem = document.getElementById('modal-imagem');
     if (receita.imagem) {
-        modalImagem.src = '../img/receitas/' + receita.imagem;
+        modalImagem.src = './img/receitas/' + receita.imagem;
         modalImagem.style.display = 'block';
     } else {
         modalImagem.style.display = 'none';
