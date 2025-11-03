@@ -18,7 +18,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     echo "<div style='padding: 20px; background: #ffebee; border: 1px solid #f44336; margin: 20px;'>";
     echo "<h3>Erro: ID da receita não informado</h3>";
     echo "<p>ID recebido: " . (isset($_GET['id']) ? htmlspecialchars($_GET['id']) : 'não informado') . "</p>";
-    echo "<p><a href='buscar.php'>← Voltar para busca</a></p>";
+    echo "<p><a href='./index.php'>Voltar ao Início</a></p>";
     echo "</div>";
     exit;
 }
