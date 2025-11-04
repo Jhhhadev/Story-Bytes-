@@ -36,12 +36,25 @@ if (isset($_SESSION['usuario_id'])) {
     <!-- Adicione dentro da section .apresentacao ou antes dos cards -->
         <div class="carrossel" aria-roledescription="carousel">
             <div class="carrossel-imagens">
-                <div class="slide"><img src="img/doces.jpg" alt="Doces variados, bolos e tortas" loading="lazy"></div>
-                <div class="slide"><img src="img/massas.jpg" alt="Prato de macarrão com molho caseiro" loading="lazy"></div>
-                <div class="slide"><img src="img/carnes.jpg" alt="Carne assada com legumes" loading="lazy"></div>
+                <div class="slide"><img src="./img/carroussel-doces.jpg" alt="Doces variados, bolos e tortas" loading="lazy"></div>
+                <div class="slide"><img src="./img/carroussel-massas.jpg" alt="Prato de macarrão com molho caseiro" loading="lazy"></div>
+                <div class="slide"><img src="./img/carroussel-carnes.jpg" alt="Carne assada com legumes" loading="lazy"></div>
+                <div class="slide"><img src="./img/carroussel-lanches.jpg" alt="Lanches deliciosos e sanduíches" loading="lazy"></div>
+                <div class="slide"><img src="./img/carroussel-bebidas.jpg" alt="Bebidas refrescantes e sucos naturais" loading="lazy"></div>
+                <div class="slide"><img src="./img/carroussel-sopas.jpg" alt="Sopas quentes e nutritivas" loading="lazy"></div>
             </div>
             <button class="carrossel-btn prev" aria-label="Imagem anterior">&#10094;</button>
             <button class="carrossel-btn next" aria-label="Próxima imagem">&#10095;</button>
+            
+            <!-- Indicadores (dots) -->
+            <div class="carrossel-dots">
+                <span class="dot active" data-slide="0" aria-label="Ir para slide 1"></span>
+                <span class="dot" data-slide="1" aria-label="Ir para slide 2"></span>
+                <span class="dot" data-slide="2" aria-label="Ir para slide 3"></span>
+                <span class="dot" data-slide="3" aria-label="Ir para slide 4"></span>
+                <span class="dot" data-slide="4" aria-label="Ir para slide 5"></span>
+                <span class="dot" data-slide="5" aria-label="Ir para slide 6"></span>
+            </div>
         </div>
 
         <h1 class="titulo-principal">Como tudo começou</h1>

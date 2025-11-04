@@ -5,7 +5,16 @@ document.addEventListener('DOMContentLoaded', function() {
   const slides = carouselImages.querySelectorAll('.slide');
   const prevBtn = document.querySelector('.carrossel-btn.prev');
   const nextBtn = document.querySelector('.carrossel-btn.next');
+  const dots = document.querySelectorAll('.dot');
   let currentIndex = 0;
+  let autoPlayInterval;
+  const autoPlayDelay = 4000; // 4 segundos
+
+  function updateDots() {
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === currentIndex);
+    });
+  }
 
   function goToSlide(index) {
     // Garante que o índice esteja dentro dos limites
@@ -14,15 +23,53 @@ document.addEventListener('DOMContentLoaded', function() {
     
     carouselImages.style.transform = `translateX(-${index * 100}%)`;
     currentIndex = index;
+    updateDots();
   }
 
+  function nextSlide() {
+    goToSlide(currentIndex + 1);
+  }
+
+  function startAutoPlay() {
+    autoPlayInterval = setInterval(nextSlide, autoPlayDelay);
+  }
+
+  function stopAutoPlay() {
+    clearInterval(autoPlayInterval);
+  }
+
+  function restartAutoPlay() {
+    stopAutoPlay();
+    startAutoPlay();
+  }
+
+  // Event listeners para os botões
   prevBtn.addEventListener('click', function() {
     goToSlide(currentIndex - 1);
+    restartAutoPlay(); // Reinicia o timer após interação manual
   });
 
   nextBtn.addEventListener('click', function() {
     goToSlide(currentIndex + 1);
+    restartAutoPlay(); // Reinicia o timer após interação manual
   });
+
+  // Event listeners para os dots
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', function() {
+      goToSlide(index);
+      restartAutoPlay(); // Reinicia o timer após interação manual
+    });
+  });
+
+  // Pausar autoplay quando o mouse estiver sobre o carrossel
+  const carousel = document.querySelector('.carrossel');
+  carousel.addEventListener('mouseenter', stopAutoPlay);
+  carousel.addEventListener('mouseleave', startAutoPlay);
+
+  // Inicializar
+  updateDots();
+  startAutoPlay();
 });
 
 
