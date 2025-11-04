@@ -58,9 +58,12 @@ main.buscar-main .receita-header h1 {
 
 main.buscar-main .receita-meta-info {
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
     flex-wrap: wrap;
+    width: 100%;
+    min-width: 0;
 }
 
 main.buscar-main .receita-meta-info .receita-categoria {
@@ -72,7 +75,16 @@ main.buscar-main .receita-meta-info .receita-categoria {
 
 main.buscar-main .receita-meta-info .receita-autor {
     font-style: italic;
-    opacity: 0.9;
+    opacity: 1;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 500;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    max-width: none;
+    width: auto;
+    text-align: center;
+    word-wrap: break-word;
 }
 
 main.buscar-main .receita-content {
@@ -179,10 +191,23 @@ main.buscar-main .receita-imagem-header {
 
 main.buscar-main .receita-info-header {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
 }
 
 main.buscar-main .receita-info-header h1 {
-    margin-bottom: 15px;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+/* Força o meta-info a ficar em coluna mesmo no card com imagem */
+main.buscar-main .receita-info-header .receita-meta-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Responsividade */
