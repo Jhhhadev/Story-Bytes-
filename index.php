@@ -46,9 +46,9 @@ if (isset($_SESSION['usuario_id'])) {
 
         <h1 class="titulo-principal">Como tudo começou</h1>
         <p class="text-coment">
-            O Story Bites nasceu com o intuito de reunir histórias através das receitas de famílias. 
-            Cada receita guarda uma história, cada mordida remete a uma memória e traz sabores que transportam para outro momento. <br>
-            Encontre receitas tradicionais, sofisticadas, fáceis, rápidas ou elaboradas, tudo em um só lugar.             
+            O Story Bytes nasceu com o propósito de reunir histórias por meio das receitas de família. Cada preparo guarda lembranças, 
+            cada mordida desperta memórias e sabores que transportam para outros momentos. Aqui, você encontra receitas tradicionais, 
+            sofisticadas, rápidas ou elaboradas — tudo em um só lugar, onde o sabor e a história se encontram.            
         </p>
     </section>
 

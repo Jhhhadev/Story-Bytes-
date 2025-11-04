@@ -28,6 +28,7 @@ main{
     line-height: 1.6;
     max-width: 800px;
     margin: 0 auto;
+    text-align: justify;
 }
 
 /* Card de Receitas */
@@ -97,6 +98,7 @@ main{
     .apresentacao .text-coment {
         font-size: 1rem;
         padding: 0 15px;
+        text-align: justify;
     }
 
     .conteudo {
@@ -126,6 +128,7 @@ main{
     .apresentacao .text-coment {
         font-size: 0.95rem;
         padding: 0 10px;
+        text-align: justify;
     }
 
     .conteudo {
