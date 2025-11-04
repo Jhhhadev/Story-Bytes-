@@ -4,7 +4,8 @@ $PAGE_TITLE  = 'StoryBites — Buscar Receitas';
 $PAGE_DESC   = 'Encontre as melhores receitas do nosso site.';
 $PAGE_STYLES = [
                 'css/card-receitas.css',
-                'css/buscar.css'
+                'css/buscar.css',
+                'css/buscar-receitas.css'
 ]; // CSS específico desta página
 
 require_once __DIR__ . '/../config.php';
@@ -148,10 +149,9 @@ if ($tem_busca) {
                             <div class="receita-card-body">
                                 <!-- Imagem da receita -->
                                 <?php if ($receita['imagem'] && file_exists("../img/receitas/" . $receita['imagem'])): ?>
-                                    <div class="receita-imagem-busca">
+                                    <div class="receita-imagem">
                                         <img src="/Story-Bytes-/img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
-                                             alt="<?= htmlspecialchars($receita['titulo']) ?>"
-                                             style="width: 100%; height: 180px; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-bottom: 15px;">
+                                             alt="<?= htmlspecialchars($receita['titulo']) ?>">
                                     </div>
                                 <?php endif; ?>
                                 
@@ -256,10 +256,9 @@ if ($tem_busca) {
                                 <div class="receita-card-body">
                                     <!-- Imagem da receita -->
                                     <?php if ($receita['imagem'] && file_exists("../img/receitas/" . $receita['imagem'])): ?>
-                                        <div class="receita-imagem-destaque">
+                                        <div class="receita-imagem">
                                             <img src="/Story-Bytes-/img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
-                                                 alt="<?= htmlspecialchars($receita['titulo']) ?>"
-                                                 style="width: 100%; height: 160px; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-bottom: 12px;">
+                                                 alt="<?= htmlspecialchars($receita['titulo']) ?>">
                                         </div>
                                     <?php endif; ?>
                                     
@@ -282,10 +281,10 @@ if ($tem_busca) {
 </main>
 
 <!-- Modal para receita completa (mantido para compatibilidade) -->
-<div id="modalReceita" class="modal" style="display: none;">
+<div id="modalReceita" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2 id="modalTitulo"></h2>
+            <h2 id="modalTitulo" class="modal-title"></h2>
             <span class="close" onclick="fecharModal()">&times;</span>
         </div>
         <div class="modal-body">
@@ -298,15 +297,15 @@ if ($tem_busca) {
             <h3>Modo de Preparo</h3>
             <div id="modalModoPreparo"></div>
             
-            <div style="display: flex; gap: 20px; margin-top: 20px;">
-                <div>
-                    <strong>Rendimento:</strong> <span id="modalRendimento"></span>
+            <div class="modal-receita-info">
+                <div class="receita-meta-item">
+                    <span class="receita-meta-label">Rendimento:</span> <span id="modalRendimento"></span>
                 </div>
-                <div>
-                    <strong>Tempo:</strong> <span id="modalTempo"></span>
+                <div class="receita-meta-item">
+                    <span class="receita-meta-label">Tempo:</span> <span id="modalTempo"></span>
                 </div>
-                <div>
-                    <strong>Categoria:</strong> <span id="modalCategoria"></span>
+                <div class="receita-meta-item">
+                    <span class="receita-meta-label">Categoria:</span> <span id="modalCategoria"></span>
                 </div>
             </div>
         </div>

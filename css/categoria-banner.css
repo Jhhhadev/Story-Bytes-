@@ -1,0 +1,249 @@
+/* ================================================
+   CSS para páginas de categoria (sopas, bebidas, doces, etc.)
+   ATUALIZADO: 03/11/2025 - PADRONIZAÇÃO CORES LARANJA
+   ================================================ */
+
+/* Banner da categoria */
+.categoria-banner {
+    display: flex !important;
+    align-items: center !important;
+    background: linear-gradient(135deg, var(--cor-primaria) 0%, #ff8a65 100%) !important;
+    min-height: 220px !important;
+    border-radius: 15px !important;
+    overflow: hidden !important;
+    color: white !important;
+    margin-bottom: 30px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+/* Container da imagem do banner */
+.categoria-banner-imagem {
+    flex: 1 !important;
+    max-width: 320px !important;
+    height: 220px !important;
+    overflow: hidden !important;
+    margin-left: 20px !important;
+}
+
+/* Imagem do banner da categoria */
+.categoria-banner-imagem img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    border-radius: 15px !important;
+}
+
+/* Container do conteúdo do banner */
+.categoria-banner-conteudo {
+    flex: 2 !important;
+    padding: 40px !important;
+}
+
+/* Título da categoria */
+.categoria-banner-titulo {
+    font-size: 2.8rem !important;
+    margin: 0 0 20px 0 !important;
+    font-weight: 700 !important;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4) !important;
+    color: white !important;
+}
+
+/* Descrição da categoria */
+.categoria-banner-descricao {
+    font-size: 1.2rem !important;
+    margin: 0 0 15px 0 !important;
+    line-height: 1.6 !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+    color: white !important;
+}
+
+/* Contador de receitas */
+.categoria-contador {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    padding: 12px 20px !important;
+    border-radius: 25px !important;
+    display: inline-block !important;
+    margin-top: 15px !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+}
+
+/* Imagens das receitas */
+.receita-imagem img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* Responsividade para tablets */
+@media (max-width: 1024px) {
+    .categoria-banner {
+        min-height: 180px !important;
+    }
+    
+    .categoria-banner-imagem {
+        max-width: 280px !important;
+        height: 180px !important;
+    }
+    
+    .categoria-banner-conteudo {
+        padding: 30px !important;
+    }
+    
+    .categoria-banner-titulo {
+        font-size: 2.4rem !important;
+    }
+    
+    .categoria-banner-descricao {
+        font-size: 1.1rem !important;
+    }
+}
+
+/* Responsividade para móveis */
+@media (max-width: 768px) {
+    .categoria-banner {
+        flex-direction: column !important;
+        text-align: center !important;
+        min-height: auto !important;
+        padding: 20px !important;
+    }
+    
+    .categoria-banner-imagem {
+        flex: none !important;
+        max-width: 100% !important;
+        height: 200px !important;
+        margin: 0 0 20px 0 !important;
+    }
+    
+    .categoria-banner-conteudo {
+        flex: none !important;
+        padding: 0 !important;
+    }
+    
+    .categoria-banner-titulo {
+        font-size: 2.2rem !important;
+        margin: 0 0 15px 0 !important;
+    }
+    
+    .categoria-banner-descricao {
+        font-size: 1rem !important;
+        margin: 0 0 15px 0 !important;
+    }
+    
+    .categoria-contador {
+        font-size: 1rem !important;
+        padding: 10px 16px !important;
+        margin-top: 10px !important;
+    }
+}
+
+/* Responsividade para móveis pequenos */
+@media (max-width: 480px) {
+    .categoria-banner {
+        padding: 15px !important;
+        margin-bottom: 20px !important;
+        border-radius: 10px !important;
+    }
+    
+    .categoria-banner-imagem {
+        height: 150px !important;
+        margin: 0 0 15px 0 !important;
+    }
+    
+    .categoria-banner-imagem img {
+        border-radius: 10px !important;
+    }
+    
+    .categoria-banner-titulo {
+        font-size: 1.8rem !important;
+        margin: 0 0 10px 0 !important;
+    }
+    
+    .categoria-banner-descricao {
+        font-size: 0.9rem !important;
+        margin: 0 0 10px 0 !important;
+    }
+    
+    .categoria-contador {
+        font-size: 0.9rem !important;
+        padding: 8px 12px !important;
+    }
+}
+
+/* Animações */
+.categoria-banner {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estados de hover para o banner */
+.categoria-banner:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+}
+
+/* Ajuste para gradiente padrão laranja em todas as categorias */
+.categoria-banner.sopas,
+.categoria-banner.bebidas,
+.categoria-banner.doces,
+.categoria-banner.carnes,
+.categoria-banner.massas,
+.categoria-banner.lanches {
+    background: linear-gradient(135deg, #ff7043 0%, #ff8a65 100%) !important;
+    background: linear-gradient(135deg, var(--cor-primaria) 0%, #ff8a65 100%) !important;
+}
+
+/* Força a cor laranja em QUALQUER banner de categoria */
+.categoria-banner {
+    background: linear-gradient(135deg, #ff7043 0%, #ff8a65 100%) !important;
+    background: linear-gradient(135deg, var(--cor-primaria) 0%, #ff8a65 100%) !important;
+}
+
+/* Especificidade máxima para garantir aplicação da cor laranja */
+.buscar-main .categoria-header .categoria-banner,
+.buscar-main .categoria-banner {
+    background: linear-gradient(135deg, #ff7043 0%, #ff8a65 100%) !important;
+}
+
+/* Imagens das receitas em páginas de categoria */
+.buscar-main .receita-card .receita-imagem img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* Sobrescrever estilos do perfil.css para TODAS as páginas de categoria */
+.buscar-main .receita-card .receita-card-body .receita-imagem img,
+.buscar-main .receita-card-body .receita-imagem img {
+    width: 100% !important;
+    height: 160px !important;
+    object-fit: cover !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    margin-top: 0 !important;
+    margin-bottom: 15px !important;
+}

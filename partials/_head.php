@@ -25,8 +25,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Yanone+Kaffeesatz:wght@200..700&display=swap" rel="stylesheet">
 
-    <title><?= isset($PAGE_TITLE) ? $PAGE_TITLE : 'StoryBites' ?></title>
-    <meta name="description" content="<?= isset($PAGE_DESC) ? $PAGE_DESC : 'StoryBites reúne receitas de família e memórias deliciosas. Encontre doces, salgados, bebidas e massas que contam histórias.' ?>">
+    <title><?= isset($PAGE_TITLE) ? $PAGE_TITLE : 'Story Bytes' ?></title>
+    <meta name="description" content="<?= isset($PAGE_DESC) ? $PAGE_DESC : 'Story Bytes reúne receitas de família e memórias deliciosas. Encontre doces, salgados, bebidas e massas que contam histórias.' ?>">
 </head>
 <body>
 

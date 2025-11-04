@@ -619,3 +619,31 @@
         height: 200px;
     }
 }
+
+/* Estilos para imagens de receitas */
+.receita-imagem img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Controles de visibilidade para modos de edição */
+.hidden {
+    display: none !important;
+}
+
+.dados-container.hidden {
+    display: none !important;
+}
+
+#dados-editar,
+#dados-senha {
+    display: none;
+}
+
+#dados-editar:not(.hidden),
+#dados-senha:not(.hidden) {
+    display: block;
+}

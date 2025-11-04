@@ -4,7 +4,8 @@ $PAGE_TITLE  = 'StoryBites — Visualizar Receita';
 $PAGE_DESC   = 'Visualize os detalhes completos da receita.';
 $PAGE_STYLES = [
     'css/card-receitas.css',
-    'css/buscar.css'
+    'css/buscar.css',
+    'css/ver-receita.css'
 ];
 
 require_once __DIR__ . '/../config.php';
@@ -12,10 +13,35 @@ require_once APP_ROOT . '/partials/_head.php';
 require_once APP_ROOT . '/partials/_header.php';
 include('../backend/conexao.php');
 
+// Função para formatar rendimento
+function formatarRendimento($rendimento) {
+    if (!$rendimento) {
+        return 'Não informado';
+    }
+    
+    // Se já tem formatação completa (contém letras), retorna como está
+    if (preg_match('/[a-zA-Z]/', $rendimento)) {
+        return $rendimento;
+    }
+    
+    // Se é apenas número, adiciona formatação padrão
+    $numero = intval($rendimento);
+    if ($numero > 0) {
+        if ($numero === 1) {
+            return $numero . ' porção';
+        } else {
+            return $numero . ' porções';
+        }
+    }
+    
+    // Se não conseguir processar, retorna como está
+    return $rendimento;
+}
+
 // Verificar se foi passado um ID
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     // Debug: mostrar erro se ID não foi passado
-    echo "<div style='padding: 20px; background: #ffebee; border: 1px solid #f44336; margin: 20px;'>";
+    echo "<div class='error-message'>";
     echo "<h3>Erro: ID da receita não informado</h3>";
     echo "<p>ID recebido: " . (isset($_GET['id']) ? htmlspecialchars($_GET['id']) : 'não informado') . "</p>";
     echo "<p><a href='./index.php'>Voltar ao Início</a></p>";
@@ -39,11 +65,11 @@ $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
     // Debug: mostrar se receita não foi encontrada
-    echo "<div style='padding: 20px; background: #fff3cd; border: 1px solid #ffc107; margin: 20px;'>";
+    echo "<div class='warning-message'>";
     echo "<h3>Receita não encontrada</h3>";
     echo "<p>ID buscado: " . $receita_id . "</p>";
     echo "<p>Verifique se a receita existe ou se o ID está correto.</p>";
-    echo "<p><a href='buscar.php'>← Voltar para busca</a></p>";
+    echo "<p><a href='./index.php'>← Voltar ao Início</a></p>";
     echo "</div>";
     exit;
 }
@@ -56,8 +82,8 @@ $PAGE_TITLE = 'StoryBites — ' . $receita['titulo'];
     <div class="container">
         <!-- Botão de voltar -->
         <div class="voltar-busca">
-            <a href="/Story-Bytes-/pages/buscar.php" class="btn btn-secondary">
-                ← Voltar à Busca
+            <a href="/Story-Bytes-/index.php" class="btn btn-secondary">
+                Voltar ao Início
             </a>
             </a>
         </div>
@@ -70,7 +96,7 @@ $PAGE_TITLE = 'StoryBites — ' . $receita['titulo'];
                         <div class="receita-imagem-header">
                             <img src="/Story-Bytes-/img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
                                  alt="<?= htmlspecialchars($receita['titulo']) ?>"
-                                 style="width: 100%; max-width: 400px; height: 250px; object-fit: cover; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); margin-bottom: 20px;">
+                                 class="receita-imagem-styled">
                         </div>
                         <div class="receita-info-header">
                             <h1><?= htmlspecialchars($receita['titulo']) ?></h1>
@@ -100,7 +126,7 @@ $PAGE_TITLE = 'StoryBites — ' . $receita['titulo'];
                 <section class="receita-detalhes-principais">
                     <div class="detalhe-item">
                         <span class="detalhe-label">Rendimento:</span>
-                        <span class="detalhe-valor"><?= htmlspecialchars($receita['rendimento'] ?: 'Não informado') ?></span>
+                        <span class="detalhe-valor"><?= htmlspecialchars(formatarRendimento($receita['rendimento'])) ?></span>
                     </div>
                     <div class="detalhe-item">
                         <span class="detalhe-label">Tempo de Preparo:</span>
@@ -136,162 +162,6 @@ $PAGE_TITLE = 'StoryBites — ' . $receita['titulo'];
         </article>
     </div>
 </main>
-
-<style>
-/* Estilos específicos para a página de receita completa */
-main.buscar-main .voltar-busca {
-    margin-bottom: 30px;
-}
-
-main.buscar-main .receita-completa {
-    background: var(--cor-branca);
-    border-radius: 10px;
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
-}
-
-main.buscar-main .receita-header {
-    background: linear-gradient(135deg, #ff7043, #ff8a65);
-    color: white;
-    padding: 40px 30px;
-    text-align: center;
-}
-
-main.buscar-main .receita-header h1 {
-    margin: 0 0 15px 0;
-    font-size: 2.5rem;
-    font-family: var(--fonte-titulo);
-    font-weight: 600;
-}
-
-main.buscar-main .receita-meta-info {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-main.buscar-main .receita-meta-info .receita-categoria {
-    background: rgba(255,255,255,0.2);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: 600;
-}
-
-main.buscar-main .receita-meta-info .receita-autor {
-    font-style: italic;
-    opacity: 0.9;
-}
-
-main.buscar-main .receita-content {
-    padding: 40px 30px;
-}
-
-main.buscar-main .receita-section {
-    margin-bottom: 40px;
-}
-
-main.buscar-main .receita-section h2 {
-    color: #ff7043;
-    font-size: 1.8rem;
-    font-family: var(--fonte-titulo);
-    margin-bottom: 20px;
-    border-bottom: 2px solid #ff7043;
-    padding-bottom: 10px;
-}
-
-main.buscar-main .receita-descricao-completa {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: var(--cor-secundaria);
-    text-align: justify;
-}
-
-main.buscar-main .receita-detalhes-principais {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 40px;
-    padding: 20px;
-    background: var(--cor-fundo);
-    border-radius: 10px;
-}
-
-main.buscar-main .receita-detalhes-principais .detalhe-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background: var(--cor-branca);
-    border-radius: 8px;
-    border-left: 4px solid #ff7043;
-}
-
-main.buscar-main .receita-detalhes-principais .detalhe-label {
-    font-weight: 600;
-    color: var(--cor-secundaria);
-}
-
-main.buscar-main .receita-detalhes-principais .detalhe-valor {
-    font-weight: 700;
-    color: #ff7043;
-    background: rgba(255, 112, 67, 0.1);
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-main.buscar-main .ingredientes-completos ul {
-    list-style: none;
-    padding: 0;
-}
-
-main.buscar-main .ingredientes-completos li {
-    padding: 10px 0 10px 25px;
-    position: relative;
-    border-bottom: 1px solid #f0f0f0;
-    font-size: 1rem;
-    line-height: 1.5;
-}
-
-main.buscar-main .ingredientes-completos li:before {
-    content: "•";
-    color: #ff7043;
-    position: absolute;
-    left: 0;
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
-main.buscar-main .modo-preparo-completo {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: var(--cor-secundaria);
-    text-align: justify;
-    padding: 20px;
-    background: var(--cor-fundo);
-    border-radius: 10px;
-    border-left: 4px solid #ff7043;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    main.buscar-main .receita-header {
-        padding: 30px 20px;
-    }
-    
-    main.buscar-main .receita-header h1 {
-        font-size: 2rem;
-    }
-    
-    main.buscar-main .receita-content {
-        padding: 30px 20px;
-    }
-    
-    main.buscar-main .receita-detalhes-principais {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
 
 <?php 
 require_once APP_ROOT . '/partials/_footer.php'; 

@@ -12,6 +12,7 @@ $PAGE_TITLE  = 'StoryBites — Atualizando Dados';
 $PAGE_DESC   = 'Atualizando suas informações pessoais.';
 $PAGE_STYLES = [
                 'css/login.css',
+                'css/atualizar-dados.css'
 ];
 
 require_once __DIR__ . '/../config.php';
@@ -81,13 +82,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="mensagem-sucesso">
                         <h2>Dados atualizados com sucesso!</h2>
                         <p>Suas informações foram atualizadas:</p>
-                        <ul style="text-align: left; margin: 15px 0;">
+                        <ul class="info-atualizada">
                             <li><strong>Nome:</strong> ' . htmlspecialchars($nome) . '</li>
                             <li><strong>E-mail:</strong> ' . htmlspecialchars($email) . '</li>
                         </ul>
                         ' . (!empty($alteracoes) ? '<p><strong>Alterações feitas:</strong><br>' . implode('<br>', $alteracoes) . '</p>' : '<p>Nenhuma alteração foi detectada.</p>') . '
                         <p><small>As alterações são aplicadas imediatamente em todo o site.</small></p>
-                        <div style="margin-top: 20px;">
+                        <div class="botoes-acao">
                             <a href="perfil.php?tab=dados" class="btn-primary">Voltar ao Perfil</a>
                         </div>
                     </div>
@@ -121,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <main class="formulario">
             <div class="mensagem-erro">
                 <h2>Erro na validação</h2>
-                <ul style="text-align: left; margin: 15px 0;">';
+                <ul class="info-atualizada">';
         
         foreach ($erros as $erro) {
             echo '<li>' . htmlspecialchars($erro) . '</li>';

@@ -11,7 +11,16 @@ session_start();
 //     exit();
 // }
 
+$ACTIVE_PAGE = 'admin';
+$PAGE_TITLE  = 'StoryBites — Gerenciar Categorias';
+$PAGE_DESC   = 'Painel administrativo para gerenciar categorias de receitas';
+$PAGE_STYLES = [
+                'css/variables.css',
+                'css/gerenciar-categorias.css'
+];
+
 require_once __DIR__ . '/../config.php';
+require_once APP_ROOT . '/partials/_head.php';
 include('../backend/conexao.php');
 
 // Processar ações
@@ -84,120 +93,17 @@ ORDER BY c.nome";
 $categorias = $conn->query($sql_categorias);
 ?>
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Categorias - StoryBites</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background: #f5f5f5;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        h1, h2 {
-            color: #8b4513;
-        }
-        .mensagem {
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .mensagem.sucesso {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .mensagem.erro {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background: #f8f9fa;
-            font-weight: bold;
-        }
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-            margin: 2px;
-        }
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-        .btn-warning {
-            background: #ffc107;
-            color: #212529;
-        }
-        .btn-primary {
-            background: #007bff;
-            color: white;
-        }
-        .btn:hover {
-            opacity: 0.8;
-        }
-        .form-inline {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        select, input {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .aviso {
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border: 1px solid #ffeaa7;
-            border-radius: 5px;
-            margin: 20px 0;
-        }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #ff7043;
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <a href="/Story-Bytes-/pages/perfil.php" class="back-link">← Voltar ao Perfil</a>
-        
-        <h1>🗂️ Gerenciar Categorias</h1>
+<main class="container">
+    <a href="/Story-Bytes-/pages/perfil.php" class="back-link">← Voltar ao Perfil</a>
+    
+    <h1>🗂️ Gerenciar Categorias</h1>
         
         <?php if ($mensagem): ?>
             <div class="mensagem <?= $tipo_mensagem ?>"><?= $mensagem ?></div>
         <?php endif; ?>
         
         <div class="aviso">
-            <strong>⚠️ Atenção:</strong> Antes de excluir uma categoria, certifique-se de que ela não possui receitas. 
+            <strong>Atenção:</strong> Antes de excluir uma categoria, certifique-se de que ela não possui receitas. 
             Se houver receitas, mova-as para outra categoria primeiro.
         </div>
         
@@ -219,19 +125,19 @@ $categorias = $conn->query($sql_categorias);
                             <td><?= $categoria['id'] ?></td>
                             <td><strong><?= htmlspecialchars($categoria['nome']) ?></strong></td>
                             <td>
-                                <span style="background: <?= $categoria['total_receitas'] > 0 ? '#28a745' : '#6c757d' ?>; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px;">
+                                <span class="badge-receitas <?= $categoria['total_receitas'] > 0 ? 'com-receitas' : 'sem-receitas' ?>">
                                     <?= $categoria['total_receitas'] ?> receita<?= $categoria['total_receitas'] != 1 ? 's' : '' ?>
                                 </span>
                             </td>
                             <td>
                                 <?php if ($categoria['total_receitas'] == 0): ?>
-                                    <form method="post" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir a categoria \'<?= htmlspecialchars($categoria['nome']) ?>\'?')">
+                                    <form method="post" class="form-excluir" onsubmit="return confirm('Tem certeza que deseja excluir a categoria \'<?= htmlspecialchars($categoria['nome']) ?>\'?')">
                                         <input type="hidden" name="acao" value="excluir_categoria">
                                         <input type="hidden" name="categoria_id" value="<?= $categoria['id'] ?>">
                                         <button type="submit" class="btn btn-danger">🗑️ Excluir</button>
                                     </form>
                                 <?php else: ?>
-                                    <span style="color: #666; font-size: 12px;">Mova as receitas primeiro</span>
+                                    <span class="texto-aviso">Mova as receitas primeiro</span>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -284,11 +190,12 @@ $categorias = $conn->query($sql_categorias);
         <p>Para operações avançadas, você pode usar os comandos SQL no arquivo:</p>
         <code>scripts_sql_gerenciar_categorias.sql</code>
         
-        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center;">
+        <div class="rodape-pagina">
             <a href="/Story-Bytes-/index.php" class="btn btn-primary">🏠 Voltar ao Início</a>
         </div>
-    </div>
-</body>
-</html>
+</main>
 
-<?php $conn->close(); ?>
+<?php
+require_once APP_ROOT . '/partials/_footer.php';
+$conn->close();
+?>

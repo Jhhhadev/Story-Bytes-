@@ -1,0 +1,309 @@
+/* ================================================
+   Buscar Receitas - Estilos específicos
+   Página de busca e resultados
+   ================================================ */
+
+/* Imagens das receitas na busca */
+.buscar-main .receita-card .receita-imagem img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+
+/* Imagens menores para listagem compacta */
+.buscar-main .receita-item .receita-imagem img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 12px;
+}
+
+/* ================================================
+   Modal de receita
+   ================================================ */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+}
+
+.modal.show {
+    display: block;
+}
+
+.modal-content {
+    background-color: var(--cor-branca, #ffffff);
+    margin: 5% auto;
+    padding: 20px;
+    border: none;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--cor-primaria, #ff7043);
+}
+
+.modal-title {
+    color: var(--cor-primaria, #ff7043);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    font-family: var(--fonte-titulo, 'Yanone Kaffeesatz', sans-serif);
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--cor-primaria, #ff7043);
+    text-decoration: none;
+}
+
+.modal-body {
+    color: var(--cor-secundaria, #333);
+    line-height: 1.6;
+}
+
+.modal-body h3 {
+    color: var(--cor-primaria, #ff7043);
+    font-size: 1.3rem;
+    margin: 20px 0 10px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #dee2e6;
+    font-family: var(--fonte-titulo, 'Yanone Kaffeesatz', sans-serif);
+}
+
+/* ================================================
+   Layout do modal com informações da receita
+   ================================================ */
+
+.modal-receita-info {
+    display: flex;
+    gap: var(--gap-lg, 20px);
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.modal-receita-meta {
+    flex: 1;
+    min-width: 200px;
+}
+
+.modal-receita-imagem {
+    flex: 1;
+    min-width: 200px;
+}
+
+.modal-receita-imagem img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius, 10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos para metadados da receita */
+.receita-meta-item {
+    margin-bottom: var(--gap-sm, 10px);
+    padding: var(--gap-sm, 8px) 12px;
+    background: #fff1ec;
+    border-radius: var(--radius, 8px);
+    border-left: 4px solid var(--cor-primaria, #ff7043);
+    flex: 1;
+    min-width: 180px;
+}
+
+.receita-meta-label {
+    font-weight: 600;
+    color: var(--cor-primaria, #ff7043);
+    display: inline-block;
+    margin-right: var(--gap-sm, 8px);
+}
+
+/* ================================================
+   Responsividade do modal
+   ================================================ */
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+        padding: 15px;
+    }
+    
+    .modal-title {
+        font-size: 1.5rem;
+    }
+    
+    .modal-receita-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .modal-receita-imagem img {
+        height: 150px;
+    }
+    
+    .receita-meta-item {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        width: 98%;
+        margin: 1% auto;
+        padding: 10px;
+    }
+    
+    .modal-title {
+        font-size: 1.3rem;
+    }
+    
+    .close {
+        font-size: 24px;
+    }
+    
+    .modal-receita-imagem img {
+        height: 120px;
+    }
+}
+
+/* ================================================
+   Animações do modal
+   ================================================ */
+
+.modal.show .modal-content {
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================================
+   Melhorias para acessibilidade
+   ================================================ */
+
+.modal:focus {
+    outline: none;
+}
+
+.modal-content:focus {
+    outline: 2px solid var(--cor-primaria, #ff7043);
+    outline-offset: 2px;
+}
+
+/* ================================================
+   Estilos para botões do modal
+   ================================================ */
+
+.modal-btn {
+    background: var(--cor-primaria, #ff7043);
+    color: var(--texto-sobre-primaria, white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius, 8px);
+    cursor: pointer;
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.modal-btn:hover {
+    background: #ff5722;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 112, 67, 0.3);
+}
+
+/* ================================================
+   Override para garantir consistência das imagens
+   ================================================ */
+
+/* Todas as imagens de receitas na busca */
+.buscar-main .receita-imagem img,
+.buscar-main .receita-card .receita-imagem img,
+.buscar-main .receita-item .receita-imagem img {
+    width: 100% !important;
+    object-fit: cover !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Altura específica para diferentes contextos */
+.buscar-main .receita-card .receita-imagem img {
+    height: 180px !important;
+    margin-bottom: 15px !important;
+}
+
+.buscar-main .receita-item .receita-imagem img {
+    height: 160px !important;
+    margin-bottom: 12px !important;
+}
+
+/* Efeitos hover nas imagens */
+.buscar-main .receita-imagem img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* ================================================
+   Responsividade para imagens da busca
+   ================================================ */
+
+@media (max-width: 768px) {
+    .buscar-main .receita-card .receita-imagem img,
+    .buscar-main .receita-item .receita-imagem img {
+        height: 140px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .buscar-main .receita-card .receita-imagem img,
+    .buscar-main .receita-item .receita-imagem img {
+        height: 120px !important;
+        border-radius: 10px !important;
+    }
+}

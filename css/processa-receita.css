@@ -1,0 +1,151 @@
+/* Estilos para a página de processamento de receitas */
+
+.formulario {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+/* Mensagens de sucesso e erro */
+.mensagem-sucesso,
+.mensagem-erro {
+    background: var(--card-fundo);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.mensagem-sucesso {
+    border-left: 5px solid var(--cor-primaria);
+}
+
+.mensagem-erro {
+    border-left: 5px solid #dc3545;
+}
+
+.mensagem-sucesso h2 {
+    color: var(--cor-primaria);
+    margin-bottom: 1rem;
+    font-family: var(--fonte-titulo);
+    font-size: 1.8rem;
+}
+
+.mensagem-erro h2 {
+    color: #dc3545;
+    margin-bottom: 1rem;
+    font-family: var(--fonte-titulo);
+    font-size: 1.8rem;
+}
+
+.mensagem-sucesso p,
+.mensagem-erro p {
+    margin-bottom: 0.5rem;
+    color: var(--cor-secundaria);
+    line-height: 1.6;
+}
+
+/* Área de botões */
+.mensagem-sucesso .botoes-acao,
+.mensagem-erro .botoes-acao {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Botões de ação */
+.btn-primary,
+.btn-secondary {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    min-width: 160px;
+}
+
+.btn-primary {
+    background: var(--cor-primaria);
+    color: var(--texto-sobre-primaria);
+}
+
+.btn-primary:hover {
+    background: #e64a19;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 112, 67, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--cor-primaria);
+    border: 2px solid var(--cor-primaria);
+}
+
+.btn-secondary:hover {
+    background: var(--cor-primaria);
+    color: var(--texto-sobre-primaria);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 112, 67, 0.2);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .formulario {
+        padding: 1rem;
+        min-height: 60vh;
+    }
+    
+    .mensagem-sucesso,
+    .mensagem-erro {
+        padding: 1.5rem;
+        margin: 0 0.5rem;
+    }
+    
+    .mensagem-sucesso h2,
+    .mensagem-erro h2 {
+        font-size: 1.5rem;
+    }
+    
+    .botoes-acao {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .mensagem-sucesso,
+    .mensagem-erro {
+        padding: 1rem;
+        border-radius: 8px;
+    }
+    
+    .mensagem-sucesso h2,
+    .mensagem-erro h2 {
+        font-size: 1.3rem;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}

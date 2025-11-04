@@ -1,0 +1,376 @@
+/* ================================================
+   Atualizar Senha - Estilos específicos
+   Página de alteração de senha
+   Integrado ao sistema de design do Story-Bytes
+   ================================================ */
+
+/* Container principal do formulário */
+.form-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background: var(--cor-branca, #ffffff);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+}
+
+.form-container h1 {
+    text-align: center;
+    color: var(--cor-primaria, #ff7043);
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 15px 0;
+    font-family: var(--fonte-titulo, 'Yanone Kaffeesatz', sans-serif);
+}
+
+.form-container > p {
+    text-align: center;
+    color: var(--cor-secundaria, #333);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* Formulário de alteração de senha */
+.form-alterar-senha .form-group {
+    margin-bottom: var(--gap-lg, 20px);
+}
+
+.form-alterar-senha label {
+    display: block;
+    margin-bottom: var(--gap-sm, 8px);
+    font-weight: 600;
+    color: var(--cor-secundaria, #333);
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+}
+
+.form-alterar-senha input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #dee2e6;
+    border-radius: var(--radius, 8px);
+    font-size: 16px;
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background: var(--cor-branca, white);
+}
+
+.form-alterar-senha input[type="password"]:focus {
+    outline: none;
+    border-color: var(--cor-primaria, #ff7043);
+    box-shadow: 0 0 0 3px rgba(255, 112, 67, 0.1);
+}
+
+.form-alterar-senha input[type="password"]::placeholder {
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Ações do formulário */
+.form-actions {
+    display: flex;
+    gap: var(--gap-md, 15px);
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.form-actions .btn-primary,
+.form-actions .btn-secondary {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius, 8px);
+    font-weight: 600;
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 1rem;
+    min-width: 140px;
+    text-align: center;
+}
+
+.form-actions .btn-primary {
+    background: var(--cor-primaria, #ff7043);
+    color: var(--texto-sobre-primaria, white);
+}
+
+.form-actions .btn-primary:hover {
+    background: #ff5722;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 112, 67, 0.3);
+}
+
+.form-actions .btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.form-actions .btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+/* Dicas de senha */
+.senha-dicas {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff1ec;
+    border-radius: var(--radius, 8px);
+    border-left: 4px solid var(--cor-primaria, #ff7043);
+}
+
+.senha-dicas h3 {
+    color: var(--cor-primaria, #ff7043);
+    font-size: 1.2rem;
+    margin: 0 0 15px 0;
+    font-family: var(--fonte-titulo, 'Yanone Kaffeesatz', sans-serif);
+}
+
+.senha-dicas ul {
+    margin: 0;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+.senha-dicas ul li {
+    margin: var(--gap-sm, 8px) 0;
+    line-height: 1.5;
+    color: var(--cor-secundaria, #333);
+}
+
+/* Mensagens de sucesso e erro */
+.mensagem-sucesso,
+.mensagem-erro {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.mensagem-sucesso {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    border: 2px solid #28a745;
+    color: #155724;
+}
+
+.mensagem-erro {
+    background: linear-gradient(135deg, #f8d7da, #f1b0b7);
+    border: 2px solid #dc3545;
+    color: #721c24;
+}
+
+/* Títulos das mensagens */
+.mensagem-sucesso h2,
+.mensagem-erro h2 {
+    margin: 0 0 15px 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    font-family: var(--fonte-titulo, 'Yanone Kaffeesatz', sans-serif);
+}
+
+.mensagem-sucesso h2 {
+    color: #28a745;
+}
+
+.mensagem-erro h2 {
+    color: #dc3545;
+}
+
+/* Parágrafos das mensagens */
+.mensagem-sucesso p,
+.mensagem-erro p {
+    margin: var(--gap-md, 10px) 0;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.mensagem-sucesso p strong,
+.mensagem-erro p strong {
+    font-weight: 600;
+}
+
+/* Container dos botões de ação */
+.acoes-senha {
+    margin-top: var(--gap-lg, 20px);
+    display: flex;
+    gap: var(--gap-md, 10px);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Botões de ação das mensagens */
+.mensagem-sucesso .btn-primary,
+.mensagem-sucesso .btn-secondary,
+.mensagem-erro .btn-primary,
+.mensagem-erro .btn-secondary {
+    display: inline-block;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius, 8px);
+    text-decoration: none;
+    font-weight: 600;
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.mensagem-sucesso .btn-primary,
+.mensagem-erro .btn-primary {
+    background: var(--cor-primaria, #ff7043);
+    color: var(--texto-sobre-primaria, white);
+}
+
+.mensagem-sucesso .btn-primary:hover,
+.mensagem-erro .btn-primary:hover {
+    background: #ff5722;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 112, 67, 0.3);
+}
+
+.mensagem-sucesso .btn-secondary,
+.mensagem-erro .btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.mensagem-sucesso .btn-secondary:hover,
+.mensagem-erro .btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+/* Lista de erros */
+.mensagem-erro ul {
+    text-align: left;
+    margin: 15px 0;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+.mensagem-erro ul li {
+    margin: var(--gap-sm, 8px) 0;
+    line-height: 1.5;
+}
+
+/* Links nas mensagens */
+.mensagem-sucesso a:not(.btn-primary):not(.btn-secondary),
+.mensagem-erro a:not(.btn-primary):not(.btn-secondary) {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.mensagem-sucesso a:not(.btn-primary):not(.btn-secondary):hover {
+    color: #1e7e34;
+}
+
+.mensagem-erro a:not(.btn-primary):not(.btn-secondary):hover {
+    color: #a71e2a;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .form-container,
+    .mensagem-sucesso,
+    .mensagem-erro {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    .form-container h1,
+    .mensagem-sucesso h2,
+    .mensagem-erro h2 {
+        font-size: 1.5rem;
+    }
+    
+    .form-actions,
+    .acoes-senha {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .form-actions .btn-primary,
+    .form-actions .btn-secondary,
+    .mensagem-sucesso .btn-secondary,
+    .mensagem-erro .btn-secondary,
+    .mensagem-sucesso .btn-primary,
+    .mensagem-erro .btn-primary {
+        width: 100%;
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container,
+    .mensagem-sucesso,
+    .mensagem-erro {
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    .form-container h1,
+    .mensagem-sucesso h2,
+    .mensagem-erro h2 {
+        font-size: 1.3rem;
+    }
+    
+    .form-container p,
+    .mensagem-sucesso p,
+    .mensagem-erro p {
+        font-size: 0.9rem;
+    }
+    
+    .senha-dicas {
+        padding: 15px;
+    }
+}
+
+/* Animações */
+.form-container,
+.mensagem-sucesso,
+.mensagem-erro {
+    animation: slideInFromTop 0.5s ease-out;
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estados de focus para acessibilidade */
+.form-actions .btn-primary:focus,
+.form-actions .btn-secondary:focus,
+.mensagem-sucesso .btn-primary:focus,
+.mensagem-sucesso .btn-secondary:focus,
+.mensagem-erro .btn-primary:focus,
+.mensagem-erro .btn-secondary:focus {
+    outline: 2px solid var(--cor-primaria, #ff7043);
+    outline-offset: 2px;
+}
+
+.form-alterar-senha input[type="password"]:focus {
+    outline: none;
+}
+
+.mensagem-sucesso a:focus,
+.mensagem-erro a:focus {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}

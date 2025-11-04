@@ -1,0 +1,227 @@
+/* Editar Receita - Estilos específicos */
+
+/* Container da imagem atual */
+.imagem-atual {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: var(--cor-fundo, #f8f9fa);
+    border-radius: var(--radius, 8px);
+    border: 1px solid #dee2e6;
+}
+
+.imagem-atual .titulo-imagem-atual {
+    margin: 0 0 10px 0;
+    font-weight: 600;
+    color: var(--cor-secundaria, #495057);
+}
+
+.imagem-atual .preview-imagem {
+    max-width: 250px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.imagem-atual .info-arquivo {
+    font-size: 0.85em;
+    color: #6c757d;
+    margin: 8px 0 0 0;
+}
+
+/* Container do input de arquivo */
+.input-arquivo-container {
+    margin-bottom: 10px;
+}
+
+.input-arquivo {
+    padding: 8px;
+    border: 2px solid #dee2e6;
+    border-radius: var(--radius, 4px);
+    background: var(--cor-branca, white);
+    width: 100%;
+    max-width: 400px;
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+}
+
+/* Textos informativos */
+.info-upload {
+    color: #6c757d;
+    font-size: 0.9em;
+    display: block;
+    line-height: 1.4;
+}
+
+.aviso-sem-imagem {
+    color: #dc3545;
+}
+
+.aviso-com-imagem {
+    color: #28a745;
+}
+
+/* Dicas de preenchimento dos formulários */
+.form-hint {
+    margin-top: 5px;
+    color: #6c757d;
+    font-size: 0.85em;
+    display: block;
+}
+
+/* Estilos para preview da nova imagem (JavaScript) */
+#preview-nova-imagem {
+    margin-top: 15px;
+    padding: 15px;
+    background: #e8f5e8;
+    border: 2px solid #28a745;
+    border-radius: var(--radius, 8px);
+}
+
+#preview-nova-imagem .titulo-preview {
+    margin: 0 0 10px 0;
+    font-weight: 600;
+    color: #155724;
+}
+
+#preview-nova-imagem .imagem-preview {
+    max-width: 250px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: var(--radius, 8px);
+    border: 2px solid #28a745;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#preview-nova-imagem .info-preview {
+    font-size: 0.85em;
+    color: #155724;
+    margin: 8px 0 0 0;
+}
+
+#preview-nova-imagem .aviso-preview {
+    font-size: 0.85em;
+    color: #155724;
+    margin: 5px 0 0 0;
+}
+
+/* Estados especiais da imagem atual */
+.imagem-atual.sera-substituida {
+    opacity: 0.6;
+    border: 2px solid #ffc107;
+}
+
+#aviso-substituicao {
+    color: #856404;
+    font-weight: 600;
+    margin: 10px 0 0 0;
+    font-size: 0.9em;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .imagem-atual .preview-imagem,
+    #preview-nova-imagem .imagem-preview {
+        max-width: 100%;
+        height: 120px;
+    }
+    
+    .input-arquivo {
+        max-width: 100%;
+    }
+}
+
+/* Melhorias visuais para formulário */
+.receita-form .form-group {
+    margin-bottom: var(--gap-lg, 20px);
+}
+
+.receita-form .form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* Consistência com outros formulários do site */
+.receita-form label {
+    display: block;
+    margin-bottom: var(--gap-sm, 8px);
+    font-weight: 600;
+    color: var(--cor-secundaria, #333);
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+}
+
+.receita-form input[type="text"],
+.receita-form input[type="file"],
+.receita-form textarea,
+.receita-form select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #dee2e6;
+    border-radius: var(--radius, 8px);
+    font-size: 16px;
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.receita-form input[type="text"]:focus,
+.receita-form textarea:focus,
+.receita-form select:focus {
+    outline: none;
+    border-color: var(--cor-primaria, #ff7043);
+    box-shadow: 0 0 0 3px rgba(255, 112, 67, 0.1);
+}
+
+.receita-form .form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-start;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+.receita-form .btn-primary,
+.receita-form .btn-secondary {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius, 8px);
+    font-weight: 600;
+    font-family: var(--fonte-principal, 'Open Sans', sans-serif);
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.receita-form .btn-primary {
+    background: var(--cor-primaria, #ff7043);
+    color: var(--texto-sobre-primaria, white);
+}
+
+.receita-form .btn-primary:hover {
+    background: #ff5722;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 112, 67, 0.3);
+}
+
+.receita-form .btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.receita-form .btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+@media (max-width: 768px) {
+    .receita-form .form-actions {
+        flex-direction: column;
+    }
+    
+    .receita-form .btn-primary,
+    .receita-form .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+}

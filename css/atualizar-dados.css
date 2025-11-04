@@ -1,0 +1,12 @@
+/* Atualizar Dados - Estilos específicos */
+
+/* Lista de informações atualizadas */
+.info-atualizada {
+    text-align: left;
+    margin: 15px 0;
+}
+
+/* Botões de ação na mensagem de sucesso */
+.botoes-acao {
+    margin-top: 20px;
+}

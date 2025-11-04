@@ -129,8 +129,8 @@ main.buscar-main.buscar-main .btn-secondary:hover {
 /* Botão Ver Receita */
 main.buscar-main.buscar-main .btn-ver-receita {
     display: inline-block;
-    background: #ff7043;
-    color: white;
+    background: var(--cor-primaria);
+    color: var(--texto-sobre-primaria);
     padding: 10px 20px;
     border-radius: 6px;
     text-decoration: none;

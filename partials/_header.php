@@ -13,7 +13,7 @@ $nome_usuario_header = $usuario_logado_header ? $_SESSION['usuario_nome'] : '';
 <header class="menu" role="banner">  <!-- role indica que essa seção é o cabeçaho do site -->
     <nav class="menu__nav" aria-label="Menu Principal">
         <a href="/Story-Bytes-/">
-            <img src="img/logo-story.png" alt="Logo StoryBites" width="90">            
+            <img src="./img/logo-StoryBytes.png" alt="Logo Story Bytes" width="90">            
         </a>
         
         <!-- Botão do menu hamburguer -->

@@ -12,6 +12,7 @@ $PAGE_TITLE  = 'StoryBites — Processando Receita';
 $PAGE_DESC   = 'Enviando sua receita para aprovação.';
 $PAGE_STYLES = [
                 'css/login.css',
+                'css/processa-receita.css',
 ];
 
 require_once __DIR__ . '/../config.php';
@@ -76,8 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <h2>Receita salva como rascunho!</h2>
                         <p><strong>' . htmlspecialchars($titulo) . '</strong> foi salva em seus rascunhos.</p>
                         <p>Você pode editá-la a qualquer momento ou enviá-la para aprovação quando quiser!</p>
-                        <div style="margin-top: 20px;">
-                            <a href="/Story-Bytes-/pages/perfil.php?tab=minhas" class="btn-primary" style="margin-right: 10px;">Ver Minhas Receitas</a>
+                        <div class="botoes-acao">
+                            <a href="/Story-Bytes-/pages/perfil.php?tab=minhas" class="btn-primary">Ver Minhas Receitas</a>
                             <a href="/Story-Bytes-/pages/perfil.php?tab=criar" class="btn-secondary">Criar Nova Receita</a>
                         </div>
                     </div>
@@ -89,8 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <h2>Receita enviada para aprovação!</h2>
                         <p><strong>' . htmlspecialchars($titulo) . '</strong> foi enviada para aprovação.</p>
                         <p>Nossos administradores irão revisar sua receita em breve!</p>
-                        <div style="margin-top: 20px;">
-                            <a href="/Story-Bytes-/pages/perfil.php?tab=minhas" class="btn-primary" style="margin-right: 10px;">Ver Minhas Receitas</a>
+                        <div class="botoes-acao">
+                            <a href="/Story-Bytes-/pages/perfil.php?tab=minhas" class="btn-primary">Ver Minhas Receitas</a>
                             <a href="/Story-Bytes-/pages/perfil.php?tab=criar" class="btn-secondary">Criar Nova Receita</a>
                         </div>
                     </div>
@@ -107,7 +108,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mensagem-erro">
                 <h2>❌ Erro ao enviar receita</h2>
                 <p>' . htmlspecialchars($e->getMessage()) . '</p>
-                <p><a href="perfil.php">Tentar novamente</a></p>
+                <div class="botoes-acao">
+                    <a href="perfil.php" class="btn-primary">Tentar novamente</a>
+                </div>
             </div>
         </main>';
     }

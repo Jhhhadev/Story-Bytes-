@@ -164,7 +164,8 @@ if (!$categorias) {
                         <div class="form-group">
                             <label for="rendimento">Rendimento</label>
                             <input type="text" id="rendimento" name="rendimento" 
-                                   placeholder="Ex: 8 porções, 12 unidades">
+                                   placeholder="Ex: 8 porções, 12 unidades, 1 litro">
+                            <small class="form-hint">Informe a quantidade e unidade (porções, unidades, litros, etc.)</small>
                         </div>
 
                         <div class="form-group">
@@ -227,8 +228,7 @@ if (!$categorias) {
                                 <?php if ($receita['imagem']): ?>
                                     <div class="receita-imagem">
                                         <img src="./img/receitas/<?= htmlspecialchars($receita['imagem']) ?>" 
-                                             alt="<?= htmlspecialchars($receita['titulo']) ?>" 
-                                             style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-top: 10px;">
+                                             alt="<?= htmlspecialchars($receita['titulo']) ?>">
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -288,7 +288,7 @@ if (!$categorias) {
             </div>
             
             <!-- Modo Edição -->
-            <div class="dados-container" id="dados-editar" style="display: none;">
+            <div class="dados-container hidden" id="dados-editar">
                 <form id="form-editar-dados" class="dados-form">
                     <div class="form-group">
                         <label for="edit-nome">Nome Completo</label>
@@ -308,7 +308,7 @@ if (!$categorias) {
             </div>
             
             <!-- Modo Alterar Senha -->
-            <div class="dados-container" id="dados-senha" style="display: none;">
+            <div class="dados-container hidden" id="dados-senha">
                 <form id="form-alterar-senha" class="dados-form">
                     <div class="form-group">
                         <label for="senha-atual">Senha Atual</label>
@@ -396,26 +396,70 @@ function switchTab(tabName) {
 
 // JavaScript para alternância de modos na aba dados
 function toggleDadosMode(modo) {
-    // Esconder todos os containers
-    document.getElementById('dados-visualizar').style.display = 'none';
-    document.getElementById('dados-editar').style.display = 'none';
-    document.getElementById('dados-senha').style.display = 'none';
+    console.log('toggleDadosMode chamado com modo:', modo);
     
-    // Remover classe active de todos os botões
-    document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+    // Verificar se os elementos existem
+    const visualizar = document.getElementById('dados-visualizar');
+    const editar = document.getElementById('dados-editar');
+    const senha = document.getElementById('dados-senha');
+    
+    if (!visualizar || !editar || !senha) {
+        console.error('Elementos não encontrados:', {visualizar, editar, senha});
+        return;
+    }
+    
+    // Esconder todos os containers
+    visualizar.classList.add('hidden');
+    editar.classList.add('hidden');
+    senha.classList.add('hidden');
     
     // Mostrar o container selecionado
-    if (modo === 'visualizar') {
-        document.getElementById('dados-visualizar').style.display = 'block';
-        document.getElementById('btn-visualizar').classList.add('active');
-    } else if (modo === 'editar') {
-        document.getElementById('dados-editar').style.display = 'block';
-        document.getElementById('btn-editar').classList.add('active');
+    if (modo === 'editar') {
+        editar.classList.remove('hidden');
+        console.log('Modo editar ativado');
     } else if (modo === 'senha') {
-        document.getElementById('dados-senha').style.display = 'block';
-        // Não há botão específico para senha, ele é ativado pelo botão "Alterar Senha"
+        senha.classList.remove('hidden');
+        console.log('Modo senha ativado');
+    } else {
+        // Padrão: mostrar visualização
+        visualizar.classList.remove('hidden');
+        console.log('Modo visualizar ativado');
     }
 }
+
+// Adicionar event listeners quando a página carregar
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM carregado, configurando event listeners');
+    
+    // Event listeners para os botões de dados
+    const btnEditarDados = document.querySelector('button[onclick="toggleDadosMode(\'editar\')"]');
+    const btnAlterarSenha = document.querySelector('button[onclick="toggleDadosMode(\'senha\')"]');
+    
+    if (btnEditarDados) {
+        btnEditarDados.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Botão Editar Dados clicado');
+            toggleDadosMode('editar');
+        });
+    }
+    
+    if (btnAlterarSenha) {
+        btnAlterarSenha.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Botão Alterar Senha clicado');
+            toggleDadosMode('senha');
+        });
+    }
+    
+    // Verificar se os elementos existem no DOM
+    console.log('Elementos encontrados:', {
+        visualizar: document.getElementById('dados-visualizar'),
+        editar: document.getElementById('dados-editar'),
+        senha: document.getElementById('dados-senha'),
+        btnEditar: btnEditarDados,
+        btnSenha: btnAlterarSenha
+    });
+});
 
 // Event listeners para os botões das abas
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -424,6 +468,31 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
         switchTab(tabName);
     });
 });
+
+// Função para formatar rendimento
+function formatarRendimento(rendimento) {
+    if (!rendimento) {
+        return 'Não informado';
+    }
+    
+    // Se já tem formatação completa (contém letras), retorna como está
+    if (/[a-zA-Z]/.test(rendimento)) {
+        return rendimento;
+    }
+    
+    // Se é apenas número, adiciona formatação padrão
+    const numero = parseInt(rendimento);
+    if (!isNaN(numero)) {
+        if (numero === 1) {
+            return numero + ' porção';
+        } else {
+            return numero + ' porções';
+        }
+    }
+    
+    // Se não conseguir processar, retorna como está
+    return rendimento;
+}
 
 // Funções para gerenciamento de receitas
 function obterReceita(id) {
@@ -450,7 +519,7 @@ function mostrarModalReceita(receita) {
     document.getElementById('modal-descricao').textContent = receita.descricao;
     document.getElementById('modal-ingredientes').innerHTML = receita.ingredientes.replace(/\n/g, '<br>');
     document.getElementById('modal-modo-preparo').innerHTML = receita.modoprep.replace(/\n/g, '<br>');
-    document.getElementById('modal-rendimento').textContent = receita.rendimento || 'Não informado';
+    document.getElementById('modal-rendimento').textContent = formatarRendimento(receita.rendimento);
     document.getElementById('modal-tempo').textContent = receita.tempo_preparo || 'Não informado';
     document.getElementById('modal-data').textContent = new Date(receita.datacriacao).toLocaleDateString('pt-BR');
     
